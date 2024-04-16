@@ -18,6 +18,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
+:root {
+  --radix-connect-button-height: 40px;
+}
+
+radix-connect-button radix-button {
+  border-radius: 4px;
+}
+
 @keyframes bounce {
   0%,
   100% {

@@ -1,13 +1,21 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { WalletDataState } from "@radixdlt/radix-dapp-toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AppReducer } from "Types/reducers";
 
-const initialState = {};
+const initialState: AppReducer = {
+  walletData: { accounts: [], personaData: [], proofs: [] },
+};
 
 const app = createSlice({
   name: "app",
   initialState,
-  reducers: {},
+  reducers: {
+    setWalletData(state, action: PayloadAction<WalletDataState>) {
+      state.walletData = action.payload;
+    },
+  },
 });
 
 export default app.reducer;
 
-export const {} = app.actions;
+export const { setWalletData } = app.actions;

@@ -35,7 +35,10 @@ const Header = () => {
           Stake HIT
         </p>
       </div>
-      <LogoWebsite twContainerClass="invisible" />
+      <div>
+        <radix-connect-button></radix-connect-button>
+      </div>
+      {/* <LogoWebsite twContainerClass="invisible" /> */}
     </div>
   );
 };
