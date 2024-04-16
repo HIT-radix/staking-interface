@@ -10,7 +10,7 @@ module.exports = {
         dark: {
           // full list of available color vars at https://daisyui.com/docs/colors/
           ...require("daisyui/src/theming/themes")["dark"],
-          primary: "#222222",
+          primary: "#121212",
           secondary: "#A0D490",
           accent: "#ffffff",
           // neutral: "#a5b6c8",
