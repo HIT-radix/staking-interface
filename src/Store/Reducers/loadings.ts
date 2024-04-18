@@ -4,6 +4,7 @@ import { LoadingReducer } from "Types/reducers";
 const initialState: LoadingReducer = {
   balanceLoading: false,
   txInProgress: false,
+  tokenDataLoading: false,
 };
 
 const loadings = createSlice({
@@ -16,9 +17,12 @@ const loadings = createSlice({
     setTxInProgress(state, action: PayloadAction<boolean>) {
       state.txInProgress = action.payload;
     },
+    setTokenDataLoading(state, action: PayloadAction<boolean>) {
+      state.tokenDataLoading = action.payload;
+    },
   },
 });
 
 export default loadings.reducer;
 
-export const { setBalanceLoading, setTxInProgress } = loadings.actions;
+export const { setBalanceLoading, setTxInProgress, setTokenDataLoading } = loadings.actions;

@@ -1,9 +1,10 @@
 import { WalletDataState } from "@radixdlt/radix-dapp-toolkit";
+import { TokenData } from "./token";
 
 export type AppReducer = {
   walletData: WalletDataState;
   hitPrice: number;
-  hitBalance: string;
+  walletAddress: string;
 };
 
 export enum Percentage {
@@ -36,9 +37,12 @@ export enum StakingTokens {
 
 export type SessionReducer = {
   successTxCount: number;
+  tokenData?: TokenData;
+  hitBalance: string;
 };
 
 export type LoadingReducer = {
   balanceLoading: boolean;
   txInProgress: boolean;
+  tokenDataLoading: boolean;
 };

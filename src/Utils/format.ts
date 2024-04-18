@@ -1,4 +1,6 @@
+import { HIT_RESOURCE_ADDRESS, STHIT_RESOURCE_ADDRESS } from "Constants/address";
 import { radixDashboardBaseUrl } from "Constants/misc";
+import { ResourceDetails } from "Types/api";
 import { parseUnits as parseUnitsEthers } from "ethers";
 import numbro from "numbro";
 
@@ -48,11 +50,11 @@ export const formatTokenAmount = (num: number | undefined, digits = 2) => {
 };
 
 export const exactAmountInDecimals = (amount: number) => {
-  return Number.isInteger(amount) ? amount.toString() : amount.toFixed(9).replace(/0+$/, "");
+  return Number.isInteger(amount) ? amount.toString() : amount.toFixed(18).replace(/0+$/, "");
 };
 
 export function parseUnits(_num: number) {
-  return parseUnitsEthers(_num.toString(), 9).toString();
+  return parseUnitsEthers(_num.toString(), 18).toString();
 }
 
 export function formatUnits(_num: number, decimals: number) {
@@ -62,4 +64,29 @@ export function formatUnits(_num: number, decimals: number) {
 
 export const generateExplorerTxLink = (txId?: string) => {
   return `${radixDashboardBaseUrl}/transaction/${txId}`;
+};
+
+export const extract_HIT_STHIT_balance = (resources: ResourceDetails[]) => {
+  const HIT_address = HIT_RESOURCE_ADDRESS;
+  const StHIT_address = STHIT_RESOURCE_ADDRESS;
+  let hitBalance: string | undefined;
+  let sthitBalance: string | undefined;
+
+  for (const resource of resources) {
+    if (resource.resource_address === HIT_address) {
+      hitBalance = resource.amount;
+    } else if (resource.resource_address === StHIT_address) {
+      sthitBalance = resource.amount;
+    }
+
+    // Break the loop if both balances are found
+    if (hitBalance !== undefined && sthitBalance !== undefined) {
+      break;
+    }
+  }
+
+  return {
+    hit: hitBalance || "0", // Default to "0" if balance not found
+    sthit: sthitBalance || "0", // Default to "0" if balance not found
+  };
 };

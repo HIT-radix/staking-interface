@@ -27,10 +27,18 @@ const staking = createSlice({
         state.isInSufficientBalance = action.payload;
       }
     },
+    setStHitBalance(state, action: PayloadAction<string>) {
+      state.stHitBalance = action.payload;
+    },
   },
 });
 
 export default staking.reducer;
 
-export const { setCurrentTab, setAmount, setPercentage, setIsInsufficientBalance } =
-  staking.actions;
+export const {
+  setCurrentTab,
+  setAmount,
+  setPercentage,
+  setIsInsufficientBalance,
+  setStHitBalance,
+} = staking.actions;

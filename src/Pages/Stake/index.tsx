@@ -7,10 +7,10 @@ import { ActionBtnStake } from "Components/actionBtnStake";
 const Stake = () => {
   return (
     <div className="flex items-center justify-center">
-      <div className="flex flex-col justify-between bg-base-content text-primary p-6 w-[95vw] max-w-[650px] rounded mt-20">
+      <div className="flex flex-col justify-between bg-base-content text-primary p-6 w-[95vw] max-w-[650px] rounded-lg mt-20">
         <div className="w-full">
           <Tabs />
-          <div className="bg-base-200 py-4 px-4 mt-3 rounded">
+          <div className="bg-base-200 py-4 px-4 mt-3 rounded-lg">
             <Input />
             <Balance />
           </div>

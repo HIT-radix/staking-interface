@@ -8,16 +8,20 @@ import { calculateInputWidth, validateDecimalPlaces } from "Utils/judgers";
 import { formatDollarAmount } from "Utils/format";
 import { Tooltip } from "./tooltip";
 import HITlogo from "Assets/Images/hit-logo.png";
+import StHITlogo from "Assets/Images/sthit-logo.png";
+import Skeleton from "react-loading-skeleton";
 
 export const Input = () => {
   const [inputWidth, setInputWidth] = useState(1.5);
 
-  const { hitPrice, hitBalance } = useSelector((state) => state.app);
-  const { amount, stHitBalance, isInSufficientBalance, currentTab } = useSelector(
-    (state) => state.staking
-  );
+  const hitPrice = useSelector((state) => state.app.hitPrice);
+  const hitBalance = useSelector((state) => state.session.hitBalance);
+  const tokenDataLoading = useSelector((state) => state.loadings.tokenDataLoading);
+  const amount = useSelector((state) => state.staking.amount);
+  const isInSufficientBalance = useSelector((state) => state.staking.isInSufficientBalance);
+  const currentTab = useSelector((state) => state.staking.currentTab);
+  const stHitBalance = useSelector((state) => state.staking.stHitBalance);
 
-  //check balance sufficiency of MESH, indexMESH, staked-MESH, staked-indexMESH
   useEffect(() => {
     dispatch(
       setIsInsufficientBalance(
@@ -35,7 +39,7 @@ export const Input = () => {
   const onValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
     if (text.match(AMOUNT_INPUT_REGEX)) {
-      if (validateDecimalPlaces(text, 9)) {
+      if (validateDecimalPlaces(text, 18)) {
         setInputWidth(calculateInputWidth(text));
         dispatch(setAmount(text));
       }
@@ -72,7 +76,7 @@ export const Input = () => {
             type="text"
             onChange={onValueChange}
             className={`input bg-base-200 text-accent focus:outline-none focus:border-none  px-0 my-3 max-w-[100%] sm:max-w-[calc(100% - 40px)] text-3xl sm:text-5xl ${
-              false ? "text-red-500" : ""
+              isInSufficientBalance ? "text-red-500" : ""
             }`}
             placeholder="0"
             style={{
@@ -87,14 +91,27 @@ export const Input = () => {
             className="btn bg-transparent text-accent flex items-center justify-end w-max rounded"
             onClick={(e) => e.stopPropagation()}
           >
-            <img src={HITlogo} alt="ringMeshIcon" className="w-6" />{" "}
+            <img
+              src={currentTab === Tabs.stake ? HITlogo : StHITlogo}
+              alt="ringMeshIcon"
+              className="w-6 rounded-full"
+            />{" "}
             <p>{currentTab === Tabs.stake ? StakingTokens.HIT : StakingTokens.StHIT}</p>
           </div>
         </div>
       </div>
-      <Tooltip text={"$" + Number(usdValue.toFixed(4)).toString()}>
-        <span className="text-secondary text-sm mb-0">~{formatDollarAmount(usdValue)}</span>
-      </Tooltip>
+      {tokenDataLoading ? (
+        <Skeleton
+          baseColor="#242d20"
+          highlightColor="#A0D490"
+          width="40px"
+          style={{ opacity: 0.5 }}
+        />
+      ) : (
+        <Tooltip text={"$" + Number(usdValue.toFixed(4)).toString()}>
+          <span className="text-secondary text-sm mb-0">~{formatDollarAmount(usdValue)}</span>
+        </Tooltip>
+      )}
     </>
   );
 };

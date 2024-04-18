@@ -7,12 +7,11 @@ import { exactAmountInDecimals } from "Utils/format";
 export const PercentageGroup = () => {
   const { percentage } = useSelector((state) => state.staking);
   const onPercentageClick = (Percentage: Percentage) => {
-    dispatch(setPercentage(Percentage));
-    // const currentBalance = getSelectedBalance();
-    // if (currentBalance > 0) {
-    //   dispatch(setAmount(exactAmountInDecimals(currentBalance * Percentage)));
-    //   dispatch(setPercentage(Percentage));
-    // }
+    const currentBalance = getSelectedBalance();
+    if (currentBalance > 0) {
+      dispatch(setAmount(exactAmountInDecimals(currentBalance * Percentage)));
+      dispatch(setPercentage(Percentage));
+    }
   };
   return (
     <div className="flex flex-row items-center justify-between pt-3">
@@ -64,7 +63,7 @@ const SingleBox = ({ percent, selected, setSelected }: SingleBoxProps) => {
     <div
       className={`${
         selected ? "bg-accent" : "bg-base-200"
-      } w-1/6 text-center py-1.5 cursor-pointer rounded`}
+      } w-1/6 text-center py-1.5 cursor-pointer rounded-lg`}
       onClick={() => setSelected(percent)}
     >
       <p className={`font-semibold ${selected ? "text-primary" : "text-secondary"}`}>

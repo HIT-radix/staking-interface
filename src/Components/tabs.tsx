@@ -2,7 +2,7 @@ import { dispatch, useSelector } from "Store";
 import { setAmount, setCurrentTab, setPercentage } from "Store/Reducers/staking";
 import { Percentage, Tabs as TabsType } from "Types/reducers";
 
-const CommonClass = "tab text-primary font-semibold w-1/2 rounded h-[unset]";
+const CommonClass = "tab text-primary font-semibold w-1/2 rounded-lg h-[unset]";
 
 export const Tabs = () => {
   const { currentTab } = useSelector((state) => state.staking);
@@ -12,7 +12,7 @@ export const Tabs = () => {
     dispatch(setAmount(""));
   };
   return (
-    <div className="mb-3 bg-base-200 px-1.5 py-1.5 rounded">
+    <div className="mb-3 bg-base-200 px-1.5 py-1.5 rounded-lg">
       <div
         className={`${CommonClass} ${currentTab === TabsType.stake ? "bg-accent" : ""}`}
         onClick={() => changeTab(TabsType.stake)}
