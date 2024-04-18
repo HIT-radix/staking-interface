@@ -22,10 +22,9 @@ let subs: Subscription[] = [];
 
 export function initializeSubscriptions() {
   rdtInstance = RadixDappToolkit({
-    dAppDefinitionAddress:
-      "component_tdx_2_1cqkezyxf9ulzwu8hakr3g0r0yfmj9xr0rnjujyy28c03ephl4wjwwk",
+    dAppDefinitionAddress: "account_tdx_2_129zymzhffm45w5jyccyu9x0tv5xs7qs76zxzrfsd7gn76f7k5reus2",
     networkId: RadixNetwork.Stokenet,
-    applicationName: "HIT Staking",
+    applicationName: "HIT Test Staking",
     applicationVersion: "1",
   });
   rdtInstance.walletApi.setRequestData(DataRequestBuilder.accounts().exactly(1));

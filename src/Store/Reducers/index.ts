@@ -6,6 +6,7 @@ import { createAction } from "@reduxjs/toolkit";
 import app from "./app";
 import session from "./session";
 import loadings from "./loadings";
+import staking from "./staking";
 
 const persistConfig = {
   version: 1,
@@ -21,6 +22,7 @@ const reducers = combineReducers({
   app,
   session,
   loadings,
+  staking,
 });
 
 const rootReducer = (state: any, action: any) => {

@@ -13,6 +13,8 @@
     "@types/react": "^18.2.78",
     "@types/react-dom": "^18.2.25",
     "autoprefixer": "10.4.17",
+    "axios": "^1.6.8",
+    "ethers": "^6.12.0",
     "numbro": "^2.5.0",
     "postcss": "8.4.33",
     "react": "^18.2.0",

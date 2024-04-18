@@ -1,0 +1,100 @@
+import { useEffect, useMemo, useState } from "react";
+
+import { AMOUNT_INPUT_REGEX } from "Constants/misc";
+import { dispatch, useSelector } from "Store";
+import { setAmount, setIsInsufficientBalance, setPercentage } from "Store/Reducers/staking";
+import { Percentage, StakingTokens, Tabs } from "Types/reducers";
+import { calculateInputWidth, validateDecimalPlaces } from "Utils/judgers";
+import { formatDollarAmount } from "Utils/format";
+import { Tooltip } from "./tooltip";
+import HITlogo from "Assets/Images/hit-logo.png";
+
+export const Input = () => {
+  const [inputWidth, setInputWidth] = useState(1.5);
+
+  const { hitPrice, hitBalance } = useSelector((state) => state.app);
+  const { amount, stHitBalance, isInSufficientBalance, currentTab } = useSelector(
+    (state) => state.staking
+  );
+
+  //check balance sufficiency of MESH, indexMESH, staked-MESH, staked-indexMESH
+  useEffect(() => {
+    dispatch(
+      setIsInsufficientBalance(
+        Number(amount) > Number(currentTab === Tabs.stake ? hitBalance : stHitBalance)
+      )
+    );
+  }, [amount, currentTab, hitBalance, stHitBalance]);
+
+  useEffect(() => {
+    if (Number(amount)) {
+      setInputWidth(calculateInputWidth(amount));
+    }
+  }, [amount]);
+
+  const onValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value;
+    if (text.match(AMOUNT_INPUT_REGEX)) {
+      if (validateDecimalPlaces(text, 9)) {
+        setInputWidth(calculateInputWidth(text));
+        dispatch(setAmount(text));
+      }
+    } else {
+      resetInput();
+    }
+    dispatch(setPercentage(Percentage._0));
+  };
+
+  const resetInput = () => {
+    dispatch(setAmount(""));
+    setInputWidth(1.5);
+  };
+
+  const inputMaxWidth = useMemo(() => 120, []);
+
+  const usdValue = useMemo(() => Number(amount ?? 0) * hitPrice, [amount, hitPrice]);
+
+  return (
+    <>
+      <div
+        className="flex justify-between items-center cursor-text"
+        onClick={() => (document.getElementById("stake-input") as HTMLInputElement).focus()}
+      >
+        <div
+          className="flex items-center"
+          style={{
+            maxWidth: `calc(100% - ${inputMaxWidth}px)`,
+          }}
+        >
+          <input
+            id="stake-input"
+            value={amount}
+            type="text"
+            onChange={onValueChange}
+            className={`input bg-base-200 text-accent focus:outline-none focus:border-none  px-0 my-3 max-w-[100%] sm:max-w-[calc(100% - 40px)] text-3xl sm:text-5xl ${
+              false ? "text-red-500" : ""
+            }`}
+            placeholder="0"
+            style={{
+              width: `${inputWidth}ch`,
+            }}
+          />
+        </div>
+        <div className="dropdown dropdown-bottom dropdown-end w-max mr-[-1rem]">
+          <div
+            tabIndex={0}
+            role="button"
+            className="btn bg-transparent text-accent flex items-center justify-end w-max rounded"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img src={HITlogo} alt="ringMeshIcon" className="w-6" />{" "}
+            <p>{currentTab === Tabs.stake ? StakingTokens.HIT : StakingTokens.StHIT}</p>
+          </div>
+        </div>
+      </div>
+      <Tooltip text={"$" + Number(usdValue.toFixed(4)).toString()}>
+        <span className="text-secondary text-sm mb-0">~{formatDollarAmount(usdValue)}</span>
+      </Tooltip>
+    </>
+  );
+};

@@ -4,6 +4,8 @@ import { AppReducer } from "Types/reducers";
 
 const initialState: AppReducer = {
   walletData: { accounts: [], personaData: [], proofs: [] },
+  hitPrice: 0,
+  hitBalance: "",
 };
 
 const app = createSlice({
@@ -13,9 +15,12 @@ const app = createSlice({
     setWalletData(state, action: PayloadAction<WalletDataState>) {
       state.walletData = action.payload;
     },
+    setHitPrice(state, action: PayloadAction<number | undefined>) {
+      state.hitPrice = action.payload ?? 0;
+    },
   },
 });
 
 export default app.reducer;
 
-export const { setWalletData } = app.actions;
+export const { setWalletData, setHitPrice } = app.actions;

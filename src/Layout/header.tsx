@@ -19,7 +19,7 @@ const Header = () => {
         <p
           className={
             "cursor-pointer hover:underline hover:text-accent " +
-            (checkIfActive("/") ? "text-accent underline" : "")
+            (checkIfActive("/") ? "text-accent underline" : "text-secondary")
           }
           onClick={() => moveToPage("/")}
         >
@@ -28,7 +28,7 @@ const Header = () => {
         <p
           className={
             "cursor-pointer hover:underline hover:text-accent " +
-            (checkIfActive("/staking") ? "text-accent underline" : "")
+            (checkIfActive("/staking") ? "text-accent underline" : "text-secondary")
           }
           onClick={() => moveToPage("staking")}
         >
