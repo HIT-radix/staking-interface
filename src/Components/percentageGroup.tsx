@@ -9,7 +9,7 @@ export const PercentageGroup = () => {
   const onPercentageClick = (Percentage: Percentage) => {
     const currentBalance = getSelectedBalance();
     if (currentBalance > 0) {
-      dispatch(setAmount(exactAmountInDecimals(currentBalance * Percentage)));
+      dispatch(setAmount(exactAmountInDecimals(currentBalance * Percentage, 18)));
       dispatch(setPercentage(Percentage));
     }
   };

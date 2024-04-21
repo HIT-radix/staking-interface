@@ -4,7 +4,11 @@ import { AMOUNT_INPUT_REGEX } from "Constants/misc";
 import { dispatch, useSelector } from "Store";
 import { setAmount, setIsInsufficientBalance, setPercentage } from "Store/Reducers/staking";
 import { Percentage, StakingTokens, Tabs } from "Types/reducers";
-import { calculateInputWidth, validateDecimalPlaces } from "Utils/judgers";
+import {
+  calculateInputWidth,
+  calculateStHitWorthInHIT,
+  validateDecimalPlaces,
+} from "Utils/judgers";
 import { formatDollarAmount } from "Utils/format";
 import { Tooltip } from "./tooltip";
 import HITlogo from "Assets/Images/hit-logo.png";
@@ -15,12 +19,14 @@ export const Input = () => {
   const [inputWidth, setInputWidth] = useState(1.5);
 
   const hitPrice = useSelector((state) => state.app.hitPrice);
-  const hitBalance = useSelector((state) => state.session.hitBalance);
+  const hitBalance = useSelector((state) => +state.session.hitBalance);
   const tokenDataLoading = useSelector((state) => state.loadings.tokenDataLoading);
   const amount = useSelector((state) => state.staking.amount);
   const isInSufficientBalance = useSelector((state) => state.staking.isInSufficientBalance);
   const currentTab = useSelector((state) => state.staking.currentTab);
-  const stHitBalance = useSelector((state) => state.staking.stHitBalance);
+  const stHitBalance = useSelector((state) => +state.staking.stHitBalance);
+  const stakedHIT = useSelector((state) => +state.staking.stakedHIT);
+  const stHIT_totalSupply = useSelector((state) => +state.staking.stHIT_totalSupply);
 
   useEffect(() => {
     dispatch(
@@ -56,7 +62,15 @@ export const Input = () => {
 
   const inputMaxWidth = useMemo(() => 120, []);
 
-  const usdValue = useMemo(() => Number(amount ?? 0) * hitPrice, [amount, hitPrice]);
+  const usdValue = useMemo(
+    () =>
+      Number(
+        (currentTab === Tabs.stake
+          ? amount
+          : calculateStHitWorthInHIT(+amount, stakedHIT, stHIT_totalSupply)) ?? 0
+      ) * hitPrice,
+    [amount, currentTab, hitPrice, stHIT_totalSupply, stakedHIT]
+  );
 
   return (
     <>

@@ -11,7 +11,7 @@ const Header = () => {
 
   const checkIfActive = (route: string) => path.pathname === route;
   return (
-    <div className="flex flex-row justify-between items-center w-full p-4 px-0 sm:px-14">
+    <div className="flex flex-row justify-between items-center w-full p-4 px-0 sm:px-14 h-[90px]">
       <div className="flex gap-12 items-center">
         <LogoWebsite />
       </div>

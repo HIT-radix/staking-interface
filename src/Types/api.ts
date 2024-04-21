@@ -74,6 +74,7 @@ interface Details {
     };
     type: string;
   };
+  total_supply: string;
 }
 
 interface Item {
@@ -84,6 +85,6 @@ interface Item {
   details: Details;
 }
 
-export interface WalletAddressDetails {
+export interface EntityDetails {
   items: Item[];
 }

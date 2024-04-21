@@ -2,19 +2,20 @@ import { Ociswap_baseurl, networkRPC } from "Constants/endpoints";
 import { store } from "Store";
 import { setHitPrice } from "Store/Reducers/app";
 import { setHitBalance, updateTokenData } from "Store/Reducers/session";
-import { setStHitBalance } from "Store/Reducers/staking";
+import { setStHitBalance, setStHitTotalSupply, setStakedHIT } from "Store/Reducers/staking";
 import { Tabs } from "Types/reducers";
 import { TokenData } from "Types/token";
 import axios, { AxiosResponse } from "axios";
 import { extract_HIT_STHIT_balance } from "./format";
-import { WalletAddressDetails } from "Types/api";
+import { EntityDetails } from "Types/api";
+import { POOL_ADDRESS, STHIT_RESOURCE_ADDRESS } from "Constants/address";
 
 export const fetchBalances = async (walletAddress: string) => {
   let HITbalance = "0";
   let stHITbalance = "0";
   if (walletAddress) {
     try {
-      const response = await axios.post<any, AxiosResponse<WalletAddressDetails>>(
+      const response = await axios.post<any, AxiosResponse<EntityDetails>>(
         `${networkRPC}/state/entity/details`,
         {
           addresses: [walletAddress],
@@ -55,4 +56,43 @@ export const fetchHITdata = async () => {
   } catch (error) {
     console.log("error in fetchHITdata", error);
   }
+};
+
+export const fetchStHITTotalSupply = async () => {
+  let totalSupply = "0";
+  try {
+    const response = await axios.post<any, AxiosResponse<EntityDetails>>(
+      `${networkRPC}/state/entity/details`,
+      {
+        addresses: [STHIT_RESOURCE_ADDRESS],
+      }
+    );
+
+    if (response.status === 200) {
+      totalSupply = response.data.items[0].details.total_supply;
+    }
+  } catch (error) {
+    console.log("error in fetchBalances", error);
+  }
+  store.dispatch(setStHitTotalSupply(totalSupply));
+};
+
+export const fetchPoolDetails = async () => {
+  let stakedHIT = "0";
+  try {
+    const response = await axios.post<any, AxiosResponse<EntityDetails>>(
+      `${networkRPC}/state/entity/details`,
+      {
+        addresses: [POOL_ADDRESS],
+      }
+    );
+
+    if (response.status === 200) {
+      const balances = extract_HIT_STHIT_balance(response.data.items[0].fungible_resources.items);
+      stakedHIT = balances.hit;
+    }
+  } catch (error) {
+    console.log("error in fetchBalances", error);
+  }
+  store.dispatch(setStakedHIT(stakedHIT));
 };

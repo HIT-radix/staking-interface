@@ -17,3 +17,11 @@ export function validateDecimalPlaces(numStr: string, maxDecimals: number) {
   const regex = new RegExp(`^\\d+(\\.\\d{0,${maxDecimals}})?$`);
   return regex.test(numStr);
 }
+
+export const calculateStHitWorthInHIT = (
+  amount: number,
+  stakedHIT: number,
+  stHIT_totalSupply: number
+) => {
+  return (amount / stHIT_totalSupply) * stakedHIT;
+};

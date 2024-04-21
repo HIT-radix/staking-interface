@@ -7,6 +7,8 @@ const initialState: StakingReducer = {
   percentage: Percentage._0,
   isInSufficientBalance: false,
   stHitBalance: "0",
+  stHIT_totalSupply: "0",
+  stakedHIT: "0",
 };
 
 const staking = createSlice({
@@ -30,6 +32,12 @@ const staking = createSlice({
     setStHitBalance(state, action: PayloadAction<string>) {
       state.stHitBalance = action.payload;
     },
+    setStHitTotalSupply(state, action: PayloadAction<string>) {
+      state.stHIT_totalSupply = action.payload;
+    },
+    setStakedHIT(state, action: PayloadAction<string>) {
+      state.stakedHIT = action.payload;
+    },
   },
 });
 
@@ -41,4 +49,6 @@ export const {
   setPercentage,
   setIsInsufficientBalance,
   setStHitBalance,
+  setStHitTotalSupply,
+  setStakedHIT,
 } = staking.actions;

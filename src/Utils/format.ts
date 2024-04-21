@@ -49,8 +49,8 @@ export const formatTokenAmount = (num: number | undefined, digits = 2) => {
   return formattedAmount;
 };
 
-export const exactAmountInDecimals = (amount: number) => {
-  return Number.isInteger(amount) ? amount.toString() : amount.toFixed(18).replace(/0+$/, "");
+export const exactAmountInDecimals = (amount: number, decimals: number) => {
+  return Number.isInteger(amount) ? amount.toString() : amount.toFixed(decimals).replace(/0+$/, "");
 };
 
 export function parseUnits(_num: number) {

@@ -28,6 +28,8 @@ export type StakingReducer = {
   percentage: Percentage;
   isInSufficientBalance: boolean;
   stHitBalance: string;
+  stHIT_totalSupply: string;
+  stakedHIT: string;
 };
 
 export enum StakingTokens {
