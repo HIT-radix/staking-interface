@@ -15,6 +15,7 @@ import {
   TxProgressToast,
   UnStakeSuccessToast,
 } from "Components/toasts";
+import { formatTokenAmount } from "./format";
 
 export const stakeHIT = async () => {
   const {
@@ -35,7 +36,7 @@ export const stakeHIT = async () => {
       toast.dismiss();
       CachedService.successToast(
         <StakeSuccessToast
-          amount={amount}
+          amount={formatTokenAmount(Number(amount))}
           token={StakingTokens.HIT}
           txId={result.value.transactionIntentHash}
         />
@@ -68,7 +69,7 @@ export const unstakeHIT = async () => {
       toast.dismiss();
       CachedService.successToast(
         <UnStakeSuccessToast
-          amount={amount}
+          amount={formatTokenAmount(Number(amount))}
           token={StakingTokens.StHIT}
           txId={result.value.transactionIntentHash}
         />
