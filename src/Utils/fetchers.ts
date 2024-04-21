@@ -8,7 +8,12 @@ import { TokenData } from "Types/token";
 import axios, { AxiosResponse } from "axios";
 import { extract_HIT_STHIT_balance } from "./format";
 import { EntityDetails } from "Types/api";
-import { POOL_ADDRESS, STHIT_RESOURCE_ADDRESS } from "Constants/address";
+import {
+  HIT_RESOURCE_ADDRESS,
+  POOL_ADDRESS,
+  STAKING_COMPONENT_ADDRESS,
+  STHIT_RESOURCE_ADDRESS,
+} from "Constants/address";
 
 export const fetchBalances = async (walletAddress: string) => {
   let HITbalance = "0";
@@ -95,4 +100,60 @@ export const fetchPoolDetails = async () => {
     console.log("error in fetchBalances", error);
   }
   store.dispatch(setStakedHIT(stakedHIT));
+};
+
+export const getStakeTxManifest = (walletAddress: string, amount: string) => {
+  return `
+    CALL_METHOD
+      Address("${walletAddress}")
+      "withdraw"
+      Address("${HIT_RESOURCE_ADDRESS}")
+      Decimal("${amount}")
+    ;
+
+    TAKE_ALL_FROM_WORKTOP
+      Address("${HIT_RESOURCE_ADDRESS}")
+      Bucket("tokens")
+    ;
+
+    CALL_METHOD
+    	Address("${STAKING_COMPONENT_ADDRESS}")
+    	"add_stake"
+    	Bucket("tokens")
+    ;
+
+    CALL_METHOD
+        Address("${walletAddress}")
+        "deposit_batch"
+        Expression("ENTIRE_WORKTOP")
+    ;
+`;
+};
+
+export const getUnStakeTxManifest = (walletAddress: string, amount: string) => {
+  return `
+    CALL_METHOD
+      Address("${walletAddress}")
+      "withdraw"
+      Address("${STHIT_RESOURCE_ADDRESS}")
+      Decimal("${amount}")
+    ;
+
+    TAKE_ALL_FROM_WORKTOP
+      Address("${STHIT_RESOURCE_ADDRESS}")
+      Bucket("tokens")
+    ;
+
+    CALL_METHOD
+	    Address("${STAKING_COMPONENT_ADDRESS}")
+	    "remove_stake"
+	    Bucket("tokens")
+    ;
+
+    CALL_METHOD
+      Address("${walletAddress}")
+      "deposit_batch"
+      Expression("ENTIRE_WORKTOP")
+    ;
+`;
 };

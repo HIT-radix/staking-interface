@@ -1,14 +1,10 @@
 import { useMemo } from "react";
 
-import { StakingTokens, Tabs, Tabs as TabsType } from "Types/reducers";
+import { StakingTokens, Tabs as TabsType } from "Types/reducers";
 import { useSelector } from "Store";
 import { BtnCSS } from "Constants/css";
-// import CachedService from "Classes/cachedService";
-// import { STHIT_RESOURCE_ADDRESS, HIT_RESOURCE_ADDRESS } from "Constants/address";
-// import { parseUnits } from "Utils/format";
-// import { ConfirmationModal } from "./ConfirmationModal";
 import { getSelectedBalance } from "Utils/fetchers";
-// import { MeshTransaction } from "Utils/program";
+import { stakeHIT, unstakeHIT } from "Utils/txSenders";
 
 export const ActionBtnStake = () => {
   const currentTab = useSelector((state) => state.staking.currentTab);
@@ -25,12 +21,9 @@ export const ActionBtnStake = () => {
 
   const handleClick = () => {
     if (!isDisabled) {
-      // handle stake/unstake function
-      // (document.getElementById("ConfirmationModal_stake_Id") as HTMLDialogElement).showModal();
+      currentTab === TabsType.stake ? stakeHIT() : unstakeHIT();
     }
   };
-
-  const handleActionBtn = async () => {};
 
   const BtnText = useMemo(
     () =>

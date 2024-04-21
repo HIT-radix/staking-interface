@@ -26,15 +26,21 @@ export default function Routes() {
   }, []);
 
   useEffect(() => {
-    (async () => {
-      fetchPoolDetails();
-    })();
-  }, []);
+    fetchPoolDetails();
+    const interval = setInterval(async () => {
+      await fetchPoolDetails();
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, [successTxCount]);
 
   useEffect(() => {
-    (async () => {
-      fetchStHITTotalSupply();
-    })();
+    fetchStHITTotalSupply();
+    const interval = setInterval(async () => {
+      await fetchStHITTotalSupply();
+    }, 60000);
+
+    return () => clearInterval(interval);
   }, [successTxCount]);
 
   return useRoutes([
