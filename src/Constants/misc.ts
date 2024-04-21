@@ -1,8 +1,8 @@
 import { RadixNetwork } from "@radixdlt/radix-dapp-toolkit";
 import { Environment } from "Types/misc";
 
-export const TELEGRAM_LINK = "";
-export const X_HANDLE = "";
+export const TELEGRAM_LINK = "https://t.me/addixanonymous";
+export const X_HANDLE = "https://twitter.com/addix_xrd";
 export const HIT_WEBSITE = "";
 
 export const AMOUNT_INPUT_REGEX = /^((\d+[.]?\d*)|(\.\d+))$/;
