@@ -15,7 +15,11 @@ const app = createSlice({
     setWalletData(state, action: PayloadAction<WalletDataState>) {
       state.walletData = action.payload;
       let accounts = action.payload.accounts;
-      state.walletAddress = accounts.length > 0 ? action.payload.accounts[0].address : "";
+      if (accounts.length > 0) {
+        state.walletAddress = action.payload.accounts[0].address;
+      } else {
+        state.walletAddress = "";
+      }
     },
     setHitPrice(state, action: PayloadAction<number>) {
       state.hitPrice = action.payload;

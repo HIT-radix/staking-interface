@@ -1,7 +1,6 @@
 import { lazy, useEffect } from "react";
 import { useNavigate, useRoutes, Navigate } from "react-router-dom";
 
-// import CachedService from "../Classes/cachedService";
 import MainLayout from "Layout/mainlayout";
 import CachedService from "Classes/cachedService";
 import { fetchPoolDetails, fetchHITdata, fetchStHITTotalSupply } from "Utils/fetchers";

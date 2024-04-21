@@ -7,6 +7,8 @@ import App from "./App";
 import hitLogo from "Assets/Images/hit-logo.png";
 import { store, persister } from "Store";
 import "react-loading-skeleton/dist/skeleton.css";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // if (process.env.REACT_APP_ENVIRONMENT === Environment.prod) {
 //   console.log = () => {};
 // }
@@ -22,6 +24,7 @@ root.render(
   >
     <ReduxProvider store={store}>
       <PersistGate loading={null} persistor={persister}>
+        <ToastContainer />
         <App />
       </PersistGate>
     </ReduxProvider>

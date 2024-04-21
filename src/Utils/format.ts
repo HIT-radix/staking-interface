@@ -90,3 +90,10 @@ export const extract_HIT_STHIT_balance = (resources: ResourceDetails[]) => {
     sthit: sthitBalance || "0", // Default to "0" if balance not found
   };
 };
+
+export const conciseAddress = (address: string, startSlice = 3, endSlice = 3): string => {
+  return `${address?.slice(0, startSlice)}...${address?.slice(
+    address?.length - endSlice,
+    address?.length
+  )}`;
+};
