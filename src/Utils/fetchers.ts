@@ -14,6 +14,7 @@ import {
   STAKING_COMPONENT_ADDRESS,
   STHIT_RESOURCE_ADDRESS,
 } from "Constants/address";
+import { setPoolDataLoading } from "Store/Reducers/loadings";
 
 export const fetchBalances = async (walletAddress: string) => {
   let HITbalance = "0";
@@ -85,6 +86,7 @@ export const fetchStHITTotalSupply = async () => {
 export const fetchPoolDetails = async () => {
   let stakedHIT = "0";
   try {
+    store.dispatch(setPoolDataLoading(true));
     const response = await axios.post<any, AxiosResponse<EntityDetails>>(
       `${networkRPC}/state/entity/details`,
       {
@@ -100,6 +102,7 @@ export const fetchPoolDetails = async () => {
     console.log("error in fetchBalances", error);
   }
   store.dispatch(setStakedHIT(stakedHIT));
+  store.dispatch(setPoolDataLoading(false));
 };
 
 export const getStakeTxManifest = (walletAddress: string, amount: string) => {

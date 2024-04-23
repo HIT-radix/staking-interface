@@ -47,4 +47,5 @@ export type LoadingReducer = {
   balanceLoading: boolean;
   txInProgress: boolean;
   tokenDataLoading: boolean;
+  poolDataLoading: boolean;
 };
