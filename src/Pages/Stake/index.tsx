@@ -9,8 +9,8 @@ import StakingInfos from "./stakingInfos";
 const Stake = () => {
   return (
     <div
-      className="flex flex-col items-center justify-center "
-      style={{ minHeight: "calc(100vh - 150px)" }}
+      className="flex flex-col items-center justify-center"
+      style={{ minHeight: "calc(100vh - 150px - 50px)" }}
     >
       <div className="w-[95vw] max-w-[650px]">
         <StakingInfos />

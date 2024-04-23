@@ -47,18 +47,18 @@ export default function Routes() {
       path: "/",
       element: (
         <MainLayout>
-          <Home />
-        </MainLayout>
-      ),
-    },
-    {
-      path: "/staking",
-      element: (
-        <MainLayout>
           <Stake />
         </MainLayout>
       ),
     },
+    // {
+    //   path: "/staking",
+    //   element: (
+    //     <MainLayout>
+    //       <Home />
+    //     </MainLayout>
+    //   ),
+    // },
     { path: "*", element: <Navigate to={"/"} replace={true} /> },
   ]);
 }

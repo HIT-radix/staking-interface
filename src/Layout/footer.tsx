@@ -7,7 +7,7 @@ import { HIT_WEBSITE, TELEGRAM_LINK, X_HANDLE } from "Constants/misc";
 
 const Footer: FunctionComponent = () => {
   return (
-    <div className="fixed bottom-10 right-12 flex items-center justify-center gap-6">
+    <div className="flex items-center justify-center gap-6 h-[50px]">
       <a href={TELEGRAM_LINK} target="blank" className="cursor-pointer">
         <img src={TelegramLogo} width={20} height={20} alt="telegram-icon" />
       </a>
