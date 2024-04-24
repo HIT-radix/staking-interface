@@ -1,3 +1,5 @@
+import { BN } from "./format";
+
 export const calculateInputWidth = (str: string) => {
   // Check if the string contains a dot
   const containsDot = str.includes(".");
@@ -19,9 +21,9 @@ export function validateDecimalPlaces(numStr: string, maxDecimals: number) {
 }
 
 export const calculateStHitWorthInHIT = (
-  amount: number,
-  stakedHIT: number,
-  stHIT_totalSupply: number
+  amount: string,
+  stakedHIT: string,
+  stHIT_totalSupply: string
 ) => {
-  return (amount / stHIT_totalSupply) * stakedHIT;
+  return BN(amount).dividedBy(stHIT_totalSupply).multipliedBy(stakedHIT);
 };

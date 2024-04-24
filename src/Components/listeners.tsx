@@ -9,6 +9,7 @@ import {
   fetchPoolDetails,
   fetchStHITTotalSupply,
 } from "Utils/fetchers";
+import { BN } from "Utils/format";
 import { useEffect } from "react";
 import { initializeSubscriptions, unsubscribeAll } from "subs";
 
@@ -17,8 +18,8 @@ const Listeners = () => {
   const amount = useSelector((state) => state.staking.amount);
   const walletAddress = useSelector((state) => state.app.walletAddress);
   const currentTab = useSelector((state) => state.staking.currentTab);
-  const hitBalance = useSelector((state) => +state.session.hitBalance);
-  const stHitBalance = useSelector((state) => +state.staking.stHitBalance);
+  const hitBalance = useSelector((state) => state.session.hitBalance);
+  const stHitBalance = useSelector((state) => state.staking.stHitBalance);
 
   useEffect(() => {
     initializeSubscriptions();
@@ -43,7 +44,7 @@ const Listeners = () => {
   useEffect(() => {
     dispatch(
       setIsInsufficientBalance(
-        Number(amount) > Number(currentTab === Tabs.stake ? hitBalance : stHitBalance)
+        BN(amount).isGreaterThan(currentTab === Tabs.stake ? hitBalance : stHitBalance)
       )
     );
   }, [amount, currentTab, hitBalance, stHitBalance]);

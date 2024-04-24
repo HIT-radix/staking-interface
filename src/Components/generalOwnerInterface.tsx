@@ -4,11 +4,12 @@ import { AMOUNT_INPUT_REGEX } from "Constants/misc";
 import { useSelector } from "Store";
 import { StakingTokens } from "Types/reducers";
 import { validateDecimalPlaces } from "Utils/judgers";
+import { BN } from "Utils/format";
 
 type Props = {
   heading: string;
   placeholder: string;
-  balance: number;
+  balance: string;
   onButtonClick: (amount: string) => Promise<void>;
   btnText: string;
 };
@@ -25,7 +26,7 @@ const GeneralOwnerInterface = ({
   const txInProgress = useSelector((state) => state.loadings.txInProgress);
 
   const isInSufficientBalance = useMemo(() => {
-    return +amount > balance;
+    return BN(amount).isGreaterThan(balance);
   }, [amount, balance]);
 
   const onValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +41,7 @@ const GeneralOwnerInterface = ({
   };
 
   const isDisabled = useMemo(
-    () => txInProgress || isInSufficientBalance || balance === 0 || Number(amount) === 0,
+    () => txInProgress || isInSufficientBalance || +balance === 0 || Number(amount) === 0,
     [txInProgress, isInSufficientBalance, balance, amount]
   );
 

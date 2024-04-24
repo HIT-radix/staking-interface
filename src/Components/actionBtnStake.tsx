@@ -15,7 +15,10 @@ export const ActionBtnStake = () => {
 
   const isDisabled = useMemo(
     () =>
-      txInProgress || isInSufficientBalance || getSelectedBalance() === 0 || Number(amount) === 0,
+      txInProgress ||
+      isInSufficientBalance ||
+      getSelectedBalance().toNumber() === 0 ||
+      Number(amount) === 0,
     [txInProgress, isInSufficientBalance, amount]
   );
 

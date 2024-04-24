@@ -9,7 +9,7 @@ import {
   calculateStHitWorthInHIT,
   validateDecimalPlaces,
 } from "Utils/judgers";
-import { formatDollarAmount } from "Utils/format";
+import { BN, formatDollarAmount } from "Utils/format";
 import { Tooltip } from "./tooltip";
 import HITlogo from "Assets/Images/hit-logo.png";
 import StHITlogo from "Assets/Images/sthit-logo.png";
@@ -23,8 +23,8 @@ export const Input = () => {
   const amount = useSelector((state) => state.staking.amount);
   const isInSufficientBalance = useSelector((state) => state.staking.isInSufficientBalance);
   const currentTab = useSelector((state) => state.staking.currentTab);
-  const stakedHIT = useSelector((state) => +state.staking.stakedHIT);
-  const stHIT_totalSupply = useSelector((state) => +state.staking.stHIT_totalSupply);
+  const stakedHIT = useSelector((state) => state.staking.stakedHIT);
+  const stHIT_totalSupply = useSelector((state) => state.staking.stHIT_totalSupply);
 
   useEffect(() => {
     if (Number(amount)) {
@@ -54,11 +54,11 @@ export const Input = () => {
 
   const usdValue = useMemo(
     () =>
-      Number(
-        (currentTab === Tabs.stake
+      BN(
+        currentTab === Tabs.stake
           ? amount
-          : calculateStHitWorthInHIT(+amount, stakedHIT, stHIT_totalSupply)) ?? 0
-      ) * hitPrice,
+          : calculateStHitWorthInHIT(amount, stakedHIT, stHIT_totalSupply)
+      ).multipliedBy(hitPrice),
     [amount, currentTab, hitPrice, stHIT_totalSupply, stakedHIT]
   );
 
@@ -113,7 +113,9 @@ export const Input = () => {
         />
       ) : (
         <Tooltip text={"$" + Number(usdValue.toFixed(4)).toString()}>
-          <span className="text-secondary text-sm mb-0">~{formatDollarAmount(usdValue)}</span>
+          <span className="text-secondary text-sm mb-0">
+            ~{formatDollarAmount(usdValue.toNumber())}
+          </span>
         </Tooltip>
       )}
     </>

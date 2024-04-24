@@ -11,7 +11,7 @@ import {
 import { Tabs } from "Types/reducers";
 import { TokenData } from "Types/token";
 import axios, { AxiosResponse } from "axios";
-import { extract_HIT_STHIT_balance } from "./format";
+import { BN, extract_HIT_STHIT_balance } from "./format";
 import { EntityDetails } from "Types/api";
 import {
   CONTRACT_OWNER_BADGE_ADDRESS,
@@ -57,7 +57,7 @@ export const getSelectedBalance = () => {
     staking: { currentTab, stHitBalance },
     session: { hitBalance },
   } = state;
-  return Number(currentTab === Tabs.stake ? hitBalance : stHitBalance);
+  return currentTab === Tabs.stake ? BN(hitBalance) : BN(stHitBalance);
 };
 
 export const fetchHITdata = async () => {

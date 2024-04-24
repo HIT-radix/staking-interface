@@ -2,7 +2,14 @@ import { HIT_RESOURCE_ADDRESS, STHIT_RESOURCE_ADDRESS } from "Constants/address"
 import { radixDashboardBaseUrl } from "Constants/misc";
 import { ResourceDetails } from "Types/api";
 import { parseUnits as parseUnitsEthers } from "ethers";
+import BigNumber from "bignumber.js";
 import numbro from "numbro";
+
+export const BN = BigNumber.clone({
+  DECIMAL_PLACES: 18,
+  ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
+  EXPONENTIAL_AT: [-20, 20],
+});
 
 export const formatDollarAmount = (num: number | undefined | null, digits = 2, round = true) => {
   if (num === 0) return "$0.00";

@@ -4,7 +4,7 @@ import Skeleton from "react-loading-skeleton";
 import { useSelector } from "Store";
 import { StakingTokens, Tabs } from "Types/reducers";
 import WalletIcon from "Assets/Svgs/wallet.svg";
-import { exactAmountInDecimals, formatDollarAmount, formatTokenAmount } from "Utils/format";
+import { formatDollarAmount, formatTokenAmount } from "Utils/format";
 import { Tooltip } from "./tooltip";
 import { getSelectedBalance } from "Utils/fetchers";
 import { calculateStHitWorthInHIT } from "Utils/judgers";
@@ -13,11 +13,11 @@ import StHITlogo from "Assets/Images/sthit-logo.png";
 
 export const Balance = () => {
   const currentTab = useSelector((state) => state.staking.currentTab);
-  const stHitBalance = useSelector((state) => +state.staking.stHitBalance);
+  const stHitBalance = useSelector((state) => state.staking.stHitBalance);
   const hitBalance = useSelector((state) => state.session.hitBalance);
   const hitPrice = useSelector((state) => state.app.hitPrice);
-  const stakedHIT = useSelector((state) => +state.staking.stakedHIT);
-  const stHIT_totalSupply = useSelector((state) => +state.staking.stHIT_totalSupply);
+  const stakedHIT = useSelector((state) => state.staking.stakedHIT);
+  const stHIT_totalSupply = useSelector((state) => state.staking.stHIT_totalSupply);
   const balanceLoading = useSelector((state) => state.loadings.balanceLoading);
   const tokenDataLoading = useSelector((state) => state.loadings.tokenDataLoading);
 
@@ -27,8 +27,10 @@ export const Balance = () => {
   const usdPriceToShow = useMemo(
     () =>
       currentTab === Tabs.stake
-        ? amountToShow * hitPrice
-        : hitPrice * calculateStHitWorthInHIT(stHitBalance, stakedHIT, stHIT_totalSupply),
+        ? amountToShow.multipliedBy(hitPrice)
+        : calculateStHitWorthInHIT(stHitBalance, stakedHIT, stHIT_totalSupply).multipliedBy(
+            hitPrice
+          ),
     [currentTab, amountToShow, hitPrice, stHitBalance, stakedHIT, stHIT_totalSupply]
   );
 
@@ -59,8 +61,10 @@ export const Balance = () => {
         ) : (
           <>
             <img src={WalletIcon} alt="WalletIcon" className="mb-1" />
-            <Tooltip text={exactAmountInDecimals(amountToShow, 18) + " " + currentToken}>
-              <p className="font-bold ml-1 text-secondary">{formatTokenAmount(amountToShow)}</p>
+            <Tooltip text={amountToShow.toString() + " " + currentToken}>
+              <p className="font-bold ml-1 text-secondary">
+                {formatTokenAmount(amountToShow.toNumber())}
+              </p>
             </Tooltip>
             {tokenDataLoading ? (
               <Skeleton
@@ -71,7 +75,9 @@ export const Balance = () => {
               />
             ) : (
               <Tooltip text={"$" + Number(usdPriceToShow.toFixed(4)).toString()}>
-                <span className="ml-1 text-secondary">(~{formatDollarAmount(usdPriceToShow)})</span>
+                <span className="ml-1 text-secondary">
+                  (~{formatDollarAmount(usdPriceToShow.toNumber())})
+                </span>
               </Tooltip>
             )}
           </>

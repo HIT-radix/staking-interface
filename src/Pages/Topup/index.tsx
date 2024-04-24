@@ -34,21 +34,21 @@ const AdminPanel = () => {
         <GeneralOwnerInterface
           heading="Distribute HITs Reward"
           placeholder="Enter HIT amount to distribute"
-          balance={+hitBalance}
+          balance={hitBalance}
           onButtonClick={async (amount) => await distributeHITRewards(amount, false)}
           btnText="Distribute"
         />
         <GeneralOwnerInterface
           heading="Lock HITs for Future Rewards"
           placeholder="Enter HIT amount to lock"
-          balance={+hitBalance}
+          balance={hitBalance}
           onButtonClick={async (amount) => await LockHITRewards(amount)}
           btnText="Lock"
         />
         <GeneralOwnerInterface
           heading="Distribute Locked HITs reward"
           placeholder="Enter locked HIT amount to distribute"
-          balance={+hitBalance}
+          balance={hitBalance}
           onButtonClick={async (amount) => await distributeHITRewards(amount, true)}
           btnText="Distribute"
         />
