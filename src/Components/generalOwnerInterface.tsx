@@ -6,11 +6,20 @@ import { StakingTokens } from "Types/reducers";
 import { validateDecimalPlaces } from "Utils/judgers";
 
 type Props = {
+  heading: string;
+  placeholder: string;
   balance: number;
   onButtonClick: (amount: string) => Promise<void>;
+  btnText: string;
 };
 
-const GeneralOwnerInterface = ({ balance, onButtonClick }: Props) => {
+const GeneralOwnerInterface = ({
+  balance,
+  onButtonClick,
+  heading,
+  placeholder,
+  btnText,
+}: Props) => {
   const [amount, setAmount] = useState("");
   const walletAddress = useSelector((state) => state.app.walletAddress);
   const txInProgress = useSelector((state) => state.loadings.txInProgress);
@@ -45,8 +54,8 @@ const GeneralOwnerInterface = ({ balance, onButtonClick }: Props) => {
         ? `Insufficient ${StakingTokens.HIT}`
         : txInProgress
         ? "Processing"
-        : "Topup",
-    [amount, isInSufficientBalance, txInProgress, walletAddress]
+        : btnText,
+    [amount, isInSufficientBalance, txInProgress, walletAddress, btnText]
   );
 
   const handleClick = async () => {
@@ -57,17 +66,14 @@ const GeneralOwnerInterface = ({ balance, onButtonClick }: Props) => {
   };
 
   return (
-    <div
-      className="w-full mt-4 flex flex-col items-center justify-center"
-      style={{ border: "1px solid red" }}
-    >
-      <p className="text-accent text-center text-xl">Top Up HIT Rewards</p>
+    <div className="w-full mb-12 flex flex-col items-center justify-center">
+      <p className="text-accent text-center text-2xl font-bold">{heading}</p>
       <input
         value={amount}
         type="text"
-        placeholder="Enter Topup HIT amount"
+        placeholder={placeholder}
         onChange={onValueChange}
-        className="input input-accent w-full max-w-xs bg-base-200 text-accent focus:outline-none focus:border-none mt-4"
+        className="input w-full max-w-xs bg-base-200 text-accent focus:outline-none focus:border-accent mt-4"
       />
       <div
         onClick={handleClick}

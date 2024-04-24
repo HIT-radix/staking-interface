@@ -30,6 +30,7 @@ export type StakingReducer = {
   stHitBalance: string;
   stHIT_totalSupply: string;
   stakedHIT: string;
+  lockedHITRewards: string;
 };
 
 export enum StakingTokens {
@@ -48,4 +49,5 @@ export type LoadingReducer = {
   txInProgress: boolean;
   tokenDataLoading: boolean;
   poolDataLoading: boolean;
+  componentDataLoading: boolean;
 };

@@ -5,7 +5,6 @@ import { PercentageGroup } from "Components/percentageGroup";
 import { ActionBtnStake } from "Components/actionBtnStake";
 import Estimates from "Components/estimates";
 import StakingInfos from "./stakingInfos";
-import Topup from "Pages/Topup";
 
 const Stake = () => {
   return (
@@ -30,7 +29,6 @@ const Stake = () => {
           </div>
           <ActionBtnStake />
         </div>
-        <Topup />
       </div>
     </div>
   );

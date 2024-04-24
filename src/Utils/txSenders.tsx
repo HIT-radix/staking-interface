@@ -1,44 +1,69 @@
 import { toast } from "react-toastify";
 
-import { store } from "Store";
-import { getStakeTxManifest, getTopupTxManifest, getUnStakeTxManifest } from "./fetchers";
-import { getRdt } from "subs";
-import { setTxInProgress } from "Store/Reducers/loadings";
-import { incrementSuccessTxCount } from "Store/Reducers/session";
+import {
+  getLockTxManifest,
+  getStakeTxManifest,
+  getDistributeHitTxManifest,
+  getUnStakeTxManifest,
+  getDistributeLockHitTxManifest,
+  fetchComponentDetails,
+} from "./fetchers";
 import { setAmount, setPercentage } from "Store/Reducers/staking";
+import { incrementSuccessTxCount } from "Store/Reducers/session";
 import { Percentage, StakingTokens } from "Types/reducers";
+import { setTxInProgress } from "Store/Reducers/loadings";
 import CachedService from "Classes/cachedService";
+import { formatTokenAmount } from "./format";
+import { store } from "Store";
+import { getRdt } from "subs";
 import {
   StakeSuccessToast,
-  TopupSuccessToast,
+  DistributeSuccessToast,
   TxCanceledToast,
   TxFailedToast,
   TxProgressToast,
   UnStakeSuccessToast,
+  LockSuccessToast,
 } from "Components/toasts";
-import { formatTokenAmount } from "./format";
 
-export const stakeHIT = async () => {
-  const {
-    app: { walletAddress },
-    staking: { amount },
-  } = store.getState();
+type Props = {
+  amount: string;
+  walletAddress: string;
+  txManifestBuilder: (walletAddress: string, amount: string) => string;
+  tokenSymbol: StakingTokens;
+  ToastElement: ({
+    amount,
+    token,
+    txId,
+  }: {
+    amount: string;
+    token: StakingTokens;
+    txId: string;
+  }) => JSX.Element;
+};
 
+export const baseTxSender = async ({
+  amount,
+  txManifestBuilder,
+  ToastElement,
+  tokenSymbol,
+  walletAddress,
+}: Props) => {
   const rdt = getRdt();
   try {
     if (rdt) {
       store.dispatch(setTxInProgress(true));
       CachedService.TxProgressToast(<TxProgressToast />);
       const result = await rdt.walletApi.sendTransaction({
-        transactionManifest: getStakeTxManifest(walletAddress, amount),
+        transactionManifest: txManifestBuilder(walletAddress, amount),
         version: 1,
       });
       if (result.isErr()) throw result.error;
       toast.dismiss();
       CachedService.successToast(
-        <StakeSuccessToast
+        <ToastElement
           amount={formatTokenAmount(Number(amount))}
-          token={StakingTokens.HIT}
+          token={tokenSymbol}
           txId={result.value.transactionIntentHash}
         />
       );
@@ -51,69 +76,69 @@ export const stakeHIT = async () => {
   store.dispatch(setTxInProgress(false));
 };
 
+export const stakeHIT = async () => {
+  const {
+    app: { walletAddress },
+    staking: { amount },
+  } = store.getState();
+
+  await baseTxSender({
+    walletAddress,
+    amount,
+    txManifestBuilder: getStakeTxManifest,
+    ToastElement: StakeSuccessToast,
+    tokenSymbol: StakingTokens.HIT,
+  });
+};
+
 export const unstakeHIT = async () => {
   const {
     app: { walletAddress },
     staking: { amount },
   } = store.getState();
 
-  const rdt = getRdt();
-  try {
-    if (rdt) {
-      store.dispatch(setTxInProgress(true));
-      CachedService.TxProgressToast(<TxProgressToast />);
-      const result = await rdt.walletApi.sendTransaction({
-        transactionManifest: getUnStakeTxManifest(walletAddress, amount),
-        version: 1,
-      });
-      if (result.isErr()) throw result.error;
-      toast.dismiss();
-      CachedService.successToast(
-        <UnStakeSuccessToast
-          amount={formatTokenAmount(Number(amount))}
-          token={StakingTokens.StHIT}
-          txId={result.value.transactionIntentHash}
-        />
-      );
-      afterSuccessChore();
-      console.log("sendTransaction Result: ", result.value);
-    }
-  } catch (error: any) {
-    afterErrorChore(error);
-  }
-  store.dispatch(setTxInProgress(false));
+  await baseTxSender({
+    walletAddress,
+    amount,
+    txManifestBuilder: getUnStakeTxManifest,
+    ToastElement: UnStakeSuccessToast,
+    tokenSymbol: StakingTokens.StHIT,
+  });
 };
 
-export const topupHIT = async (amount: string) => {
+export const distributeHITRewards = async (amount: string, distributeLockedHits: boolean) => {
   const {
     app: { walletAddress },
   } = store.getState();
 
-  const rdt = getRdt();
-  try {
-    if (rdt) {
-      store.dispatch(setTxInProgress(true));
-      CachedService.TxProgressToast(<TxProgressToast />);
-      const result = await rdt.walletApi.sendTransaction({
-        transactionManifest: getTopupTxManifest(walletAddress, amount),
-        version: 1,
-      });
-      if (result.isErr()) throw result.error;
-      toast.dismiss();
-      CachedService.successToast(
-        <TopupSuccessToast
-          amount={formatTokenAmount(Number(amount))}
-          token={StakingTokens.HIT}
-          txId={result.value.transactionIntentHash}
-        />
-      );
-      afterSuccessChore();
-      console.log("sendTransaction Result: ", result.value);
-    }
-  } catch (error: any) {
-    afterErrorChore(error);
+  await baseTxSender({
+    walletAddress,
+    amount,
+    txManifestBuilder: distributeLockedHits
+      ? getDistributeLockHitTxManifest
+      : getDistributeHitTxManifest,
+    ToastElement: DistributeSuccessToast,
+    tokenSymbol: StakingTokens.HIT,
+  });
+
+  if (distributeLockedHits) {
+    fetchComponentDetails();
   }
-  store.dispatch(setTxInProgress(false));
+};
+
+export const LockHITRewards = async (amount: string) => {
+  const {
+    app: { walletAddress },
+  } = store.getState();
+
+  await baseTxSender({
+    walletAddress,
+    amount,
+    txManifestBuilder: getLockTxManifest,
+    ToastElement: LockSuccessToast,
+    tokenSymbol: StakingTokens.HIT,
+  });
+  fetchComponentDetails();
 };
 
 const afterSuccessChore = () => {

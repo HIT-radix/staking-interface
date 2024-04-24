@@ -9,6 +9,7 @@ const initialState: StakingReducer = {
   stHitBalance: "0",
   stHIT_totalSupply: "0",
   stakedHIT: "0",
+  lockedHITRewards: "0",
 };
 
 const staking = createSlice({
@@ -38,12 +39,16 @@ const staking = createSlice({
     setStakedHIT(state, action: PayloadAction<string>) {
       state.stakedHIT = action.payload;
     },
+    setLockedHITRewards(state, action: PayloadAction<string>) {
+      state.lockedHITRewards = action.payload;
+    },
   },
 });
 
 export default staking.reducer;
 
 export const {
+  setLockedHITRewards,
   setCurrentTab,
   setAmount,
   setPercentage,

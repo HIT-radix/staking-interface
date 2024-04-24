@@ -1,9 +1,10 @@
 import { dispatch, useSelector } from "Store";
-import { setBalanceLoading, setTokenDataLoading } from "Store/Reducers/loadings";
+import { setBalanceLoading } from "Store/Reducers/loadings";
 import { setIsInsufficientBalance } from "Store/Reducers/staking";
 import { Tabs } from "Types/reducers";
 import {
   fetchBalances,
+  fetchComponentDetails,
   fetchHITdata,
   fetchPoolDetails,
   fetchStHITTotalSupply,
@@ -27,11 +28,8 @@ const Listeners = () => {
   }, []);
 
   useEffect(() => {
-    (async () => {
-      dispatch(setTokenDataLoading(true));
-      fetchHITdata();
-      dispatch(setTokenDataLoading(false));
-    })();
+    fetchHITdata();
+    fetchComponentDetails();
   }, []);
 
   useEffect(() => {

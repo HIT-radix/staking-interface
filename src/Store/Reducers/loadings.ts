@@ -6,6 +6,7 @@ const initialState: LoadingReducer = {
   txInProgress: false,
   tokenDataLoading: false,
   poolDataLoading: false,
+  componentDataLoading: false,
 };
 
 const loadings = createSlice({
@@ -24,10 +25,18 @@ const loadings = createSlice({
     setPoolDataLoading(state, action: PayloadAction<boolean>) {
       state.poolDataLoading = action.payload;
     },
+    setComponentDataLoading(state, action: PayloadAction<boolean>) {
+      state.componentDataLoading = action.payload;
+    },
   },
 });
 
 export default loadings.reducer;
 
-export const { setBalanceLoading, setTxInProgress, setTokenDataLoading, setPoolDataLoading } =
-  loadings.actions;
+export const {
+  setBalanceLoading,
+  setTxInProgress,
+  setTokenDataLoading,
+  setPoolDataLoading,
+  setComponentDataLoading,
+} = loadings.actions;

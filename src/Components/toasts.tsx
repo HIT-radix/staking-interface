@@ -90,7 +90,7 @@ export const UnStakeSuccessToast = ({
   );
 };
 
-export const TopupSuccessToast = ({
+export const DistributeSuccessToast = ({
   amount,
   token,
   txId,
@@ -101,13 +101,40 @@ export const TopupSuccessToast = ({
 }) => {
   return (
     <BaseToast
-      heading="Topup Transaction Successful"
+      heading="Distribute Transaction Successful"
       subHeading={
         <>
           <span className="font-semibold mr-1">
             {amount} <span>${token}</span>
           </span>
-          Topup successfully.
+          Distributed successfully.
+        </>
+      }
+      twHeadingClass="text-base-content"
+      twSubHeadingClass="text-base-content"
+      txId={txId}
+    />
+  );
+};
+
+export const LockSuccessToast = ({
+  amount,
+  token,
+  txId,
+}: {
+  amount: string;
+  token: StakingTokens;
+  txId: string;
+}) => {
+  return (
+    <BaseToast
+      heading="Lock Transaction Successful"
+      subHeading={
+        <>
+          <span className="font-semibold mr-1">
+            {amount} <span>${token}</span>
+          </span>
+          Locked successfully.
         </>
       }
       twHeadingClass="text-base-content"
@@ -170,7 +197,7 @@ export const TxFailedToast = ({ txId }: { txId?: string }) => {
 };
 
 export const TxProgressToast = () => {
-  return <BaseToast heading="Processing Transaction" subHeading="Transaction is in processing." />;
+  return <BaseToast heading="Processing Transaction" subHeading="Open your Radix Wallet app." />;
 };
 
 // export const TxSignToast = () => {
