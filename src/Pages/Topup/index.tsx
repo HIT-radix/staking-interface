@@ -5,7 +5,7 @@ import { CONTRACT_OWNER_ADDRESS } from "Constants/address";
 import GeneralOwnerInterface from "Components/generalOwnerInterface";
 import { formatTokenAmount } from "Utils/format";
 
-const Topup = () => {
+const AdminPanel = () => {
   const walletAddress = useSelector((state) => state.app.walletAddress);
   const hitBalance = useSelector((state) => state.session.hitBalance);
   const lockedHITRewards = useSelector((state) => state.staking.lockedHITRewards);
@@ -57,4 +57,4 @@ const Topup = () => {
   ) : null;
 };
 
-export default Topup;
+export default AdminPanel;

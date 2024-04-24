@@ -22,7 +22,7 @@ export default function Routes() {
       ),
     },
     {
-      path: "/top-up-hit",
+      path: "/admin",
       element: (
         <MainLayout>
           <Topup />

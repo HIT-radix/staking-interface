@@ -1,15 +1,20 @@
-// import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import HitLogo from "Assets/Images/hit-logo.png";
-// import CachedService from "Classes/cachedService";
+import CachedService from "Classes/cachedService";
+import { useSelector } from "Store";
+import { CONTRACT_OWNER_ADDRESS } from "Constants/address";
 
 const Header = () => {
-  // const path = useLocation();
-  // const moveToPage = (route: string) => {
-  //   CachedService.navigation(route);
-  // };
+  const path = useLocation();
+  const walletAddress = useSelector((state) => state.app.walletAddress);
 
-  // const checkIfActive = (route: string) => path.pathname === route;
+  const moveToPage = (route: string) => {
+    CachedService.navigation(route);
+  };
+
+  const checkIfActive = (route: string) => path.pathname === route;
+
   return (
     <div
       className="flex flex-row justify-between items-center w-full p-4 px-2 sm:px-14 h-[90px]"
@@ -18,6 +23,28 @@ const Header = () => {
       <div className="flex gap-12 items-center">
         <LogoWebsite />
       </div>
+      {walletAddress === CONTRACT_OWNER_ADDRESS && (
+        <div className="flex flex-row items-center gap-8 text-xl">
+          <p
+            className={
+              "cursor-pointer hover:underline hover:text-accent " +
+              (checkIfActive("/admin") ? "text-accent underline" : "text-secondary")
+            }
+            onClick={() => moveToPage("/admin")}
+          >
+            Admin
+          </p>
+          <p
+            className={
+              "cursor-pointer hover:underline hover:text-accent " +
+              (checkIfActive("/") ? "text-accent underline" : "text-secondary")
+            }
+            onClick={() => moveToPage("/")}
+          >
+            Stake HIT
+          </p>
+        </div>
+      )}
       {/* <div className="flex flex-row items-center gap-8 text-xl">
         <p
           className={
