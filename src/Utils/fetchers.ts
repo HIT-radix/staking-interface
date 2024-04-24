@@ -9,6 +9,7 @@ import axios, { AxiosResponse } from "axios";
 import { extract_HIT_STHIT_balance } from "./format";
 import { EntityDetails } from "Types/api";
 import {
+  CONTRACT_OWNER_BADGE_ADDRESS,
   HIT_RESOURCE_ADDRESS,
   POOL_ADDRESS,
   STAKING_COMPONENT_ADDRESS,
@@ -157,6 +158,35 @@ export const getUnStakeTxManifest = (walletAddress: string, amount: string) => {
       Address("${walletAddress}")
       "deposit_batch"
       Expression("ENTIRE_WORKTOP")
+    ;
+`;
+};
+
+export const getTopupTxManifest = (walletAddress: string, amount: string) => {
+  return `
+    CALL_METHOD
+      Address("${walletAddress}")
+      "create_proof_of_amount"
+      Address("${CONTRACT_OWNER_BADGE_ADDRESS}")
+      Decimal("1")
+    ;
+
+    CALL_METHOD
+      Address("${walletAddress}")
+      "withdraw"
+      Address("${HIT_RESOURCE_ADDRESS}")
+      Decimal("${amount}")
+    ;
+
+    TAKE_ALL_FROM_WORKTOP
+      Address("${HIT_RESOURCE_ADDRESS}")
+      Bucket("bucket1")
+    ;
+
+    CALL_METHOD
+      Address("${STAKING_COMPONENT_ADDRESS}")
+      "airdrop"
+      Bucket("bucket1")
     ;
 `;
 };

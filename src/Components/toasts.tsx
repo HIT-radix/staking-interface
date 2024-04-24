@@ -90,6 +90,33 @@ export const UnStakeSuccessToast = ({
   );
 };
 
+export const TopupSuccessToast = ({
+  amount,
+  token,
+  txId,
+}: {
+  amount: string;
+  token: StakingTokens;
+  txId: string;
+}) => {
+  return (
+    <BaseToast
+      heading="Topup Transaction Successful"
+      subHeading={
+        <>
+          <span className="font-semibold mr-1">
+            {amount} <span>${token}</span>
+          </span>
+          Topup successfully.
+        </>
+      }
+      twHeadingClass="text-base-content"
+      twSubHeadingClass="text-base-content"
+      txId={txId}
+    />
+  );
+};
+
 // export const ClaimSuccessToast = ({
 //   solAmount,
 //   usdPrice,

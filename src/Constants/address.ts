@@ -25,4 +25,14 @@ export const POOL_ADDRESS =
     ? "pool_tdx_2_1c3tt7jlhpycq6crjgmpcsqrur44u7hry97v20nvsw3fx5hsj52hcej"
     : "pool_rdx1cnv7v2rar2w2r4fa65tnrul09kphsp9f0xaq0c06c7ds4u2syga8ly";
 
+export const CONTRACT_OWNER_BADGE_ADDRESS =
+  process.env.REACT_APP_ENVIRONMENT === Environment.dev
+    ? "resource_tdx_2_1t5qu33df9s8txu0tcszr8c7n92xn278jrkclzv3hupf78fx74ezt96"
+    : "resource_rdx1th9a8045tkufp07carehayjcfy5juslp93kvels9wnly9dg8elah64";
+
+export const CONTRACT_OWNER_ADDRESS =
+  process.env.REACT_APP_ENVIRONMENT === Environment.dev
+    ? "account_tdx_2_129zymzhffm45w5jyccyu9x0tv5xs7qs76zxzrfsd7gn76f7k5reus2"
+    : "account_tdx_2_129zymzhffm45w5jyccyu9x0tv5xs7qs76zxzrfsd7gn76f7k5reus2";
+
 // export const LIQUIDITY_POOL_ADDRESS = new PublicKey("C6Fk5DceKtzNPk9LbE5wS6nodwogp5TvqRaiUUGLDaHB");

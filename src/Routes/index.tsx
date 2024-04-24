@@ -7,8 +7,9 @@ import { fetchPoolDetails, fetchHITdata, fetchStHITTotalSupply } from "Utils/fet
 import { dispatch, useSelector } from "Store";
 import { setTokenDataLoading } from "Store/Reducers/loadings";
 
-const Home = lazy(() => import("Pages/Home"));
+// const Home = lazy(() => import("Pages/Home"));
 const Stake = lazy(() => import("Pages/Stake"));
+const Topup = lazy(() => import("Pages/Topup"));
 
 export default function Routes() {
   const navigate = useNavigate();
@@ -48,6 +49,14 @@ export default function Routes() {
       element: (
         <MainLayout>
           <Stake />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/top-up-hit",
+      element: (
+        <MainLayout>
+          <Topup />
         </MainLayout>
       ),
     },
