@@ -9,6 +9,7 @@ import { store, persister } from "Store";
 import "react-loading-skeleton/dist/skeleton.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Listeners from "Components/listeners";
 // if (process.env.REACT_APP_ENVIRONMENT === Environment.prod) {
 //   console.log = () => {};
 // }
@@ -24,6 +25,7 @@ root.render(
   >
     <ReduxProvider store={store}>
       <PersistGate loading={null} persistor={persister}>
+        <Listeners />
         <ToastContainer />
         <App />
       </PersistGate>

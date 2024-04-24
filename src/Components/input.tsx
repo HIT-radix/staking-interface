@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { AMOUNT_INPUT_REGEX } from "Constants/misc";
 import { dispatch, useSelector } from "Store";
-import { setAmount, setIsInsufficientBalance, setPercentage } from "Store/Reducers/staking";
+import { setAmount, setPercentage } from "Store/Reducers/staking";
 import { Percentage, StakingTokens, Tabs } from "Types/reducers";
 import {
   calculateInputWidth,
@@ -19,22 +19,12 @@ export const Input = () => {
   const [inputWidth, setInputWidth] = useState(1.5);
 
   const hitPrice = useSelector((state) => state.app.hitPrice);
-  const hitBalance = useSelector((state) => +state.session.hitBalance);
   const tokenDataLoading = useSelector((state) => state.loadings.tokenDataLoading);
   const amount = useSelector((state) => state.staking.amount);
   const isInSufficientBalance = useSelector((state) => state.staking.isInSufficientBalance);
   const currentTab = useSelector((state) => state.staking.currentTab);
-  const stHitBalance = useSelector((state) => +state.staking.stHitBalance);
   const stakedHIT = useSelector((state) => +state.staking.stakedHIT);
   const stHIT_totalSupply = useSelector((state) => +state.staking.stHIT_totalSupply);
-
-  useEffect(() => {
-    dispatch(
-      setIsInsufficientBalance(
-        Number(amount) > Number(currentTab === Tabs.stake ? hitBalance : stHitBalance)
-      )
-    );
-  }, [amount, currentTab, hitBalance, stHitBalance]);
 
   useEffect(() => {
     if (Number(amount)) {

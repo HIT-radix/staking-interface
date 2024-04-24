@@ -1,36 +1,25 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import Skeleton from "react-loading-skeleton";
 
-import { dispatch, useSelector } from "Store";
+import { useSelector } from "Store";
 import { StakingTokens, Tabs } from "Types/reducers";
 import WalletIcon from "Assets/Svgs/wallet.svg";
 import { exactAmountInDecimals, formatDollarAmount, formatTokenAmount } from "Utils/format";
 import { Tooltip } from "./tooltip";
-import { fetchBalances, getSelectedBalance } from "Utils/fetchers";
-import { setBalanceLoading } from "Store/Reducers/loadings";
+import { getSelectedBalance } from "Utils/fetchers";
 import { calculateStHitWorthInHIT } from "Utils/judgers";
 import HITlogo from "Assets/Images/hit-logo.png";
 import StHITlogo from "Assets/Images/sthit-logo.png";
 
 export const Balance = () => {
-  const successTxCount = useSelector((state) => state.session.successTxCount);
   const currentTab = useSelector((state) => state.staking.currentTab);
   const stHitBalance = useSelector((state) => +state.staking.stHitBalance);
   const hitBalance = useSelector((state) => state.session.hitBalance);
   const hitPrice = useSelector((state) => state.app.hitPrice);
   const stakedHIT = useSelector((state) => +state.staking.stakedHIT);
   const stHIT_totalSupply = useSelector((state) => +state.staking.stHIT_totalSupply);
-  const walletAddress = useSelector((state) => state.app.walletAddress);
   const balanceLoading = useSelector((state) => state.loadings.balanceLoading);
   const tokenDataLoading = useSelector((state) => state.loadings.tokenDataLoading);
-
-  useEffect(() => {
-    (async () => {
-      dispatch(setBalanceLoading(true));
-      await fetchBalances(walletAddress);
-      dispatch(setBalanceLoading(false));
-    })();
-  }, [successTxCount, walletAddress]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const amountToShow = useMemo(() => getSelectedBalance(), [currentTab, stHitBalance, hitBalance]);
