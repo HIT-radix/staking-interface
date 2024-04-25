@@ -76,7 +76,11 @@ export const Balance = () => {
             ) : (
               <Tooltip text={"$" + Number(usdPriceToShow.toFixed(4)).toString()}>
                 <span className="ml-1 text-secondary">
-                  (~{formatDollarAmount(usdPriceToShow.toNumber())})
+                  (~
+                  {formatDollarAmount(
+                    Number.isNaN(usdPriceToShow.toNumber()) ? 0 : usdPriceToShow.toNumber()
+                  )}
+                  )
                 </span>
               </Tooltip>
             )}

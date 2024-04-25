@@ -4,6 +4,7 @@ import { LockHITRewards, distributeHITRewards } from "Utils/txSenders";
 import { CONTRACT_OWNER_ADDRESS } from "Constants/address";
 import GeneralOwnerInterface from "Components/generalOwnerInterface";
 import { formatTokenAmount } from "Utils/format";
+import { StakingTokens } from "Types/reducers";
 
 const AdminPanel = () => {
   const walletAddress = useSelector((state) => state.app.walletAddress);
@@ -24,8 +25,8 @@ const AdminPanel = () => {
         </div>
         <div className="min-w-[300px]">
           <InfoTile
-            title="Locked HITs for Rewards"
-            value={formatTokenAmount(+lockedHITRewards)}
+            title="Total Locked Rewards"
+            value={formatTokenAmount(+lockedHITRewards) + " " + StakingTokens.HIT}
             isLoading={componentDataLoading}
           />
         </div>

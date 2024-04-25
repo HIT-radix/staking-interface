@@ -23,6 +23,7 @@ import {
 import {
   setComponentDataLoading,
   setPoolDataLoading,
+  setStHitDataLoading,
   setTokenDataLoading,
 } from "Store/Reducers/loadings";
 
@@ -79,6 +80,7 @@ export const fetchHITdata = async () => {
 export const fetchStHITTotalSupply = async () => {
   let totalSupply = "0";
   try {
+    store.dispatch(setStHitDataLoading(true));
     const response = await axios.post<any, AxiosResponse<EntityDetails>>(
       `${networkRPC}/state/entity/details`,
       {
@@ -93,6 +95,7 @@ export const fetchStHITTotalSupply = async () => {
     console.log("error in fetchStHITTotalSupply", error);
   }
   store.dispatch(setStHitTotalSupply(totalSupply));
+  store.dispatch(setStHitDataLoading(false));
 };
 
 export const fetchPoolDetails = async () => {

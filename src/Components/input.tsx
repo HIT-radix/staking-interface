@@ -114,7 +114,7 @@ export const Input = () => {
       ) : (
         <Tooltip text={"$" + Number(usdValue.toFixed(4)).toString()}>
           <span className="text-secondary text-sm mb-0">
-            ~{formatDollarAmount(usdValue.toNumber())}
+            ~{formatDollarAmount(Number.isNaN(usdValue.toNumber()) ? 0 : usdValue.toNumber())}
           </span>
         </Tooltip>
       )}

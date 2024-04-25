@@ -50,4 +50,5 @@ export type LoadingReducer = {
   tokenDataLoading: boolean;
   poolDataLoading: boolean;
   componentDataLoading: boolean;
+  stHitDataLoading: boolean;
 };

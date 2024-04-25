@@ -25,7 +25,10 @@ const Estimates = () => {
       <p className="text-secondary">You'll recieve</p>
       <Tooltip text={exactAmountInDecimals(estimatedAmount.toNumber(), 4)}>
         <p className="text-secondary">
-          ~ {formatTokenAmount(estimatedAmount.toNumber())}{" "}
+          ~{" "}
+          {formatTokenAmount(
+            Number.isNaN(estimatedAmount.toNumber()) ? 0 : estimatedAmount.toNumber()
+          )}{" "}
           {currentTab === Tabs.stake ? StakingTokens.StHIT : StakingTokens.HIT}
         </p>
       </Tooltip>

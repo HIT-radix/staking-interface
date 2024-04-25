@@ -21,7 +21,7 @@ const InfoTile = ({
           height={30}
         />
       ) : (
-        <p className="text-4xl mt-2">{value}</p>
+        <p className="text-3xl mt-2">{value}</p>
       )}
     </div>
   );
