@@ -1,4 +1,8 @@
-import { HIT_RESOURCE_ADDRESS, STHIT_RESOURCE_ADDRESS } from "Constants/address";
+import {
+  CONTRACT_OWNER_BADGE_ADDRESS,
+  HIT_RESOURCE_ADDRESS,
+  STHIT_RESOURCE_ADDRESS,
+} from "Constants/address";
 import { radixDashboardBaseUrl } from "Constants/misc";
 import { ResourceDetails } from "Types/api";
 import { parseUnits as parseUnitsEthers } from "ethers";
@@ -73,21 +77,29 @@ export const generateExplorerTxLink = (txId?: string) => {
   return `${radixDashboardBaseUrl}/transaction/${txId}`;
 };
 
-export const extract_HIT_STHIT_balance = (resources: ResourceDetails[]) => {
-  const HIT_address = HIT_RESOURCE_ADDRESS;
-  const StHIT_address = STHIT_RESOURCE_ADDRESS;
+export const extract_HIT_STHIT_balance = (
+  resources: ResourceDetails[],
+  searchForOwner: boolean = false
+) => {
   let hitBalance: string | undefined;
   let sthitBalance: string | undefined;
+  let isOwner = false;
 
   for (const resource of resources) {
-    if (resource.resource_address === HIT_address) {
+    if (resource.resource_address === HIT_RESOURCE_ADDRESS) {
       hitBalance = resource.amount;
-    } else if (resource.resource_address === StHIT_address) {
+    } else if (resource.resource_address === STHIT_RESOURCE_ADDRESS) {
       sthitBalance = resource.amount;
+    } else if (searchForOwner && resource.resource_address === CONTRACT_OWNER_BADGE_ADDRESS) {
+      isOwner = true;
     }
 
-    // Break the loop if both balances are found
-    if (hitBalance !== undefined && sthitBalance !== undefined) {
+    // Break the loop if both balances are found and check isOwner is true only if searchForOwner is true
+    if (
+      hitBalance !== undefined &&
+      sthitBalance !== undefined &&
+      (searchForOwner ? isOwner === true : true)
+    ) {
       break;
     }
   }
@@ -95,6 +107,7 @@ export const extract_HIT_STHIT_balance = (resources: ResourceDetails[]) => {
   return {
     hit: hitBalance || "0", // Default to "0" if balance not found
     sthit: sthitBalance || "0", // Default to "0" if balance not found
+    isOwner,
   };
 };
 

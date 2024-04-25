@@ -1,19 +1,18 @@
 import InfoTile from "Components/infoTile";
 import { useSelector } from "Store";
 import { LockHITRewards, distributeHITRewards } from "Utils/txSenders";
-import { CONTRACT_OWNER_ADDRESS } from "Constants/address";
 import GeneralOwnerInterface from "Components/generalOwnerInterface";
 import { formatTokenAmount } from "Utils/format";
 import { StakingTokens } from "Types/reducers";
 
 const AdminPanel = () => {
-  const walletAddress = useSelector((state) => state.app.walletAddress);
   const hitBalance = useSelector((state) => state.session.hitBalance);
   const lockedHITRewards = useSelector((state) => state.staking.lockedHITRewards);
+  const isOwner = useSelector((state) => state.staking.isOwner);
   const balanceLoading = useSelector((state) => state.loadings.balanceLoading);
   const componentDataLoading = useSelector((state) => state.loadings.componentDataLoading);
 
-  return walletAddress === CONTRACT_OWNER_ADDRESS ? (
+  return isOwner ? (
     <div>
       <div className="flex items-center justify-center gap-3 mb-4">
         <div className="min-w-[300px]">

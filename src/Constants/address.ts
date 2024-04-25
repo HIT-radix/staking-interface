@@ -29,8 +29,3 @@ export const CONTRACT_OWNER_BADGE_ADDRESS =
   process.env.REACT_APP_ENVIRONMENT === Environment.dev
     ? "resource_tdx_2_1t5qu33df9s8txu0tcszr8c7n92xn278jrkclzv3hupf78fx74ezt96"
     : "resource_rdx1th9a8045tkufp07carehayjcfy5juslp93kvels9wnly9dg8elah64";
-
-export const CONTRACT_OWNER_ADDRESS =
-  process.env.REACT_APP_ENVIRONMENT === Environment.dev
-    ? "account_tdx_2_1293j8sulmxf6crr3ftu9pu0ppsfvng3d7g8amtzk3slsu5a8a9a49m"
-    : "account_rdx129xg758ryxg7xc080nv0c0k9xrcdv3ezve6kqpj665q38cv23kamph";

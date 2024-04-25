@@ -31,6 +31,7 @@ export type StakingReducer = {
   stHIT_totalSupply: string;
   stakedHIT: string;
   lockedHITRewards: string;
+  isOwner: boolean;
 };
 
 export enum StakingTokens {

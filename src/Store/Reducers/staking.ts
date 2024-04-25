@@ -10,6 +10,7 @@ const initialState: StakingReducer = {
   stHIT_totalSupply: "0",
   stakedHIT: "0",
   lockedHITRewards: "0",
+  isOwner: false,
 };
 
 const staking = createSlice({
@@ -21,6 +22,9 @@ const staking = createSlice({
     },
     setAmount(state, action: PayloadAction<string>) {
       state.amount = action.payload;
+    },
+    setIsOwner(state, action: PayloadAction<boolean>) {
+      state.isOwner = action.payload;
     },
     setPercentage(state, action: PayloadAction<Percentage>) {
       state.percentage = action.payload;
@@ -48,6 +52,7 @@ const staking = createSlice({
 export default staking.reducer;
 
 export const {
+  setIsOwner,
   setLockedHITRewards,
   setCurrentTab,
   setAmount,

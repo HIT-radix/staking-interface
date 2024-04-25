@@ -3,6 +3,7 @@ import { store } from "Store";
 import { setHitPrice } from "Store/Reducers/app";
 import { setHitBalance, updateTokenData } from "Store/Reducers/session";
 import {
+  setIsOwner,
   setLockedHITRewards,
   setStHitBalance,
   setStHitTotalSupply,
@@ -30,6 +31,7 @@ import {
 export const fetchBalances = async (walletAddress: string) => {
   let HITbalance = "0";
   let stHITbalance = "0";
+  let isOwner = false;
   if (walletAddress) {
     try {
       const response = await axios.post<any, AxiosResponse<EntityDetails>>(
@@ -40,9 +42,13 @@ export const fetchBalances = async (walletAddress: string) => {
       );
 
       if (response.status === 200) {
-        const balances = extract_HIT_STHIT_balance(response.data.items[0].fungible_resources.items);
+        const balances = extract_HIT_STHIT_balance(
+          response.data.items[0].fungible_resources.items,
+          true
+        );
         HITbalance = balances.hit;
         stHITbalance = balances.sthit;
+        isOwner = balances.isOwner;
       }
     } catch (error) {
       console.log("error in fetchBalances", error);
@@ -50,6 +56,7 @@ export const fetchBalances = async (walletAddress: string) => {
   }
   store.dispatch(setHitBalance(HITbalance));
   store.dispatch(setStHitBalance(stHITbalance));
+  store.dispatch(setIsOwner(isOwner));
 };
 
 export const getSelectedBalance = () => {

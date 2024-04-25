@@ -3,11 +3,10 @@ import { useLocation } from "react-router-dom";
 import HitLogo from "Assets/Images/hit-logo.png";
 import CachedService from "Classes/cachedService";
 import { useSelector } from "Store";
-import { CONTRACT_OWNER_ADDRESS } from "Constants/address";
 
 const Header = () => {
   const path = useLocation();
-  const walletAddress = useSelector((state) => state.app.walletAddress);
+  const isOwner = useSelector((state) => state.staking.isOwner);
 
   const moveToPage = (route: string) => {
     CachedService.navigation(route);
@@ -23,7 +22,7 @@ const Header = () => {
       <div className="flex gap-12 items-center">
         <LogoWebsite />
       </div>
-      {walletAddress === CONTRACT_OWNER_ADDRESS && (
+      {isOwner && (
         <div className="flex flex-row items-center gap-8 text-xl">
           <p
             className={
@@ -45,30 +44,9 @@ const Header = () => {
           </p>
         </div>
       )}
-      {/* <div className="flex flex-row items-center gap-8 text-xl">
-        <p
-          className={
-            "cursor-pointer hover:underline hover:text-accent " +
-            (checkIfActive("/") ? "text-accent underline" : "text-secondary")
-          }
-          onClick={() => moveToPage("/")}
-        >
-          Dashboard
-        </p>
-        <p
-          className={
-            "cursor-pointer hover:underline hover:text-accent " +
-            (checkIfActive("/staking") ? "text-accent underline" : "text-secondary")
-          }
-          onClick={() => moveToPage("staking")}
-        >
-          Stake HIT
-        </p>
-      </div> */}
       <div>
         <radix-connect-button></radix-connect-button>
       </div>
-      {/* <LogoWebsite twContainerClass="invisible" /> */}
     </div>
   );
 };
