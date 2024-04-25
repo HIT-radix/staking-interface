@@ -22,25 +22,25 @@ const StakingInfos = () => {
   );
 
   return (
-    <div className="grid grid-cols-12 w-full mb-3 sm:mb-12 gap-3">
-      <div className="col-span-12 sm:col-span-6 flex items-center justify-center sm:pr-2">
+    <div className="grid grid-cols-12 w-full mb-5 gap-3">
+      <div className="col-span-12 sm:col-span-6 flex items-center justify-center ">
         <InfoTile title="Staking APY%" value={apy + "%"} isLoading={poolDataLoading} />
       </div>
-      <div className="col-span-12 sm:col-span-6 flex items-center justify-center sm:pl-2">
+      <div className="col-span-12 sm:col-span-6 flex items-center justify-center">
         <InfoTile
           title="Total Staked"
           value={formatTokenAmount(+stakedHIT) + " " + StakingTokens.HIT}
           isLoading={poolDataLoading}
         />
       </div>
-      <div className="col-span-12 sm:col-span-6 flex items-center justify-center sm:pr-2">
+      <div className="col-span-12 sm:col-span-6 flex items-center justify-center ">
         <InfoTile
           title="Total Locked Rewards"
           value={formatTokenAmount(+lockedHITRewards) + " " + StakingTokens.HIT}
           isLoading={componentDataLoading}
         />
       </div>
-      <div className="col-span-12 sm:col-span-6 flex items-center justify-center sm:pr-2">
+      <div className="col-span-12 sm:col-span-6 flex items-center justify-center ">
         <InfoTile
           title="StHIT Price"
           value={
