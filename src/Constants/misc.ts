@@ -3,7 +3,7 @@ import { Environment } from "Types/misc";
 
 export const TELEGRAM_LINK = "https://t.me/addixanonymous";
 export const X_HANDLE = "https://twitter.com/addix_xrd";
-export const HIT_WEBSITE = "";
+export const HIT_WEBSITE = "https://addix-xrd.gitbook.io/usdhit-on-radix/";
 
 export const AMOUNT_INPUT_REGEX = /^((\d+[.]?\d*)|(\.\d+))$/;
 
