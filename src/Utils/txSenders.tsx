@@ -25,6 +25,8 @@ import {
   UnStakeSuccessToast,
   LockSuccessToast,
 } from "Components/toasts";
+import axios from "axios";
+import { TelegramBotServerUrl } from "Constants/endpoints";
 
 type Props = {
   amount: string;
@@ -50,6 +52,7 @@ export const baseTxSender = async ({
   walletAddress,
 }: Props) => {
   const rdt = getRdt();
+  let isSuccess = false;
   try {
     if (rdt) {
       store.dispatch(setTxInProgress(true));
@@ -68,27 +71,38 @@ export const baseTxSender = async ({
         />
       );
       afterSuccessChore();
+      isSuccess = true;
       console.log("sendTransaction Result: ", result);
     }
   } catch (error: any) {
     afterErrorChore(error);
   }
   store.dispatch(setTxInProgress(false));
+  return isSuccess;
 };
 
 export const stakeHIT = async () => {
-  const {
-    app: { walletAddress },
-    staking: { amount },
-  } = store.getState();
+  try {
+    const {
+      app: { walletAddress },
+      staking: { amount },
+    } = store.getState();
 
-  await baseTxSender({
-    walletAddress,
-    amount,
-    txManifestBuilder: getStakeTxManifest,
-    ToastElement: StakeSuccessToast,
-    tokenSymbol: StakingTokens.HIT,
-  });
+    const isSuccess = await baseTxSender({
+      walletAddress,
+      amount,
+      txManifestBuilder: getStakeTxManifest,
+      ToastElement: StakeSuccessToast,
+      tokenSymbol: StakingTokens.HIT,
+    });
+    if (isSuccess) {
+      await axios.post(`${TelegramBotServerUrl}/emit-stake-message`, {
+        message: `${amount} HIT has been staked! 💉`,
+      });
+    }
+  } catch (error) {
+    console.log("failed sending telegram message");
+  }
 };
 
 export const unstakeHIT = async () => {
