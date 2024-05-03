@@ -6,9 +6,9 @@ import { StakingTokens } from "Types/reducers";
 import { formatTokenAmount } from "Utils/format";
 import { calculateStHitWorthInHIT } from "Utils/judgers";
 
-const StakingInfos = () => {
-  const weekly_hit_reward = 2000;
+const yearly_hit_reward = 50000000000; // reward in one week
 
+const StakingInfos = () => {
   const stakedHIT = useSelector((state) => state.staking.stakedHIT);
   const poolDataLoading = useSelector((state) => state.loadings.poolDataLoading);
   const stHitDataLoading = useSelector((state) => state.loadings.stHitDataLoading);
@@ -16,10 +16,12 @@ const StakingInfos = () => {
   const stHIT_totalSupply = useSelector((state) => state.staking.stHIT_totalSupply);
   const componentDataLoading = useSelector((state) => state.loadings.componentDataLoading);
 
-  const apy = useMemo(
-    () => ((Math.pow(1 + weekly_hit_reward / +stakedHIT, 365 / 7) - 1) * 100).toFixed(2),
-    [stakedHIT]
-  );
+  const apy = useMemo(() => ((yearly_hit_reward / +stakedHIT) * 100).toFixed(2), [stakedHIT]);
+
+  // const apy = useMemo(
+  //   () => ((Math.pow(1 + weekly_hit_reward / +stakedHIT, 365 / 7) - 1) * 100).toFixed(2),
+  //   [stakedHIT]
+  // );
 
   return (
     <div className="grid grid-cols-12 w-full mb-5 gap-3">
