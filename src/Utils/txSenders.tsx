@@ -97,7 +97,7 @@ export const stakeHIT = async () => {
     });
     if (isSuccess) {
       await axios.post(`${TelegramBotServerUrl}/emit-stake-message`, {
-        message: `${amount} HIT has been staked! 💉`,
+        message: `${formatTokenAmount(+amount)} HIT has been staked! 💉`,
       });
     }
   } catch (error) {
