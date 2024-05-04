@@ -2,13 +2,17 @@ import { dispatch, useSelector } from "Store";
 import { setAmount, setPercentage } from "Store/Reducers/staking";
 import { Percentage } from "Types/reducers";
 import { getSelectedBalance } from "Utils/fetchers";
+import { BN } from "Utils/format";
 
 export const PercentageGroup = () => {
   const { percentage } = useSelector((state) => state.staking);
   const onPercentageClick = (Percentage: Percentage) => {
     const currentBalance = getSelectedBalance();
     if (currentBalance.toNumber() > 0) {
-      dispatch(setAmount(currentBalance.multipliedBy(Percentage).toFixed(18).replace(/0+$/, "")));
+      const fraction = new BN(Percentage).toFraction();
+      dispatch(
+        setAmount(currentBalance.multipliedBy(fraction[0]).dividedBy(fraction[1]).toString())
+      );
       dispatch(setPercentage(Percentage));
     }
   };

@@ -44,7 +44,7 @@ const Listeners = () => {
   useEffect(() => {
     dispatch(
       setIsInsufficientBalance(
-        BN(amount).isGreaterThan(currentTab === Tabs.stake ? hitBalance : stHitBalance)
+        new BN(amount).isGreaterThan(currentTab === Tabs.stake ? hitBalance : stHitBalance)
       )
     );
   }, [amount, currentTab, hitBalance, stHitBalance]);
