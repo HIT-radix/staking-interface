@@ -121,38 +121,46 @@ export const unstakeHIT = async () => {
 };
 
 export const distributeHITRewards = async (amount: string, distributeLockedHits: boolean) => {
-  const {
-    app: { walletAddress },
-  } = store.getState();
+  try {
+    const {
+      app: { walletAddress },
+    } = store.getState();
 
-  await baseTxSender({
-    walletAddress,
-    amount,
-    txManifestBuilder: distributeLockedHits
-      ? getDistributeLockHitTxManifest
-      : getDistributeHitTxManifest,
-    ToastElement: DistributeSuccessToast,
-    tokenSymbol: StakingTokens.HIT,
-  });
+    await baseTxSender({
+      walletAddress,
+      amount,
+      txManifestBuilder: distributeLockedHits
+        ? getDistributeLockHitTxManifest
+        : getDistributeHitTxManifest,
+      ToastElement: DistributeSuccessToast,
+      tokenSymbol: StakingTokens.HIT,
+    });
 
-  if (distributeLockedHits) {
-    fetchComponentDetails();
+    if (distributeLockedHits) {
+      fetchComponentDetails();
+    }
+  } catch (error) {
+    console.log("Unable to distribute Hits");
   }
 };
 
 export const LockHITRewards = async (amount: string) => {
-  const {
-    app: { walletAddress },
-  } = store.getState();
+  try {
+    const {
+      app: { walletAddress },
+    } = store.getState();
 
-  await baseTxSender({
-    walletAddress,
-    amount,
-    txManifestBuilder: getLockTxManifest,
-    ToastElement: LockSuccessToast,
-    tokenSymbol: StakingTokens.HIT,
-  });
-  fetchComponentDetails();
+    await baseTxSender({
+      walletAddress,
+      amount,
+      txManifestBuilder: getLockTxManifest,
+      ToastElement: LockSuccessToast,
+      tokenSymbol: StakingTokens.HIT,
+    });
+    fetchComponentDetails();
+  } catch (error) {
+    console.log("Unable to lock hits");
+  }
 };
 
 const afterSuccessChore = () => {
