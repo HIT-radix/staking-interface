@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import HitLogo from "Assets/Images/hit-logo.png";
 import CachedService from "Classes/cachedService";
 import { useSelector } from "Store";
+import ImageAudioPlayer from "Components/audioplayer";
 
 const Header = () => {
   const path = useLocation();
@@ -54,7 +55,8 @@ const Header = () => {
 const LogoWebsite = ({ twContainerClass = "" }: { twContainerClass?: string }) => {
   return (
     <div className={"flex flex-row items-center " + twContainerClass}>
-      <img src={HitLogo} alt="mesh-logo" className="w-10" />
+      <ImageAudioPlayer />
+      {/* <img src={HitLogo} alt="mesh-logo" className="w-10" /> */}
       <p className="hidden sm:block text-accent text-2xl font-bold pl-2">ADDIX HIT</p>
     </div>
   );

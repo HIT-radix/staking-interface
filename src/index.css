@@ -34,7 +34,7 @@ radix-connect-button radix-button {
     transform: scale(1);
   }
   50% {
-    transform: scale(1.03);
+    transform: scale(1.1);
   }
 }
 
@@ -47,6 +47,5 @@ radix-connect-button radix-button {
 }
 
 .bouncing {
-  opacity: 0.5;
   animation: bounce 0.4s infinite; /* Adjust timing to match the beat */
 }
