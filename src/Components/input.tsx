@@ -9,7 +9,7 @@ import {
   calculateStHitWorthInHIT,
   validateDecimalPlaces,
 } from "Utils/judgers";
-import { BN, formatDollarAmount } from "Utils/format";
+import { BN, formatDollarAmount, toLocaleFormat } from "Utils/format";
 import { Tooltip } from "./tooltip";
 import HITlogo from "Assets/Images/hit-logo.png";
 import StHITlogo from "Assets/Images/sthit-logo.png";
@@ -33,7 +33,7 @@ export const Input = () => {
   }, [amount]);
 
   const onValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const text = e.target.value;
+    const text = e.target.value.replaceAll(",", "");
     if (text.match(AMOUNT_INPUT_REGEX)) {
       if (validateDecimalPlaces(text, 18)) {
         setInputWidth(calculateInputWidth(text));
@@ -76,7 +76,7 @@ export const Input = () => {
         >
           <input
             id="stake-input"
-            value={amount}
+            value={toLocaleFormat(amount)}
             type="text"
             onChange={onValueChange}
             className={`input rounded-none bg-base-200 text-accent focus:outline-none focus:border-none  px-0 my-3 max-w-[100%] sm:max-w-[calc(100% - 40px)] text-3xl sm:text-5xl ${

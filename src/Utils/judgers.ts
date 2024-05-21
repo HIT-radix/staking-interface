@@ -5,12 +5,19 @@ export const calculateInputWidth = (str: string) => {
   const containsDot = str.includes(".");
 
   // Count the number of '1's in the string
-  const countOfOnes = str.split("").filter((char) => char === "1").length;
+  const arrayedNum = str.split("");
+  const countOfOnes = arrayedNum.filter((char) => char === "1").length;
+  const countOfCommas = arrayedNum.filter((char) => char === ",").length;
   const totalLengthWithDot = containsDot ? str.length - 1 : str.length;
 
-  const inputWidth = totalLengthWithDot - countOfOnes + countOfOnes * 1 + (containsDot ? 0.5 : 0);
+  const inputWidth =
+    totalLengthWithDot -
+    countOfOnes +
+    countOfOnes * 1 +
+    (containsDot ? 0.5 : 0) +
+    countOfCommas * 1;
 
-  return Number(inputWidth.toFixed(2)) + 1;
+  return Number(inputWidth.toFixed(2)) + 2;
 };
 
 export function validateDecimalPlaces(numStr: string, maxDecimals: number) {

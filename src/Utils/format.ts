@@ -117,3 +117,25 @@ export const conciseAddress = (address: string, startSlice = 3, endSlice = 3): s
     address?.length
   )}`;
 };
+
+export const toLocaleFormat = (value: string) => {
+  if (value === "") {
+    return value;
+  }
+  // Remove all non-digit and non-decimal characters
+  value = value.replace(/[^0-9.]/g, "");
+  const containsDot = value.includes(".");
+
+  // Split into integer and decimal parts
+  const parts = value.split(".");
+  const integerPart = parts[0];
+  const decimalPart = parts.length > 1 ? parts[1] : "";
+
+  // Format the integer part using toLocaleString()
+  const formattedIntegerPart = parseInt(integerPart).toLocaleString();
+
+  // Combine integer part and decimal part
+  const answer =
+    decimalPart || containsDot ? formattedIntegerPart + "." + decimalPart : formattedIntegerPart;
+  return answer;
+};
