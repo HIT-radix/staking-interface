@@ -1,9 +1,9 @@
 import { useLocation } from "react-router-dom";
 
-import HitLogo from "Assets/Images/hit-logo.png";
 import CachedService from "Classes/cachedService";
 import { useSelector } from "Store";
 import ImageAudioPlayer from "Components/audioplayer";
+import { HIT_WEBSITE } from "Constants/misc";
 
 const Header = () => {
   const path = useLocation();
@@ -45,7 +45,13 @@ const Header = () => {
           </p>
         </div>
       )}
-      <div>
+      <div className="flex items-center justify-center gap-9">
+        <p
+          className="text-accent font-bold text-lg cursor-pointer hidden sm:block"
+          onClick={() => window.open(HIT_WEBSITE, "_blank")}
+        >
+          Docs
+        </p>
         <radix-connect-button></radix-connect-button>
       </div>
     </div>
