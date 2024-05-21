@@ -8,10 +8,9 @@ export const calculateInputWidth = (str: string) => {
   const countOfOnes = str.split("").filter((char) => char === "1").length;
   const totalLengthWithDot = containsDot ? str.length - 1 : str.length;
 
-  const inputWidth =
-    totalLengthWithDot - countOfOnes + countOfOnes * 0.75 + (containsDot ? 0.5 : 0);
+  const inputWidth = totalLengthWithDot - countOfOnes + countOfOnes * 1 + (containsDot ? 0.5 : 0);
 
-  return Number(inputWidth.toFixed(2)) + 0.75;
+  return Number(inputWidth.toFixed(2)) + 1;
 };
 
 export function validateDecimalPlaces(numStr: string, maxDecimals: number) {

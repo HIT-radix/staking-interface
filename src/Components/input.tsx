@@ -79,7 +79,7 @@ export const Input = () => {
             value={amount}
             type="text"
             onChange={onValueChange}
-            className={`input bg-base-200 text-accent focus:outline-none focus:border-none  px-0 my-3 max-w-[100%] sm:max-w-[calc(100% - 40px)] text-3xl sm:text-5xl ${
+            className={`input rounded-none bg-base-200 text-accent focus:outline-none focus:border-none  px-0 my-3 max-w-[100%] sm:max-w-[calc(100% - 40px)] text-3xl sm:text-5xl ${
               isInSufficientBalance ? "text-red-500" : ""
             }`}
             placeholder="0"
