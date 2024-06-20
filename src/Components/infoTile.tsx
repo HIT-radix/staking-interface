@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import Skeleton from "react-loading-skeleton";
 
 const InfoTile = ({
@@ -6,7 +7,7 @@ const InfoTile = ({
   isLoading,
 }: {
   title: string;
-  value: string | number;
+  value: string | number | ReactNode;
   isLoading: boolean;
 }) => {
   return (
@@ -21,7 +22,7 @@ const InfoTile = ({
           height={30}
         />
       ) : (
-        <p className="text-3xl mt-2">{value}</p>
+        <div className="text-3xl mt-2">{value}</div>
       )}
     </div>
   );
