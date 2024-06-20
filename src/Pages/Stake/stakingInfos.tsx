@@ -61,17 +61,19 @@ const StakingInfos = () => {
           isLoading={poolDataLoading || stHitDataLoading}
         />
       </div>
-      <div className="col-span-12 sm:col-span-6 flex items-center justify-center ">
-        <InfoTile
-          title="Your stake is worth"
-          value={
-            <>
-              {userStakeWorth.inHIT} HIT <span className="text-xl">({userStakeWorth.inUsd})</span>
-            </>
-          }
-          isLoading={poolDataLoading || stHitDataLoading}
-        />
-      </div>
+      {+stHitBalance > 0 && (
+        <div className="col-span-12 sm:col-span-6 flex items-center justify-center ">
+          <InfoTile
+            title="Your stake is worth"
+            value={
+              <>
+                {userStakeWorth.inHIT} HIT <span className="text-xl">({userStakeWorth.inUsd})</span>
+              </>
+            }
+            isLoading={poolDataLoading || stHitDataLoading}
+          />
+        </div>
+      )}
     </div>
   );
 };
