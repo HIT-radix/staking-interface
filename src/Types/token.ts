@@ -54,3 +54,8 @@ export interface TokenData {
   total_value_locked: TotalValueLocked;
   volume: Volume;
 }
+
+export type RewardTokenDistribution = {
+  id: number;
+  amount: string;
+};

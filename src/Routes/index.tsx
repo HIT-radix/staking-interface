@@ -7,6 +7,7 @@ import CachedService from "Classes/cachedService";
 // const Home = lazy(() => import("Pages/Home"));
 const Stake = lazy(() => import("Pages/Stake"));
 const Topup = lazy(() => import("Pages/Topup"));
+const NodeStaking = lazy(() => import("Pages/NodeStaking"));
 
 export default function Routes() {
   const navigate = useNavigate();
@@ -29,14 +30,14 @@ export default function Routes() {
         </MainLayout>
       ),
     },
-    // {
-    //   path: "/staking",
-    //   element: (
-    //     <MainLayout>
-    //       <Home />
-    //     </MainLayout>
-    //   ),
-    // },
+    {
+      path: "/staking",
+      element: (
+        <MainLayout>
+          <NodeStaking />
+        </MainLayout>
+      ),
+    },
     { path: "*", element: <Navigate to={"/"} replace={true} /> },
   ]);
 }

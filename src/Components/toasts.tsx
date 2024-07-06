@@ -144,23 +144,59 @@ export const LockSuccessToast = ({
   );
 };
 
-// export const ClaimSuccessToast = ({
-//   solAmount,
-//   usdPrice,
-//   txId,
-// }: {
-//   solAmount: string;
-//   usdPrice: string;
-//   txId: string;
-// }) => {
-//   return (
-//     <BaseToast
-//       heading="Claim Transaction Successful"
-//       subHeading={`You have claimed ${solAmount} SOL (~${usdPrice}).`}
-//       txId={txId}
-//     />
-//   );
-// };
+export const NFTmintToast = ({ amount, txId }: { amount: string; txId: string }) => {
+  return (
+    <BaseToast
+      heading="NFT mint Successful"
+      subHeading={
+        <>
+          <span className="font-semibold mr-1">{amount} NFT</span>
+          minted successfully.
+        </>
+      }
+      twHeadingClass="text-base-content"
+      twSubHeadingClass="text-base-content"
+      txId={txId}
+    />
+  );
+};
+
+export const AssignRewardSuccessToast = ({
+  amount,
+  token,
+  txId,
+}: {
+  amount: string;
+  token: StakingTokens;
+  txId: string;
+}) => {
+  return (
+    <BaseToast
+      heading="Rewards Assign Successful"
+      subHeading={
+        <>
+          <span className="font-semibold mr-1">
+            {amount} <span>${token}</span>
+          </span>
+          rewards Assigned successfully.
+        </>
+      }
+      twHeadingClass="text-base-content"
+      twSubHeadingClass="text-base-content"
+      txId={txId}
+    />
+  );
+};
+
+export const ClaimSuccessToast = ({ txId }: { txId: string }) => {
+  return (
+    <BaseToast
+      heading="Claim Transaction Successful"
+      subHeading={`Rewards claimed successfully`}
+      txId={txId}
+    />
+  );
+};
 
 export const TxRejectedToast = () => {
   return (

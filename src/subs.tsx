@@ -10,6 +10,14 @@ import { DAPP_DEFINITION_ADDRESS } from "Constants/address";
 import { applicationName, networkId } from "Constants/misc";
 import CachedService from "Classes/cachedService";
 import { WalletConnectedToast, WalletDiconnectedToast } from "Components/toasts";
+// import { GatewayApiClient } from "@radixdlt/babylon-gateway-api-sdk";
+
+// export const gatewayApi = GatewayApiClient.initialize({
+//   networkId,
+//   applicationName,
+//   applicationVersion: "1",
+//   applicationDappDefinitionAddress: DAPP_DEFINITION_ADDRESS,
+// });
 
 export type RDT = ReturnType<typeof RadixDappToolkit>;
 

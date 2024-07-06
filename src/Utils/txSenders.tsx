@@ -1,13 +1,6 @@
 import { toast } from "react-toastify";
 
-import {
-  getLockTxManifest,
-  getStakeTxManifest,
-  getDistributeHitTxManifest,
-  getUnStakeTxManifest,
-  getDistributeLockHitTxManifest,
-  fetchComponentDetails,
-} from "./fetchers";
+import { fetchComponentDetails } from "./fetchers";
 import { setAmount, setPercentage } from "Store/Reducers/staking";
 import { incrementSuccessTxCount } from "Store/Reducers/session";
 import { Percentage, StakingTokens } from "Types/reducers";
@@ -24,14 +17,28 @@ import {
   TxProgressToast,
   UnStakeSuccessToast,
   LockSuccessToast,
+  NFTmintToast,
+  AssignRewardSuccessToast,
+  ClaimSuccessToast,
 } from "Components/toasts";
 import axios from "axios";
 import { TelegramBotServerUrl } from "Constants/endpoints";
+import {
+  getAssignNodeStakingRewardsManifest,
+  getDepositNodeStakingRewardsManifest,
+  getDistributeHitTxManifest,
+  getDistributeLockHitTxManifest,
+  getLockTxManifest,
+  getMintNodeStakingRewardsNFTbadgeManifest,
+  getStakeTxManifest,
+  getUnStakeTxManifest,
+  getWithdrawNodeStakingRewardsManifest,
+} from "./manifests";
+import { RewardTokenDistribution } from "Types/token";
 
 type Props = {
   amount: string;
-  walletAddress: string;
-  txManifestBuilder: (walletAddress: string, amount: string) => string;
+  txManifest: string;
   tokenSymbol: StakingTokens;
   ToastElement: ({
     amount,
@@ -44,13 +51,7 @@ type Props = {
   }) => JSX.Element;
 };
 
-export const baseTxSender = async ({
-  amount,
-  txManifestBuilder,
-  ToastElement,
-  tokenSymbol,
-  walletAddress,
-}: Props) => {
+export const baseTxSender = async ({ amount, txManifest, ToastElement, tokenSymbol }: Props) => {
   const rdt = getRdt();
   let isSuccess = false;
   try {
@@ -58,7 +59,7 @@ export const baseTxSender = async ({
       store.dispatch(setTxInProgress(true));
       CachedService.TxProgressToast(<TxProgressToast />);
       const result = await rdt.walletApi.sendTransaction({
-        transactionManifest: txManifestBuilder(walletAddress, amount),
+        transactionManifest: txManifest,
         version: 1,
       });
       if (result.isErr()) throw result.error;
@@ -89,9 +90,8 @@ export const stakeHIT = async () => {
     } = store.getState();
 
     const isSuccess = await baseTxSender({
-      walletAddress,
       amount,
-      txManifestBuilder: getStakeTxManifest,
+      txManifest: getStakeTxManifest(walletAddress, amount),
       ToastElement: StakeSuccessToast,
       tokenSymbol: StakingTokens.HIT,
     });
@@ -112,9 +112,8 @@ export const unstakeHIT = async () => {
   } = store.getState();
 
   await baseTxSender({
-    walletAddress,
     amount,
-    txManifestBuilder: getUnStakeTxManifest,
+    txManifest: getUnStakeTxManifest(walletAddress, amount),
     ToastElement: UnStakeSuccessToast,
     tokenSymbol: StakingTokens.StHIT,
   });
@@ -127,11 +126,10 @@ export const distributeHITRewards = async (amount: string, distributeLockedHits:
     } = store.getState();
 
     await baseTxSender({
-      walletAddress,
       amount,
-      txManifestBuilder: distributeLockedHits
-        ? getDistributeLockHitTxManifest
-        : getDistributeHitTxManifest,
+      txManifest: distributeLockedHits
+        ? getDistributeLockHitTxManifest(walletAddress, amount)
+        : getDistributeHitTxManifest(walletAddress, amount),
       ToastElement: DistributeSuccessToast,
       tokenSymbol: StakingTokens.HIT,
     });
@@ -151,9 +149,8 @@ export const LockHITRewards = async (amount: string) => {
     } = store.getState();
 
     await baseTxSender({
-      walletAddress,
       amount,
-      txManifestBuilder: getLockTxManifest,
+      txManifest: getLockTxManifest(walletAddress, amount),
       ToastElement: LockSuccessToast,
       tokenSymbol: StakingTokens.HIT,
     });
@@ -177,4 +174,85 @@ const afterErrorChore = (error: any) => {
     CachedService.errorToast(<TxFailedToast />);
   }
   console.log("Unable to send Transaction", error);
+};
+
+export const mintNodeStakingRewardsNFTbadge = async () => {
+  try {
+    const {
+      app: { walletAddress },
+    } = store.getState();
+
+    await baseTxSender({
+      amount: "1",
+      txManifest: getMintNodeStakingRewardsNFTbadgeManifest(walletAddress),
+      ToastElement: NFTmintToast,
+      tokenSymbol: StakingTokens.HIT,
+    });
+  } catch (error) {
+    console.log("Unable to mint node staking nft badge");
+  }
+};
+
+export const depositNodeStakingRewards = async (
+  amount: string,
+  tokenSymbol: StakingTokens,
+  tokenAddress: string
+) => {
+  try {
+    const {
+      app: { walletAddress },
+    } = store.getState();
+
+    await baseTxSender({
+      amount,
+      txManifest: getDepositNodeStakingRewardsManifest(walletAddress, amount, tokenAddress),
+      ToastElement: LockSuccessToast,
+      tokenSymbol,
+    });
+  } catch (error) {
+    console.log("Unable to lock", tokenSymbol);
+  }
+};
+
+export const assignNodeStakingRewards = async (
+  amount: string,
+  rewardTokenDistributions: RewardTokenDistribution[],
+  tokenSymbol: StakingTokens,
+  rewardTokenAddress: string
+) => {
+  try {
+    const {
+      app: { walletAddress },
+    } = store.getState();
+
+    await baseTxSender({
+      amount,
+      txManifest: getAssignNodeStakingRewardsManifest(
+        walletAddress,
+        rewardTokenDistributions,
+        rewardTokenAddress
+      ),
+      ToastElement: AssignRewardSuccessToast,
+      tokenSymbol,
+    });
+  } catch (error) {
+    console.log("Unable to assign", tokenSymbol, "rewards");
+  }
+};
+
+export const withdrawNodeStakingRewards = async (userNftBadgeId: number) => {
+  try {
+    const {
+      app: { walletAddress },
+    } = store.getState();
+
+    await baseTxSender({
+      amount: "",
+      txManifest: getWithdrawNodeStakingRewardsManifest(walletAddress, userNftBadgeId),
+      ToastElement: ClaimSuccessToast,
+      tokenSymbol: StakingTokens.HIT,
+    });
+  } catch (error) {
+    console.log("Unable to withdraw node staking rewards");
+  }
 };

@@ -37,6 +37,7 @@ export type StakingReducer = {
 export enum StakingTokens {
   HIT = "HIT",
   StHIT = "StHIT",
+  FOMO = "FOMO",
 }
 
 export type SessionReducer = {
