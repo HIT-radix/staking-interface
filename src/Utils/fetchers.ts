@@ -5,6 +5,7 @@ import { setHitBalance, updateTokenData } from "Store/Reducers/session";
 import {
   setIsOwner,
   setLockedHITRewards,
+  setNodeStakeNFTid,
   setStHitBalance,
   setStHitTotalSupply,
   setStakedHIT,
@@ -14,13 +15,21 @@ import { TokenData } from "Types/token";
 import axios, { AxiosResponse } from "axios";
 import { BN, extract_HIT_STHIT_balance } from "./format";
 import { EntityDetails } from "Types/api";
-import { POOL_ADDRESS, STAKING_COMPONENT_ADDRESS, STHIT_RESOURCE_ADDRESS } from "Constants/address";
+import {
+  NODE_STAKE_NFT_ADDRESS,
+  POOL_ADDRESS,
+  STAKING_COMPONENT_ADDRESS,
+  STHIT_RESOURCE_ADDRESS,
+} from "Constants/address";
 import {
   setComponentDataLoading,
+  setFindingNodeNFT,
   setPoolDataLoading,
   setStHitDataLoading,
   setTokenDataLoading,
 } from "Store/Reducers/loadings";
+import { GatewayApiClientConfig } from "@radixdlt/radix-dapp-toolkit";
+import CachedService from "Classes/cachedService";
 
 export const fetchBalances = async (walletAddress: string) => {
   let HITbalance = "0";
@@ -141,4 +150,24 @@ export const fetchComponentDetails = async () => {
   }
   store.dispatch(setLockedHITRewards(lockedHITs));
   store.dispatch(setComponentDataLoading(false));
+};
+
+export const findNodeStakeNFT = async (walletAddress: string) => {
+  store.dispatch(setFindingNodeNFT(true));
+  const details = await CachedService.gatewayApi.state.getEntityDetailsVaultAggregated(
+    walletAddress
+  );
+  let nftId: number | undefined = undefined;
+  details.non_fungible_resources.items.some((nft_resource) => {
+    if (nft_resource.resource_address === NODE_STAKE_NFT_ADDRESS) {
+      if (nft_resource.vaults.items[0].items) {
+        const userNftid = Number(nft_resource.vaults.items[0].items[0].replace(/#/g, ""));
+        nftId = Number.isNaN(userNftid) ? undefined : userNftid;
+        return true;
+      }
+    }
+    return false;
+  });
+  store.dispatch(setNodeStakeNFTid(nftId));
+  store.dispatch(setFindingNodeNFT(false));
 };

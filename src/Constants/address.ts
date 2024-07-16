@@ -33,7 +33,7 @@ export const CONTRACT_OWNER_BADGE_ADDRESS =
 export const NODE_STAKING_COMPONENT_ADDRESS =
   process.env.REACT_APP_ENVIRONMENT === Environment.dev
     ? "component_tdx_2_1crf2uqm3tcqqdml0tqq04wurmqrhdkca7cscsuxr45lghhvv72zgnx"
-    : "component_tdx_2_1crf2uqm3tcqqdml0tqq04wurmqrhdkca7cscsuxr45lghhvv72zgnx";
+    : "component_rdx1cqs56santq8lptq22pquhc7rfvzjc4dkk5v0lx43ujpx2y0smsz87g";
 
 export const FOMO_RESOURCE_ADDRESS =
   process.env.REACT_APP_ENVIRONMENT === Environment.dev
@@ -43,14 +43,23 @@ export const FOMO_RESOURCE_ADDRESS =
 export const NODE_STAKING_CONTRACT_OWNER_BADGE_ADDRESS =
   process.env.REACT_APP_ENVIRONMENT === Environment.dev
     ? "resource_tdx_2_1the5m83lln5y2qenaamf97g7a2qrys5tmj0ek4zsxznhcp5vehxldd"
-    : "resource_tdx_2_1the5m83lln5y2qenaamf97g7a2qrys5tmj0ek4zsxznhcp5vehxldd";
+    : "resource_rdx1t4r3uflc6gnf3sfln640q4j6fa4l80q6rs86g700l0cerq6avmrzc5";
 
 export const NODE_STAKING_AIRDROPPER_BADGE_ADDRESS =
   process.env.REACT_APP_ENVIRONMENT === Environment.dev
     ? "resource_tdx_2_1thg6t73wm0p38w4r8y7afxk3jrvqcyuryp9jk5r7pj4afgw38ul6dl"
-    : "resource_tdx_2_1thg6t73wm0p38w4r8y7afxk3jrvqcyuryp9jk5r7pj4afgw38ul6dl";
+    : "resource_rdx1thtmjr4rw5kn2yryzf3qnre6vrynzk8nxk7ssvmcuk0dhru2l90jk0";
 
 export const NODE_STAKING_USER_BADGE_ADDRESS =
   process.env.REACT_APP_ENVIRONMENT === Environment.dev
     ? "resource_tdx_2_1ngg9srqnvjctfrkmmq56h9gpc8seju2z0wm48qxc9pgvapsrpue2nn"
-    : "resource_tdx_2_1ngg9srqnvjctfrkmmq56h9gpc8seju2z0wm48qxc9pgvapsrpue2nn";
+    : "resource_rdx1ntr35h0hshdv6tekr7kvakthv6vee8f9mfjvn6r9aakdkx3ng7l3xj";
+
+export const NODE_VALIDATOR_ADDRESS =
+  "validator_rdx1swez5cqmw4d6tls0mcldehnfhpxge0mq7cmnypnjz909apqqjgx6n9";
+
+export const NODE_LSU_ADDRESS =
+  "resource_rdx1t4d3ka2x2j35e30gh75j6hma6fccwdsft88h2v2ul4qmqshnwjmxf7";
+
+export const NODE_STAKE_NFT_ADDRESS =
+  "resource_rdx1ntr35h0hshdv6tekr7kvakthv6vee8f9mfjvn6r9aakdkx3ng7l3xj";

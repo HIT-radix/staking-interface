@@ -30,6 +30,7 @@ import {
   getDistributeLockHitTxManifest,
   getLockTxManifest,
   getMintNodeStakingRewardsNFTbadgeManifest,
+  getStakeInNodeValidatorManifest,
   getStakeTxManifest,
   getUnStakeTxManifest,
   getWithdrawNodeStakingRewardsManifest,
@@ -254,5 +255,22 @@ export const withdrawNodeStakingRewards = async (userNftBadgeId: number) => {
     });
   } catch (error) {
     console.log("Unable to withdraw node staking rewards");
+  }
+};
+
+export const stakeInNodeValidator = async (amount: string) => {
+  try {
+    const {
+      app: { walletAddress },
+    } = store.getState();
+
+    await baseTxSender({
+      amount,
+      txManifest: getStakeInNodeValidatorManifest(walletAddress, amount),
+      ToastElement: StakeSuccessToast,
+      tokenSymbol: StakingTokens.XRD,
+    });
+  } catch (error) {
+    console.log("Unable to stake in node validator");
   }
 };

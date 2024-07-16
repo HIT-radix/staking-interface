@@ -10,6 +10,7 @@ import { DAPP_DEFINITION_ADDRESS } from "Constants/address";
 import { applicationName, networkId } from "Constants/misc";
 import CachedService from "Classes/cachedService";
 import { WalletConnectedToast, WalletDiconnectedToast } from "Components/toasts";
+import axios from "axios";
 // import { GatewayApiClient } from "@radixdlt/babylon-gateway-api-sdk";
 
 // export const gatewayApi = GatewayApiClient.initialize({
@@ -25,7 +26,7 @@ let rdtInstance: null | RDT = null;
 export function getRdt() {
   return rdtInstance;
 }
-function setRdt(rdt: RDT) {
+export function setRdt(rdt: RDT) {
   rdtInstance = rdt;
 }
 
@@ -38,7 +39,16 @@ export function initializeSubscriptions() {
     applicationName,
     applicationVersion: "1",
   });
-  rdtInstance.walletApi.setRequestData(DataRequestBuilder.accounts().exactly(1));
+
+  rdtInstance.walletApi.setRequestData(DataRequestBuilder.accounts().atLeast(1));
+
+  const getChallenge = () => {
+    const res = axios.get<string>("http://localhost:3002/node-staking/create-challenge");
+    return res.then((data) => data.data);
+  };
+
+  rdtInstance.walletApi.provideChallengeGenerator(getChallenge);
+
   subs.push(
     rdtInstance.walletApi.walletData$.subscribe((walletData: WalletDataState) => {
       const data: WalletDataState = JSON.parse(JSON.stringify(walletData));

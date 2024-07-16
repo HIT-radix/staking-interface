@@ -1,10 +1,12 @@
 import {
   CONTRACT_OWNER_BADGE_ADDRESS,
   HIT_RESOURCE_ADDRESS,
+  NODE_LSU_ADDRESS,
   NODE_STAKING_AIRDROPPER_BADGE_ADDRESS,
   NODE_STAKING_COMPONENT_ADDRESS,
   NODE_STAKING_CONTRACT_OWNER_BADGE_ADDRESS,
   NODE_STAKING_USER_BADGE_ADDRESS,
+  NODE_VALIDATOR_ADDRESS,
   STAKING_COMPONENT_ADDRESS,
   STHIT_RESOURCE_ADDRESS,
 } from "Constants/address";
@@ -145,13 +147,13 @@ export const getDistributeLockHitTxManifest = (walletAddress: string, amount: st
 export const getMintNodeStakingRewardsNFTbadgeManifest = (walletAddress: string) => {
   return `
     CALL_METHOD
-        Address("${NODE_STAKING_COMPONENT_ADDRESS}")
-        "mint_user_nft"
+      Address("${NODE_STAKING_COMPONENT_ADDRESS}")
+      "mint_user_nft"
     ;
     CALL_METHOD
-        Address("${walletAddress}")
-        "deposit_batch"
-        Expression("ENTIRE_WORKTOP")
+      Address("${walletAddress}")
+      "deposit_batch"
+      Expression("ENTIRE_WORKTOP")
     ;
 `;
 };
@@ -163,25 +165,25 @@ export const getDepositNodeStakingRewardsManifest = (
 ) => {
   return `
     CALL_METHOD
-        Address("${walletAddress}")
-        "create_proof_of_amount"
-        Address("${NODE_STAKING_CONTRACT_OWNER_BADGE_ADDRESS}")
-        Decimal("1")
+      Address("${walletAddress}")
+      "create_proof_of_amount"
+      Address("${NODE_STAKING_CONTRACT_OWNER_BADGE_ADDRESS}")
+      Decimal("1")
     ;
     CALL_METHOD
-        Address("${walletAddress}")
-        "withdraw"
-        Address("${rewardTokenAddress}")
-        Decimal("${amount}")
+      Address("${walletAddress}")
+      "withdraw"
+      Address("${rewardTokenAddress}")
+      Decimal("${amount}")
     ;
     TAKE_ALL_FROM_WORKTOP
-        Address("${rewardTokenAddress}")
-        Bucket("rewards")
+      Address("${rewardTokenAddress}")
+      Bucket("rewards")
     ;
     CALL_METHOD
-        Address("${NODE_STAKING_COMPONENT_ADDRESS}")
-        "deposit_future_rewards"
-        Bucket("rewards")
+      Address("${NODE_STAKING_COMPONENT_ADDRESS}")
+      "deposit_future_rewards"
+      Bucket("rewards")
     ;
 `;
 };
@@ -193,16 +195,16 @@ export const getAssignNodeStakingRewardsManifest = (
 ) => {
   return `
     CALL_METHOD
-        Address("${walletAddress}")
-        "create_proof_of_amount"
-        Address("${NODE_STAKING_AIRDROPPER_BADGE_ADDRESS}")
-        Decimal("1")
+      Address("${walletAddress}")
+      "create_proof_of_amount"
+      Address("${NODE_STAKING_AIRDROPPER_BADGE_ADDRESS}")
+      Decimal("1")
     ;
     CALL_METHOD
-        Address("${NODE_STAKING_COMPONENT_ADDRESS}")
-        "assign_rewards"
-        Map<U64, Decimal>(${formatRewardTokenDistribution(rewardTokenDistributions)})
-        Address("${rewardTokenAddress}")
+      Address("${NODE_STAKING_COMPONENT_ADDRESS}")
+      "assign_rewards"
+      Map<U64, Decimal>(${formatRewardTokenDistribution(rewardTokenDistributions)})
+      Address("${rewardTokenAddress}")
     ;
 `;
 };
@@ -213,23 +215,52 @@ export const getWithdrawNodeStakingRewardsManifest = (
 ) => {
   return `
     CALL_METHOD
-        Address("${walletAddress}")
-        "create_proof_of_non_fungibles"
-        Address("${NODE_STAKING_USER_BADGE_ADDRESS}")
-        Array<NonFungibleLocalId>(NonFungibleLocalId("#${userNftBadgeId}#"))
+      Address("${walletAddress}")
+      "create_proof_of_non_fungibles"
+      Address("${NODE_STAKING_USER_BADGE_ADDRESS}")
+      Array<NonFungibleLocalId>(NonFungibleLocalId("#${userNftBadgeId}#"))
     ;
     POP_FROM_AUTH_ZONE
-        Proof("proof")
+      Proof("proof")
     ;
     CALL_METHOD
-        Address("${NODE_STAKING_COMPONENT_ADDRESS}")
-        "withdraw_rewards"
-        Proof("proof")
+      Address("${NODE_STAKING_COMPONENT_ADDRESS}")
+      "withdraw_rewards"
+      Proof("proof")
     ;
     CALL_METHOD
-        Address("${walletAddress}")
-        "deposit_batch"
-        Expression("ENTIRE_WORKTOP")
+      Address("${walletAddress}")
+      "deposit_batch"
+      Expression("ENTIRE_WORKTOP")
+    ;
+`;
+};
+
+export const getStakeInNodeValidatorManifest = (walletAddress: string, amount: string) => {
+  return `
+    CALL_METHOD
+      Address("${walletAddress}")
+      "withdraw"
+      Address("resource_rdx1tknxxxxxxxxxradxrdxxxxxxxxx009923554798xxxxxxxxxradxrd")
+      Decimal("${amount}")
+    ;
+    TAKE_ALL_FROM_WORKTOP
+      Address("resource_rdx1tknxxxxxxxxxradxrdxxxxxxxxx009923554798xxxxxxxxxradxrd")
+      Bucket("bucket1")
+    ;
+    CALL_METHOD
+      Address("${NODE_VALIDATOR_ADDRESS}")
+      "stake"
+      Bucket("bucket1")
+    ;
+    TAKE_ALL_FROM_WORKTOP
+      Address("${NODE_LSU_ADDRESS}")
+      Bucket("bucketLSU")
+    ;
+    CALL_METHOD
+      Address("${walletAddress}")
+      "deposit"
+      Bucket("bucketLSU")
     ;
 `;
 };

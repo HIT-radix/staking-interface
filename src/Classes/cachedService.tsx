@@ -2,8 +2,11 @@ import { Oval } from "react-loader-spinner";
 import { ToastOptions, toast } from "react-toastify";
 import { NavigateFunction } from "react-router";
 
+import { applicationName, networkId } from "Constants/misc";
 import checkIcon from "Assets/Svgs/checkIcon.svg";
 import errorIcon from "Assets/Svgs/txReject.svg";
+import { GatewayApiClient } from "@radixdlt/babylon-gateway-api-sdk";
+import { DAPP_DEFINITION_ADDRESS } from "Constants/address";
 
 const commonToastConfig: Partial<ToastOptions> = {
   position: "bottom-left",
@@ -20,6 +23,12 @@ const commonToastConfig: Partial<ToastOptions> = {
 class Cache {
   navigation: NavigateFunction = () => {};
   isWalletConnected: boolean = false;
+  gatewayApi = GatewayApiClient.initialize({
+    networkId,
+    applicationName,
+    applicationVersion: "1",
+    applicationDappDefinitionAddress: DAPP_DEFINITION_ADDRESS,
+  });
 
   errorToast = (text: string | JSX.Element, options?: ToastOptions<{}>) =>
     toast.error(text, {

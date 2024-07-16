@@ -32,12 +32,14 @@ export type StakingReducer = {
   stakedHIT: string;
   lockedHITRewards: string;
   isOwner: boolean;
+  NodeStakeNFTid?: number;
 };
 
 export enum StakingTokens {
   HIT = "HIT",
   StHIT = "StHIT",
   FOMO = "FOMO",
+  XRD = "XRD",
 }
 
 export type SessionReducer = {
@@ -53,4 +55,5 @@ export type LoadingReducer = {
   poolDataLoading: boolean;
   componentDataLoading: boolean;
   stHitDataLoading: boolean;
+  findingNodeNFT: boolean;
 };

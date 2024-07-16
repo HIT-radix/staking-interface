@@ -11,6 +11,7 @@ const initialState: StakingReducer = {
   stakedHIT: "0",
   lockedHITRewards: "0",
   isOwner: false,
+  NodeStakeNFTid: undefined,
 };
 
 const staking = createSlice({
@@ -19,6 +20,9 @@ const staking = createSlice({
   reducers: {
     setCurrentTab(state, action: PayloadAction<Tabs>) {
       state.currentTab = action.payload;
+    },
+    setNodeStakeNFTid(state, action: PayloadAction<number | undefined>) {
+      state.NodeStakeNFTid = action.payload;
     },
     setAmount(state, action: PayloadAction<string>) {
       state.amount = action.payload;
@@ -61,4 +65,5 @@ export const {
   setStHitBalance,
   setStHitTotalSupply,
   setStakedHIT,
+  setNodeStakeNFTid,
 } = staking.actions;

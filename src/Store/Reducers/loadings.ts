@@ -8,6 +8,7 @@ const initialState: LoadingReducer = {
   poolDataLoading: false,
   componentDataLoading: false,
   stHitDataLoading: false,
+  findingNodeNFT: false,
 };
 
 const loadings = createSlice({
@@ -16,6 +17,9 @@ const loadings = createSlice({
   reducers: {
     setBalanceLoading(state, action: PayloadAction<boolean>) {
       state.balanceLoading = action.payload;
+    },
+    setFindingNodeNFT(state, action: PayloadAction<boolean>) {
+      state.findingNodeNFT = action.payload;
     },
     setTxInProgress(state, action: PayloadAction<boolean>) {
       state.txInProgress = action.payload;
@@ -44,4 +48,5 @@ export const {
   setTokenDataLoading,
   setPoolDataLoading,
   setComponentDataLoading,
+  setFindingNodeNFT,
 } = loadings.actions;
