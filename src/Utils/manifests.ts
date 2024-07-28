@@ -1,13 +1,13 @@
 import {
-  CONTRACT_OWNER_BADGE_ADDRESS,
+  RUG_PRROF_STAKING_OWNER_BADGE_ADDRESS,
   HIT_RESOURCE_ADDRESS,
   NODE_LSU_ADDRESS,
   NODE_STAKING_AIRDROPPER_BADGE_ADDRESS,
   NODE_STAKING_COMPONENT_ADDRESS,
-  NODE_STAKING_CONTRACT_OWNER_BADGE_ADDRESS,
+  NODE_STAKING_OWNER_BADGE_ADDRESS,
   NODE_STAKING_USER_BADGE_ADDRESS,
   NODE_VALIDATOR_ADDRESS,
-  STAKING_COMPONENT_ADDRESS,
+  RUG_PROOF_STAKING_COMPONENT_ADDRESS,
   STHIT_RESOURCE_ADDRESS,
 } from "Constants/address";
 import { RewardTokenDistribution } from "Types/token";
@@ -28,7 +28,7 @@ export const getStakeTxManifest = (walletAddress: string, amount: string) => {
     ;
 
     CALL_METHOD
-    	Address("${STAKING_COMPONENT_ADDRESS}")
+    	Address("${RUG_PROOF_STAKING_COMPONENT_ADDRESS}")
     	"add_stake"
     	Bucket("tokens")
     ;
@@ -56,7 +56,7 @@ export const getUnStakeTxManifest = (walletAddress: string, amount: string) => {
     ;
 
     CALL_METHOD
-	    Address("${STAKING_COMPONENT_ADDRESS}")
+	    Address("${RUG_PROOF_STAKING_COMPONENT_ADDRESS}")
 	    "remove_stake"
 	    Bucket("tokens")
     ;
@@ -74,7 +74,7 @@ export const getDistributeHitTxManifest = (walletAddress: string, amount: string
     CALL_METHOD
       Address("${walletAddress}")
       "create_proof_of_amount"
-      Address("${CONTRACT_OWNER_BADGE_ADDRESS}")
+      Address("${RUG_PRROF_STAKING_OWNER_BADGE_ADDRESS}")
       Decimal("1")
     ;
 
@@ -91,7 +91,7 @@ export const getDistributeHitTxManifest = (walletAddress: string, amount: string
     ;
 
     CALL_METHOD
-      Address("${STAKING_COMPONENT_ADDRESS}")
+      Address("${RUG_PROOF_STAKING_COMPONENT_ADDRESS}")
       "airdrop"
       Bucket("bucket1")
     ;
@@ -103,7 +103,7 @@ export const getLockTxManifest = (walletAddress: string, amount: string) => {
     CALL_METHOD
       Address("${walletAddress}")
       "create_proof_of_amount"
-      Address("${CONTRACT_OWNER_BADGE_ADDRESS}")
+      Address("${RUG_PRROF_STAKING_OWNER_BADGE_ADDRESS}")
       Decimal("1")
     ;
 
@@ -120,7 +120,7 @@ export const getLockTxManifest = (walletAddress: string, amount: string) => {
     ;
 
     CALL_METHOD
-      Address("${STAKING_COMPONENT_ADDRESS}")
+      Address("${RUG_PROOF_STAKING_COMPONENT_ADDRESS}")
       "deposit_rewards"
       Bucket("bucket1")
     ;
@@ -132,12 +132,12 @@ export const getDistributeLockHitTxManifest = (walletAddress: string, amount: st
     CALL_METHOD
       Address("${walletAddress}")
       "create_proof_of_amount"
-      Address("${CONTRACT_OWNER_BADGE_ADDRESS}")
+      Address("${RUG_PRROF_STAKING_OWNER_BADGE_ADDRESS}")
       Decimal("1")
     ;
 
     CALL_METHOD
-      Address("${STAKING_COMPONENT_ADDRESS}")
+      Address("${RUG_PROOF_STAKING_COMPONENT_ADDRESS}")
       "airdrop_deposited_amount"
       Decimal("${amount}")
     ;
@@ -167,7 +167,7 @@ export const getDepositNodeStakingRewardsManifest = (
     CALL_METHOD
       Address("${walletAddress}")
       "create_proof_of_amount"
-      Address("${NODE_STAKING_CONTRACT_OWNER_BADGE_ADDRESS}")
+      Address("${NODE_STAKING_OWNER_BADGE_ADDRESS}")
       Decimal("1")
     ;
     CALL_METHOD

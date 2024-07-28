@@ -1,39 +1,49 @@
+import axios, { AxiosResponse } from "axios";
+
 import { Ociswap_baseurl, networkRPC } from "Constants/endpoints";
 import { store } from "Store";
 import { setHitPrice } from "Store/Reducers/app";
-import { setHitBalance, updateTokenData } from "Store/Reducers/session";
+import { setFomoBalance, setHitBalance, updateTokenData } from "Store/Reducers/session";
 import {
   setIsOwner,
   setLockedHITRewards,
+  setLockedNodeStakingFomos,
+  setLockedNodeStakingHits,
   setNodeStakeNFTid,
   setStHitBalance,
   setStHitTotalSupply,
   setStakedHIT,
 } from "Store/Reducers/staking";
-import { Tabs } from "Types/reducers";
-import { TokenData } from "Types/token";
-import axios, { AxiosResponse } from "axios";
-import { BN, extract_HIT_STHIT_balance } from "./format";
+import { StakingTokens, Tabs } from "Types/reducers";
+import { ClaimableRewardsInfo, TokenData } from "Types/token";
+import { BN, extractBalances } from "./format";
 import { EntityDetails } from "Types/api";
 import {
-  NODE_STAKE_NFT_ADDRESS,
+  NODE_STAKING_USER_BADGE_ADDRESS,
+  NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS,
+  NODE_STAKING_HIT_KEY_VALUE_STORE_ADDRESS,
   POOL_ADDRESS,
-  STAKING_COMPONENT_ADDRESS,
+  RUG_PROOF_STAKING_COMPONENT_ADDRESS,
   STHIT_RESOURCE_ADDRESS,
+  HIT_RESOURCE_ADDRESS,
+  FOMO_RESOURCE_ADDRESS,
+  NODE_STAKING_COMPONENT_ADDRESS,
 } from "Constants/address";
 import {
-  setComponentDataLoading,
+  setRugProofComponentDataLoading,
   setFindingNodeNFT,
+  setNodeStakingRewardsLoading,
   setPoolDataLoading,
   setStHitDataLoading,
   setTokenDataLoading,
+  setNodeStakingComponentDataLoading,
 } from "Store/Reducers/loadings";
-import { GatewayApiClientConfig } from "@radixdlt/radix-dapp-toolkit";
 import CachedService from "Classes/cachedService";
 
 export const fetchBalances = async (walletAddress: string) => {
   let HITbalance = "0";
   let stHITbalance = "0";
+  let fomobalance = "0";
   let isOwner = false;
   if (walletAddress) {
     try {
@@ -45,13 +55,19 @@ export const fetchBalances = async (walletAddress: string) => {
       );
 
       if (response.status === 200) {
-        const balances = extract_HIT_STHIT_balance(
+        const { balances, isOwner: isOwnerFound } = extractBalances(
           response.data.items[0].fungible_resources.items,
+          [
+            { symbol: StakingTokens.HIT, address: HIT_RESOURCE_ADDRESS },
+            { symbol: StakingTokens.StHIT, address: STHIT_RESOURCE_ADDRESS },
+            { symbol: StakingTokens.FOMO, address: FOMO_RESOURCE_ADDRESS },
+          ],
           true
         );
-        HITbalance = balances.hit;
-        stHITbalance = balances.sthit;
-        isOwner = balances.isOwner;
+        HITbalance = balances[StakingTokens.HIT];
+        stHITbalance = balances[StakingTokens.StHIT];
+        fomobalance = balances[StakingTokens.FOMO];
+        isOwner = isOwnerFound;
       }
     } catch (error) {
       console.log("error in fetchBalances", error);
@@ -59,6 +75,7 @@ export const fetchBalances = async (walletAddress: string) => {
   }
   store.dispatch(setHitBalance(HITbalance));
   store.dispatch(setStHitBalance(stHITbalance));
+  store.dispatch(setFomoBalance(fomobalance));
   store.dispatch(setIsOwner(isOwner));
 };
 
@@ -120,8 +137,10 @@ export const fetchPoolDetails = async () => {
     );
 
     if (response.status === 200) {
-      const balances = extract_HIT_STHIT_balance(response.data.items[0].fungible_resources.items);
-      stakedHIT = balances.hit;
+      const { balances } = extractBalances(response.data.items[0].fungible_resources.items, [
+        { symbol: StakingTokens.HIT, address: HIT_RESOURCE_ADDRESS },
+      ]);
+      stakedHIT = balances[StakingTokens.HIT];
     }
   } catch (error) {
     console.log("error in fetchPoolDetails", error);
@@ -130,26 +149,56 @@ export const fetchPoolDetails = async () => {
   store.dispatch(setPoolDataLoading(false));
 };
 
-export const fetchComponentDetails = async () => {
+export const fetchRugProofComponentDetails = async () => {
   let lockedHITs = "0";
   try {
-    store.dispatch(setComponentDataLoading(true));
+    store.dispatch(setRugProofComponentDataLoading(true));
     const response = await axios.post<any, AxiosResponse<EntityDetails>>(
       `${networkRPC}/state/entity/details`,
       {
-        addresses: [STAKING_COMPONENT_ADDRESS],
+        addresses: [RUG_PROOF_STAKING_COMPONENT_ADDRESS],
       }
     );
 
     if (response.status === 200) {
-      const balances = extract_HIT_STHIT_balance(response.data.items[0].fungible_resources.items);
-      lockedHITs = balances.hit;
+      const { balances } = extractBalances(response.data.items[0].fungible_resources.items, [
+        { symbol: StakingTokens.HIT, address: HIT_RESOURCE_ADDRESS },
+      ]);
+      lockedHITs = balances[StakingTokens.HIT];
     }
   } catch (error) {
-    console.log("error in fetchComponentDetails", error);
+    console.log("error in fetchRugProofComponentDetails", error);
   }
   store.dispatch(setLockedHITRewards(lockedHITs));
-  store.dispatch(setComponentDataLoading(false));
+  store.dispatch(setRugProofComponentDataLoading(false));
+};
+
+export const fetchNodeStakingComponentDetails = async () => {
+  let lockedHITs = "0";
+  let lockedFOMOs = "0";
+  try {
+    store.dispatch(setNodeStakingComponentDataLoading(true));
+    const response = await axios.post<any, AxiosResponse<EntityDetails>>(
+      `${networkRPC}/state/entity/details`,
+      {
+        addresses: [NODE_STAKING_COMPONENT_ADDRESS],
+      }
+    );
+
+    if (response.status === 200) {
+      const { balances } = extractBalances(response.data.items[0].fungible_resources.items, [
+        { symbol: StakingTokens.HIT, address: HIT_RESOURCE_ADDRESS },
+        { symbol: StakingTokens.FOMO, address: FOMO_RESOURCE_ADDRESS },
+      ]);
+      lockedHITs = balances[StakingTokens.HIT];
+      lockedFOMOs = balances[StakingTokens.FOMO];
+    }
+  } catch (error) {
+    console.log("error in fetchNodeStakingComponentDetails", error);
+  }
+  store.dispatch(setLockedNodeStakingHits(lockedHITs));
+  store.dispatch(setLockedNodeStakingFomos(lockedFOMOs));
+  store.dispatch(setNodeStakingComponentDataLoading(false));
 };
 
 export const findNodeStakeNFT = async (walletAddress: string) => {
@@ -159,7 +208,7 @@ export const findNodeStakeNFT = async (walletAddress: string) => {
   );
   let nftId: number | undefined = undefined;
   details.non_fungible_resources.items.some((nft_resource) => {
-    if (nft_resource.resource_address === NODE_STAKE_NFT_ADDRESS) {
+    if (nft_resource.resource_address === NODE_STAKING_USER_BADGE_ADDRESS) {
       if (nft_resource.vaults.items[0].items) {
         const userNftid = Number(nft_resource.vaults.items[0].items[0].replace(/#/g, ""));
         nftId = Number.isNaN(userNftid) ? undefined : userNftid;
@@ -170,4 +219,37 @@ export const findNodeStakeNFT = async (walletAddress: string) => {
   });
   store.dispatch(setNodeStakeNFTid(nftId));
   store.dispatch(setFindingNodeNFT(false));
+};
+
+export const fetchClaimableNodeStakingRewards = async (nftId: number) => {
+  const keyValueAddressesWithTheirTokens = [
+    { address: NODE_STAKING_HIT_KEY_VALUE_STORE_ADDRESS, token: StakingTokens.HIT },
+    { address: NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS, token: StakingTokens.FOMO },
+  ];
+
+  let claimableRewards: ClaimableRewardsInfo = { HIT: "0", FOMO: "0" };
+
+  try {
+    store.dispatch(setNodeStakingRewardsLoading(true));
+    const keyValueDataResponses = await Promise.all(
+      keyValueAddressesWithTheirTokens.map((key_value_store_address) =>
+        CachedService.gatewayApi.state.innerClient.keyValueStoreData({
+          stateKeyValueStoreDataRequest: {
+            key_value_store_address: key_value_store_address.address,
+            keys: [{ key_json: { kind: "U64", value: nftId.toString() } }],
+          },
+        })
+      )
+    );
+    keyValueDataResponses.forEach((response, index) => {
+      if (response.entries[0].value.programmatic_json.kind === "Decimal") {
+        claimableRewards[keyValueAddressesWithTheirTokens[index].token] =
+          response.entries[0].value.programmatic_json.value;
+      }
+    });
+  } catch (error) {
+    console.log("unable to fetch ClaimableNodeStakingRewards:", error);
+  }
+  store.dispatch(setNodeStakingRewardsLoading(false));
+  return claimableRewards;
 };

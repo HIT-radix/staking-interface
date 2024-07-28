@@ -4,7 +4,7 @@ import { setIsInsufficientBalance } from "Store/Reducers/staking";
 import { Tabs } from "Types/reducers";
 import {
   fetchBalances,
-  fetchComponentDetails,
+  fetchRugProofComponentDetails,
   fetchHITdata,
   fetchPoolDetails,
   fetchStHITTotalSupply,
@@ -30,7 +30,7 @@ const Listeners = () => {
 
   useEffect(() => {
     fetchHITdata();
-    fetchComponentDetails();
+    fetchRugProofComponentDetails();
   }, []);
 
   useEffect(() => {

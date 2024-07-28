@@ -6,15 +6,20 @@ const initialState: LoadingReducer = {
   txInProgress: false,
   tokenDataLoading: false,
   poolDataLoading: false,
-  componentDataLoading: false,
+  rugProofComponentDataLoading: false,
   stHitDataLoading: false,
   findingNodeNFT: false,
+  nodeStakingRewards: false,
+  nodeStakingComponentDataLoading: false,
 };
 
 const loadings = createSlice({
   name: "loadings",
   initialState,
   reducers: {
+    setNodeStakingRewardsLoading(state, action: PayloadAction<boolean>) {
+      state.nodeStakingRewards = action.payload;
+    },
     setBalanceLoading(state, action: PayloadAction<boolean>) {
       state.balanceLoading = action.payload;
     },
@@ -30,11 +35,14 @@ const loadings = createSlice({
     setPoolDataLoading(state, action: PayloadAction<boolean>) {
       state.poolDataLoading = action.payload;
     },
-    setComponentDataLoading(state, action: PayloadAction<boolean>) {
-      state.componentDataLoading = action.payload;
+    setRugProofComponentDataLoading(state, action: PayloadAction<boolean>) {
+      state.rugProofComponentDataLoading = action.payload;
     },
     setStHitDataLoading(state, action: PayloadAction<boolean>) {
       state.stHitDataLoading = action.payload;
+    },
+    setNodeStakingComponentDataLoading(state, action: PayloadAction<boolean>) {
+      state.nodeStakingComponentDataLoading = action.payload;
     },
   },
 });
@@ -47,6 +55,8 @@ export const {
   setTxInProgress,
   setTokenDataLoading,
   setPoolDataLoading,
-  setComponentDataLoading,
+  setRugProofComponentDataLoading,
   setFindingNodeNFT,
+  setNodeStakingRewardsLoading,
+  setNodeStakingComponentDataLoading,
 } = loadings.actions;

@@ -1,6 +1,7 @@
 import {
-  CONTRACT_OWNER_BADGE_ADDRESS,
+  RUG_PRROF_STAKING_OWNER_BADGE_ADDRESS,
   HIT_RESOURCE_ADDRESS,
+  NODE_STAKING_OWNER_BADGE_ADDRESS,
   STHIT_RESOURCE_ADDRESS,
 } from "Constants/address";
 import { radixDashboardBaseUrl } from "Constants/misc";
@@ -78,27 +79,37 @@ export const generateExplorerTxLink = (txId?: string) => {
   return `${radixDashboardBaseUrl}/transaction/${txId}`;
 };
 
-export const extract_HIT_STHIT_balance = (
+export const extractBalances = (
   resources: ResourceDetails[],
+  tokens: {
+    symbol: string;
+    address: string;
+  }[],
   searchForOwner: boolean = false
 ) => {
-  let hitBalance: string | undefined;
-  let sthitBalance: string | undefined;
+  const balances: { [symbol: string]: string } = {};
   let isOwner = false;
 
+  // Initialize all token balances to "0"
+  for (const token of tokens) {
+    balances[token.symbol] = "0";
+  }
+
   for (const resource of resources) {
-    if (resource.resource_address === HIT_RESOURCE_ADDRESS) {
-      hitBalance = resource.amount;
-    } else if (resource.resource_address === STHIT_RESOURCE_ADDRESS) {
-      sthitBalance = resource.amount;
-    } else if (searchForOwner && resource.resource_address === CONTRACT_OWNER_BADGE_ADDRESS) {
+    const token = tokens.find((t) => t.address === resource.resource_address);
+    if (token) {
+      balances[token.symbol] = resource.amount;
+    } else if (
+      searchForOwner &&
+      (resource.resource_address === RUG_PRROF_STAKING_OWNER_BADGE_ADDRESS ||
+        resource.resource_address === NODE_STAKING_OWNER_BADGE_ADDRESS)
+    ) {
       isOwner = true;
     }
 
-    // Break the loop if both balances are found and check isOwner is true only if searchForOwner is true
+    // Break the loop if all balances are found and check isOwner is true only if searchForOwner is true
     if (
-      hitBalance !== undefined &&
-      sthitBalance !== undefined &&
+      tokens.every((token) => balances[token.symbol] !== "0") &&
       (searchForOwner ? isOwner === true : true)
     ) {
       break;
@@ -106,8 +117,7 @@ export const extract_HIT_STHIT_balance = (
   }
 
   return {
-    hit: hitBalance || "0", // Default to "0" if balance not found
-    sthit: sthitBalance || "0", // Default to "0" if balance not found
+    balances,
     isOwner,
   };
 };

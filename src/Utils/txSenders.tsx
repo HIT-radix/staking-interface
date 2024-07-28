@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 
-import { fetchComponentDetails } from "./fetchers";
+import { fetchNodeStakingComponentDetails, fetchRugProofComponentDetails } from "./fetchers";
 import { setAmount, setPercentage } from "Store/Reducers/staking";
 import { incrementSuccessTxCount } from "Store/Reducers/session";
 import { Percentage, StakingTokens } from "Types/reducers";
@@ -136,7 +136,7 @@ export const distributeHITRewards = async (amount: string, distributeLockedHits:
     });
 
     if (distributeLockedHits) {
-      fetchComponentDetails();
+      fetchRugProofComponentDetails();
     }
   } catch (error) {
     console.log("Unable to distribute Hits");
@@ -155,7 +155,7 @@ export const LockHITRewards = async (amount: string) => {
       ToastElement: LockSuccessToast,
       tokenSymbol: StakingTokens.HIT,
     });
-    fetchComponentDetails();
+    fetchRugProofComponentDetails();
   } catch (error) {
     console.log("Unable to lock hits");
   }
@@ -210,6 +210,7 @@ export const depositNodeStakingRewards = async (
       ToastElement: LockSuccessToast,
       tokenSymbol,
     });
+    fetchNodeStakingComponentDetails();
   } catch (error) {
     console.log("Unable to lock", tokenSymbol);
   }

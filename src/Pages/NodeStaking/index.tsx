@@ -1,23 +1,9 @@
-// import { DataRequestBuilder } from "@radixdlt/radix-dapp-toolkit";
-// import axios from "axios";
-
-import { stakeInNodeValidator } from "Utils/txSenders";
 import LoadingSkeleton from "./Components/loadingSkeleton";
 import { useSelector } from "Store";
 import { getRdt } from "subs";
 import Listeners from "./Components/listeners";
 import NftImage from "./Components/nftImage";
 import Controls from "./Components/controls";
-
-// import { HIT_RESOURCE_ADDRESS } from "Constants/address";
-// import { getRdt } from "subs";
-// import { StakingTokens } from "Types/reducers";
-// import {
-//   assignNodeStakingRewards,
-//   depositNodeStakingRewards,
-//   mintNodeStakingRewardsNFTbadge,
-//   withdrawNodeStakingRewards,
-// } from "Utils/txSenders";
 
 const NodeStaking = () => {
   const walletAddress = useSelector((state) => state.app.walletAddress);
@@ -73,6 +59,7 @@ const NodeStaking = () => {
               <Controls />
             </>
           )}
+
           {/* 
       <div
         className="btn bg-accent"

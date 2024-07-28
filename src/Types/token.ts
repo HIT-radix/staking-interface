@@ -1,3 +1,5 @@
+import { StakingTokens } from "./reducers";
+
 export type PeriodicData = {
   "1h": string;
   "24h": string;
@@ -59,3 +61,5 @@ export type RewardTokenDistribution = {
   id: number;
   amount: string;
 };
+
+export type ClaimableRewardsInfo = Partial<Record<StakingTokens, string>>;

@@ -6,6 +6,7 @@ const initialState: SessionReducer = {
   successTxCount: 0,
   tokenData: undefined,
   hitBalance: "0",
+  fomoBalance: "0",
 };
 
 const session = createSlice({
@@ -21,9 +22,13 @@ const session = createSlice({
     setHitBalance(state, action: PayloadAction<string>) {
       state.hitBalance = action.payload;
     },
+    setFomoBalance(state, action: PayloadAction<string>) {
+      state.fomoBalance = action.payload;
+    },
   },
 });
 
 export default session.reducer;
 
-export const { incrementSuccessTxCount, updateTokenData, setHitBalance } = session.actions;
+export const { incrementSuccessTxCount, updateTokenData, setHitBalance, setFomoBalance } =
+  session.actions;

@@ -16,7 +16,9 @@ const StakingInfos = () => {
   const stHitDataLoading = useSelector((state) => state.loadings.stHitDataLoading);
   const lockedHITRewards = useSelector((state) => state.staking.lockedHITRewards);
   const stHIT_totalSupply = useSelector((state) => state.staking.stHIT_totalSupply);
-  const componentDataLoading = useSelector((state) => state.loadings.componentDataLoading);
+  const rugProofComponentDataLoading = useSelector(
+    (state) => state.loadings.rugProofComponentDataLoading
+  );
 
   const apy = useMemo(() => ((yearly_hit_reward / +stakedHIT) * 100).toFixed(2), [stakedHIT]);
 
@@ -47,7 +49,7 @@ const StakingInfos = () => {
         <InfoTile
           title="Total Locked Rewards"
           value={formatTokenAmount(+lockedHITRewards) + " " + StakingTokens.HIT}
-          isLoading={componentDataLoading}
+          isLoading={rugProofComponentDataLoading}
         />
       </div>
       <div className="col-span-12 sm:col-span-6 flex items-center justify-center ">

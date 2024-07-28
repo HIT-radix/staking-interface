@@ -33,6 +33,8 @@ export type StakingReducer = {
   lockedHITRewards: string;
   isOwner: boolean;
   NodeStakeNFTid?: number;
+  lockedNodeStakingHits: string;
+  lockedNodeStakingFomos: string;
 };
 
 export enum StakingTokens {
@@ -46,6 +48,7 @@ export type SessionReducer = {
   successTxCount: number;
   tokenData?: TokenData;
   hitBalance: string;
+  fomoBalance: string;
 };
 
 export type LoadingReducer = {
@@ -53,7 +56,9 @@ export type LoadingReducer = {
   txInProgress: boolean;
   tokenDataLoading: boolean;
   poolDataLoading: boolean;
-  componentDataLoading: boolean;
+  rugProofComponentDataLoading: boolean;
   stHitDataLoading: boolean;
   findingNodeNFT: boolean;
+  nodeStakingRewards: boolean;
+  nodeStakingComponentDataLoading: boolean;
 };
