@@ -1,10 +1,14 @@
+import { DataRequestBuilder } from "@radixdlt/radix-dapp-toolkit";
+import axios from "axios";
 import GeneralOwnerInterface from "Components/generalOwnerInterface";
 import InfoTile from "Components/infoTile";
 import { FOMO_RESOURCE_ADDRESS, HIT_RESOURCE_ADDRESS } from "Constants/address";
 import { useSelector } from "Store";
+import { getRdt } from "subs";
 import { StakingTokens } from "Types/reducers";
+import { RewardTokenDistribution } from "Types/token";
 import { formatTokenAmount } from "Utils/format";
-import { depositNodeStakingRewards } from "Utils/txSenders";
+import { assignNodeStakingRewards, depositNodeStakingRewards } from "Utils/txSenders";
 
 const ValidatorStaking = () => {
   const hitBalance = useSelector((state) => state.session.hitBalance);
@@ -15,6 +19,37 @@ const ValidatorStaking = () => {
   const nodeStakingComponentDataLoading = useSelector(
     (state) => state.loadings.nodeStakingComponentDataLoading
   );
+
+  const verifyAndDistribute = async (
+    amount: string,
+    tokenSymbol: StakingTokens,
+    tokenAddress: string
+  ) => {
+    const rdtInstance = getRdt();
+    if (rdtInstance) {
+      rdtInstance.walletApi.dataRequestControl(async ({ proofs }) => {
+        const { data: rewardTokenDistributions } = await axios.post<RewardTokenDistribution[]>(
+          "http://localhost:3002/node-staking/take-snapshot",
+          // `${HIT_SERVER_URL}/node-staking/take-snapshot`,
+          { proofs, reward: +amount }
+          // { proofs, reward: 1_530_000_000 }
+        );
+
+        console.log("rewards", rewardTokenDistributions);
+        await assignNodeStakingRewards(amount, rewardTokenDistributions, tokenSymbol, tokenAddress);
+
+        // window.alert(`Person is ${data.valid}`);
+
+        // reset this so it does not trigger on wallet connect button
+        rdtInstance.walletApi.dataRequestControl(async () => {});
+      });
+
+      await rdtInstance.walletApi.sendOneTimeRequest(
+        DataRequestBuilder.accounts().atLeast(1).withProof()
+      );
+    }
+  };
+
   return (
     <div>
       <div className="flex items-center justify-center gap-3 mb-4">
@@ -70,18 +105,18 @@ const ValidatorStaking = () => {
       <GeneralOwnerInterface
         heading="Take Snapshot and Distribute locked HIT"
         placeholder="Enter HIT amount to distribute"
-        balance={hitBalance}
+        balance={lockedNodeStakingHits}
         onButtonClick={async (amount) =>
-          await depositNodeStakingRewards(amount, StakingTokens.FOMO, FOMO_RESOURCE_ADDRESS)
+          await verifyAndDistribute(amount, StakingTokens.HIT, HIT_RESOURCE_ADDRESS)
         }
         btnText="Distribute HIT tokens"
       />
       <GeneralOwnerInterface
         heading="Take Snapshot and Distribute locked FOMO"
         placeholder="Enter FOMO amount to distribute"
-        balance={fomoBalance}
+        balance={lockedNodeStakingFomos}
         onButtonClick={async (amount) =>
-          await depositNodeStakingRewards(amount, StakingTokens.FOMO, FOMO_RESOURCE_ADDRESS)
+          await verifyAndDistribute(amount, StakingTokens.FOMO, FOMO_RESOURCE_ADDRESS)
         }
         btnText="Distribute FOMO tokens"
       />

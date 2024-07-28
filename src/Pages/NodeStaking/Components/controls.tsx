@@ -27,10 +27,9 @@ const Controls = () => {
     })();
   }, [NodeStakeNFTid, successTxCount]);
 
-  const allowWithdraw = useMemo(
-    () => Number(claimableRewards.HIT) > 0 || Number(claimableRewards.FOMO) > 0,
-    [claimableRewards]
-  );
+  const allowWithdraw = useMemo(() => {
+    return Number(claimableRewards.HIT) > 0 || Number(claimableRewards.FOMO) > 0;
+  }, [claimableRewards]);
 
   return (
     <div className="w-full mt-3">
@@ -73,7 +72,7 @@ const Controls = () => {
           />
           {allowWithdraw && (
             <div
-              className="btn bg-accent w-full hover:bg-accent mt-1 btn-disabled"
+              className="btn bg-accent w-full hover:bg-accent mt-1"
               onClick={() => withdrawNodeStakingRewards(NodeStakeNFTid)}
             >
               Withdraw Rewards 🎉

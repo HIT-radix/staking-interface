@@ -22,7 +22,7 @@ import {
   ClaimSuccessToast,
 } from "Components/toasts";
 import axios from "axios";
-import { TelegramBotServerUrl } from "Constants/endpoints";
+import { HIT_SERVER_URL } from "Constants/endpoints";
 import {
   getAssignNodeStakingRewardsManifest,
   getDepositNodeStakingRewardsManifest,
@@ -97,7 +97,7 @@ export const stakeHIT = async () => {
       tokenSymbol: StakingTokens.HIT,
     });
     if (isSuccess) {
-      await axios.post(`${TelegramBotServerUrl}/emit-stake-message`, {
+      await axios.post(`${HIT_SERVER_URL}/emit-stake-message`, {
         message: `${formatTokenAmount(+amount)} HIT has been staked! 💉`,
       });
     }
