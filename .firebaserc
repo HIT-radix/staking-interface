@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "addix-hit"
+    "default": "addix-hit",
+    "dev": "dev-addix",
+    "prod": "addix-hit"
   }
 }

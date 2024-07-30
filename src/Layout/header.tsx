@@ -23,8 +23,8 @@ const Header = () => {
       <div className="flex gap-12 items-center">
         <LogoWebsite />
       </div>
-      {isOwner && (
-        <div className="flex flex-row items-center gap-8 text-xl">
+      <div className="flex flex-row items-center gap-8 text-xl">
+        {isOwner && (
           <p
             className={
               "cursor-pointer hover:underline hover:text-accent " +
@@ -34,17 +34,26 @@ const Header = () => {
           >
             Admin
           </p>
-          <p
-            className={
-              "cursor-pointer hover:underline hover:text-accent " +
-              (checkIfActive("/") ? "text-accent underline" : "text-secondary")
-            }
-            onClick={() => moveToPage("/")}
-          >
-            Stake HIT
-          </p>
-        </div>
-      )}
+        )}
+        <p
+          className={
+            "cursor-pointer hover:underline hover:text-accent " +
+            (checkIfActive("/") ? "text-accent underline" : "text-secondary")
+          }
+          onClick={() => moveToPage("/")}
+        >
+          Stake HIT
+        </p>
+        <p
+          className={
+            "cursor-pointer hover:underline hover:text-accent " +
+            (checkIfActive("/staking") ? "text-accent underline" : "text-secondary")
+          }
+          onClick={() => moveToPage("/staking")}
+        >
+          Validator Staking
+        </p>
+      </div>
       <div className="flex items-center justify-center gap-9">
         <p
           className="text-accent font-bold text-lg cursor-pointer hidden sm:block"
