@@ -102,7 +102,8 @@ export const extractBalances = (
     } else if (
       searchForOwner &&
       (resource.resource_address === RUG_PRROF_STAKING_OWNER_BADGE_ADDRESS ||
-        resource.resource_address === NODE_STAKING_OWNER_BADGE_ADDRESS)
+        resource.resource_address === NODE_STAKING_OWNER_BADGE_ADDRESS) &&
+      +resource.amount > 0
     ) {
       isOwner = true;
     }
