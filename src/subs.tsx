@@ -11,6 +11,7 @@ import { applicationName, networkId } from "Constants/misc";
 import CachedService from "Classes/cachedService";
 import { WalletConnectedToast, WalletDiconnectedToast } from "Components/toasts";
 import axios from "axios";
+import { HIT_SERVER_URL } from "Constants/endpoints";
 // import { GatewayApiClient } from "@radixdlt/babylon-gateway-api-sdk";
 
 // export const gatewayApi = GatewayApiClient.initialize({
@@ -43,7 +44,7 @@ export function initializeSubscriptions() {
   rdtInstance.walletApi.setRequestData(DataRequestBuilder.accounts().atLeast(1));
 
   const getChallenge = () => {
-    const res = axios.get<string>("http://localhost:3002/node-staking/create-challenge");
+    const res = axios.get<string>(`${HIT_SERVER_URL}/node-staking/create-challenge`);
     return res.then((data) => data.data);
   };
 

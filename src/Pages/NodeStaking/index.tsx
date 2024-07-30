@@ -16,29 +16,6 @@ const NodeStaking = () => {
       rdt.walletApi.sendRequest();
     }
   };
-
-  // const handleVerify = async () => {
-  //   const rdtInstance = getRdt();
-  //   if (rdtInstance) {
-  //     rdtInstance.walletApi.dataRequestControl(async ({ proofs }) => {
-  //       const { data } = await axios.post<{ valid: boolean }>(
-  //         "http://localhost:3002/node-staking/take-snapshot",
-  //         { proofs, reward: 1_530_000_000 }
-  //       );
-
-  //       console.log("rewards", data);
-
-  //       // window.alert(`Person is ${data.valid}`);
-
-  //       // reset this so it does not trigger on wallet connect button
-  //       rdtInstance.walletApi.dataRequestControl(async () => {});
-  //     });
-
-  //     await rdtInstance.walletApi.sendOneTimeRequest(
-  //       DataRequestBuilder.accounts().atLeast(1).withProof()
-  //     );
-  //   }
-  // };
   return (
     <>
       <Listeners />

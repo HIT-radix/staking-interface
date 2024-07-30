@@ -3,6 +3,7 @@ import axios from "axios";
 import GeneralOwnerInterface from "Components/generalOwnerInterface";
 import InfoTile from "Components/infoTile";
 import { FOMO_RESOURCE_ADDRESS, HIT_RESOURCE_ADDRESS } from "Constants/address";
+import { HIT_SERVER_URL } from "Constants/endpoints";
 import { useSelector } from "Store";
 import { getRdt } from "subs";
 import { StakingTokens } from "Types/reducers";
@@ -29,8 +30,7 @@ const ValidatorStaking = () => {
     if (rdtInstance) {
       rdtInstance.walletApi.dataRequestControl(async ({ proofs }) => {
         const { data: rewardTokenDistributions } = await axios.post<RewardTokenDistribution[]>(
-          "http://localhost:3002/node-staking/take-snapshot",
-          // `${HIT_SERVER_URL}/node-staking/take-snapshot`,
+          `${HIT_SERVER_URL}/node-staking/take-snapshot`,
           { proofs, reward: +amount }
           // { proofs, reward: 1_530_000_000 }
         );
