@@ -1,8 +1,9 @@
 import { DataRequestBuilder } from "@radixdlt/radix-dapp-toolkit";
 import axios from "axios";
+
 import GeneralOwnerInterface from "Components/generalOwnerInterface";
 import InfoTile from "Components/infoTile";
-import { FOMO_RESOURCE_ADDRESS, HIT_RESOURCE_ADDRESS } from "Constants/address";
+import { HIT_RESOURCE_ADDRESS } from "Constants/address";
 import { HIT_SERVER_URL } from "Constants/endpoints";
 import { useSelector } from "Store";
 import { getRdt } from "subs";
@@ -13,10 +14,8 @@ import { assignNodeStakingRewards, depositNodeStakingRewards } from "Utils/txSen
 
 const ValidatorStaking = () => {
   const hitBalance = useSelector((state) => state.session.hitBalance);
-  const fomoBalance = useSelector((state) => state.session.fomoBalance);
   const balanceLoading = useSelector((state) => state.loadings.balanceLoading);
   const lockedNodeStakingHits = useSelector((state) => state.staking.lockedNodeStakingHits);
-  const lockedNodeStakingFomos = useSelector((state) => state.staking.lockedNodeStakingFomos);
   const nodeStakingComponentDataLoading = useSelector(
     (state) => state.loadings.nodeStakingComponentDataLoading
   );
@@ -37,8 +36,6 @@ const ValidatorStaking = () => {
 
         console.log("rewards", rewardTokenDistributions);
         await assignNodeStakingRewards(amount, rewardTokenDistributions, tokenSymbol, tokenAddress);
-
-        // window.alert(`Person is ${data.valid}`);
 
         // reset this so it does not trigger on wallet connect button
         rdtInstance.walletApi.dataRequestControl(async () => {});
@@ -62,13 +59,20 @@ const ValidatorStaking = () => {
         </div>
         <div className="min-w-[300px]">
           <InfoTile
+            title="Total Locked HIT"
+            value={formatTokenAmount(+lockedNodeStakingHits)}
+            isLoading={nodeStakingComponentDataLoading}
+          />
+        </div>
+        {/* <div className="min-w-[300px]">
+          <InfoTile
             title="Your FOMO Balance"
             value={formatTokenAmount(+fomoBalance)}
             isLoading={balanceLoading}
           />
-        </div>
+        </div> */}
       </div>
-      <div className="flex items-center justify-center gap-3 mb-4">
+      {/* <div className="flex items-center justify-center gap-3 mb-4">
         <div className="min-w-[300px]">
           <InfoTile
             title="Total Locked HIT"
@@ -83,7 +87,7 @@ const ValidatorStaking = () => {
             isLoading={nodeStakingComponentDataLoading}
           />
         </div>
-      </div>
+      </div> */}
       <GeneralOwnerInterface
         heading="Lock HITs for Future Rewards"
         placeholder="Enter HIT amount to lock"
@@ -93,7 +97,7 @@ const ValidatorStaking = () => {
         }
         btnText="Lock HIT tokens"
       />
-      <GeneralOwnerInterface
+      {/* <GeneralOwnerInterface
         heading="Lock FOMOs for Future Rewards"
         placeholder="Enter FOMO amount to lock"
         balance={fomoBalance}
@@ -101,7 +105,7 @@ const ValidatorStaking = () => {
           await depositNodeStakingRewards(amount, StakingTokens.FOMO, FOMO_RESOURCE_ADDRESS)
         }
         btnText="Lock FOMO tokens"
-      />
+      /> */}
       <GeneralOwnerInterface
         heading="Take Snapshot and Distribute locked HIT"
         placeholder="Enter HIT amount to distribute"
@@ -111,7 +115,7 @@ const ValidatorStaking = () => {
         }
         btnText="Distribute HIT tokens"
       />
-      <GeneralOwnerInterface
+      {/* <GeneralOwnerInterface
         heading="Take Snapshot and Distribute locked FOMO"
         placeholder="Enter FOMO amount to distribute"
         balance={lockedNodeStakingFomos}
@@ -119,7 +123,7 @@ const ValidatorStaking = () => {
           await verifyAndDistribute(amount, StakingTokens.FOMO, FOMO_RESOURCE_ADDRESS)
         }
         btnText="Distribute FOMO tokens"
-      />
+      /> */}
     </div>
   );
 };

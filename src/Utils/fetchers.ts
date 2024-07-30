@@ -3,11 +3,10 @@ import axios, { AxiosResponse } from "axios";
 import { Ociswap_baseurl, networkRPC } from "Constants/endpoints";
 import { store } from "Store";
 import { setHitPrice } from "Store/Reducers/app";
-import { setFomoBalance, setHitBalance, updateTokenData } from "Store/Reducers/session";
+import { setHitBalance, updateTokenData } from "Store/Reducers/session";
 import {
   setIsOwner,
   setLockedHITRewards,
-  setLockedNodeStakingFomos,
   setLockedNodeStakingHits,
   setNodeStakeNFTid,
   setStHitBalance,
@@ -20,13 +19,11 @@ import { BN, extractBalances } from "./format";
 import { EntityDetails } from "Types/api";
 import {
   NODE_STAKING_USER_BADGE_ADDRESS,
-  NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS,
   NODE_STAKING_HIT_KEY_VALUE_STORE_ADDRESS,
   POOL_ADDRESS,
   RUG_PROOF_STAKING_COMPONENT_ADDRESS,
   STHIT_RESOURCE_ADDRESS,
   HIT_RESOURCE_ADDRESS,
-  FOMO_RESOURCE_ADDRESS,
   NODE_STAKING_COMPONENT_ADDRESS,
 } from "Constants/address";
 import {
@@ -43,7 +40,7 @@ import CachedService from "Classes/cachedService";
 export const fetchBalances = async (walletAddress: string) => {
   let HITbalance = "0";
   let stHITbalance = "0";
-  let fomobalance = "0";
+  // let fomobalance = "0";
   let isOwner = false;
   if (walletAddress) {
     try {
@@ -60,13 +57,13 @@ export const fetchBalances = async (walletAddress: string) => {
           [
             { symbol: StakingTokens.HIT, address: HIT_RESOURCE_ADDRESS },
             { symbol: StakingTokens.StHIT, address: STHIT_RESOURCE_ADDRESS },
-            { symbol: StakingTokens.FOMO, address: FOMO_RESOURCE_ADDRESS },
+            // { symbol: StakingTokens.FOMO, address: FOMO_RESOURCE_ADDRESS },
           ],
           true
         );
         HITbalance = balances[StakingTokens.HIT];
         stHITbalance = balances[StakingTokens.StHIT];
-        fomobalance = balances[StakingTokens.FOMO];
+        // fomobalance = balances[StakingTokens.FOMO];
         isOwner = isOwnerFound;
       }
     } catch (error) {
@@ -75,7 +72,7 @@ export const fetchBalances = async (walletAddress: string) => {
   }
   store.dispatch(setHitBalance(HITbalance));
   store.dispatch(setStHitBalance(stHITbalance));
-  store.dispatch(setFomoBalance(fomobalance));
+  // store.dispatch(setFomoBalance(fomobalance));
   store.dispatch(setIsOwner(isOwner));
 };
 
@@ -175,7 +172,7 @@ export const fetchRugProofComponentDetails = async () => {
 
 export const fetchNodeStakingComponentDetails = async () => {
   let lockedHITs = "0";
-  let lockedFOMOs = "0";
+  // let lockedFOMOs = "0";
   try {
     store.dispatch(setNodeStakingComponentDataLoading(true));
     const response = await axios.post<any, AxiosResponse<EntityDetails>>(
@@ -188,16 +185,16 @@ export const fetchNodeStakingComponentDetails = async () => {
     if (response.status === 200) {
       const { balances } = extractBalances(response.data.items[0].fungible_resources.items, [
         { symbol: StakingTokens.HIT, address: HIT_RESOURCE_ADDRESS },
-        { symbol: StakingTokens.FOMO, address: FOMO_RESOURCE_ADDRESS },
+        // { symbol: StakingTokens.FOMO, address: FOMO_RESOURCE_ADDRESS },
       ]);
       lockedHITs = balances[StakingTokens.HIT];
-      lockedFOMOs = balances[StakingTokens.FOMO];
+      // lockedFOMOs = balances[StakingTokens.FOMO];
     }
   } catch (error) {
     console.log("error in fetchNodeStakingComponentDetails", error);
   }
   store.dispatch(setLockedNodeStakingHits(lockedHITs));
-  store.dispatch(setLockedNodeStakingFomos(lockedFOMOs));
+  // store.dispatch(setLockedNodeStakingFomos(lockedFOMOs));
   store.dispatch(setNodeStakingComponentDataLoading(false));
 };
 
@@ -224,7 +221,7 @@ export const findNodeStakeNFT = async (walletAddress: string) => {
 export const fetchClaimableNodeStakingRewards = async (nftId: number) => {
   const keyValueAddressesWithTheirTokens = [
     { address: NODE_STAKING_HIT_KEY_VALUE_STORE_ADDRESS, token: StakingTokens.HIT },
-    { address: NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS, token: StakingTokens.FOMO },
+    // { address: NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS, token: StakingTokens.FOMO },
   ];
 
   let claimableRewards: ClaimableRewardsInfo = { HIT: "0", FOMO: "0" };

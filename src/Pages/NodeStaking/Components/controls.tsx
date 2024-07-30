@@ -2,12 +2,11 @@ import redirectIcon from "Assets/Images/share.png";
 import InfoTile from "Components/infoTile";
 import { useSelector } from "Store";
 import { withdrawNodeStakingRewards } from "Utils/txSenders";
-import hitLogo from "Assets/Images/hit-logo.png";
-import fomoLogo from "Assets/Images/fomo.png";
 import { useEffect, useMemo, useState } from "react";
 import { fetchClaimableNodeStakingRewards } from "Utils/fetchers";
 import { ClaimableRewardsInfo } from "Types/token";
 import { formatTokenAmount } from "Utils/format";
+import hitLogo from "Assets/Images/hit-logo.png";
 
 const Controls = () => {
   const NodeStakeNFTid = useSelector((state) => state.staking.NodeStakeNFTid);
@@ -28,7 +27,7 @@ const Controls = () => {
   }, [NodeStakeNFTid, successTxCount]);
 
   const allowWithdraw = useMemo(() => {
-    return Number(claimableRewards.HIT) > 0 || Number(claimableRewards.FOMO) > 0;
+    return Number(claimableRewards.HIT) > 0;
   }, [claimableRewards]);
 
   return (
@@ -52,6 +51,7 @@ const Controls = () => {
         <>
           <InfoTile
             title="Your Claimable Rewards:"
+            // value={formatTokenAmount(Number(claimableRewards.HIT)) + " HIT"}
             value={
               <div>
                 <div className="flex items-center">
@@ -60,12 +60,12 @@ const Controls = () => {
                     $HIT : {formatTokenAmount(Number(claimableRewards.HIT))}
                   </p>
                 </div>
-                <div className="flex items-center mt-2">
+                {/* <div className="flex items-center mt-2">
                   <img src={fomoLogo} alt="hit-logo" className="w-8" />
                   <p className="text-2xl font-bold ml-1">
                     $FOMO : {formatTokenAmount(Number(claimableRewards.FOMO))}
                   </p>
-                </div>
+                </div> */}
               </div>
             }
             isLoading={nodeStakingRewardsLoading}
