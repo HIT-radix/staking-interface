@@ -64,9 +64,9 @@ export const NODE_LSU_ADDRESS =
 export const NODE_STAKING_HIT_KEY_VALUE_STORE_ADDRESS =
   process.env.REACT_APP_ENVIRONMENT === Environment.dev
     ? "internal_keyvaluestore_tdx_2_1kqv4x2fctjx2esglff4t85gx033ruyaxyh2ct72k2d7q2l7899am5g"
-    : "internal_keyvaluestore_rdx1kz0j2fzd49m8whh7wkg5592wr9fjrdlzg46322727ck7u3ddne7mxs";
+    : "internal_keyvaluestore_rdx1krxnad7sk0dsz2f5j27lxgq74uvwq0h5xyzd2rwvhs0xy5td6zf583";
 
 export const NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS =
   process.env.REACT_APP_ENVIRONMENT === Environment.dev
     ? "internal_keyvaluestore_tdx_2_1kzlxcs94slutg6raf9gc9kde7xyv7zd2dkqfkx0p2n80uhl88esah5"
-    : "internal_keyvaluestore_rdx1kzkf2slt7lcf645vwe0aryvfywnzp74rxvgkf32p6un3dq36yywp67";
+    : "internal_keyvaluestore_rdx1kqc5uy3gu2j6v9sdjrz72n0axlmldvkqu24evdyqdjrh23xqd0demj";
