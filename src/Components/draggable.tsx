@@ -20,7 +20,6 @@ const SnappableDraggable = () => {
     const screenHeight = window.innerHeight;
     const elementWidth = data.node.offsetWidth;
     const elementHeight = data.node.offsetHeight;
-    console.log("elementHeight", elementHeight);
     setBounds({ ...bounds, bottom: screenHeight - elementHeight });
 
     const newX = data.x < screenWidth / 2 ? 0 : screenWidth - elementWidth;

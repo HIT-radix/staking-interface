@@ -155,3 +155,6 @@ export const toLocaleFormat = (value: string) => {
 export const formatRewardTokenDistribution = (
   rewardTokenDistributions: RewardTokenDistribution[]
 ) => rewardTokenDistributions.map(({ id, amount }) => `${id}u64 => Decimal("${amount}")`).join(",");
+
+export const calculatePercentage = (givenValue: number, totalValue: number) =>
+  numbro(givenValue / totalValue).format({ output: "percent", mantissa: 2 });

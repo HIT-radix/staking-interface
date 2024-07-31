@@ -19,3 +19,5 @@ export const networkId =
 
 export const applicationName =
   process.env.REACT_APP_ENVIRONMENT === Environment.dev ? "HIT Test Staking" : "HIT Staking";
+
+export const TOTAL_HIT_SUPPLY = 1_000_000_000_000;
