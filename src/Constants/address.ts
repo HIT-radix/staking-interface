@@ -33,7 +33,7 @@ export const RUG_PRROF_STAKING_OWNER_BADGE_ADDRESS =
 export const NODE_STAKING_COMPONENT_ADDRESS =
   process.env.REACT_APP_ENVIRONMENT === Environment.dev
     ? "component_tdx_2_1crf2uqm3tcqqdml0tqq04wurmqrhdkca7cscsuxr45lghhvv72zgnx"
-    : "component_rdx1cqs56santq8lptq22pquhc7rfvzjc4dkk5v0lx43ujpx2y0smsz87g";
+    : "component_rdx1cqpv4nfsgfk9c2r9ymnqyksfkjsg07mfc49m9qw3dpgzrmjmsuuquv";
 
 export const FOMO_RESOURCE_ADDRESS =
   process.env.REACT_APP_ENVIRONMENT === Environment.dev
@@ -53,7 +53,7 @@ export const NODE_STAKING_AIRDROPPER_BADGE_ADDRESS =
 export const NODE_STAKING_USER_BADGE_ADDRESS =
   process.env.REACT_APP_ENVIRONMENT === Environment.dev
     ? "resource_tdx_2_1ngg9srqnvjctfrkmmq56h9gpc8seju2z0wm48qxc9pgvapsrpue2nn"
-    : "resource_rdx1ntr35h0hshdv6tekr7kvakthv6vee8f9mfjvn6r9aakdkx3ng7l3xj";
+    : "resource_rdx1ntmkq3eddym9lzppx8sg2elpqwexhsppcdscwu5s7ca5u79hcaztu3";
 
 export const NODE_VALIDATOR_ADDRESS =
   "validator_rdx1swez5cqmw4d6tls0mcldehnfhpxge0mq7cmnypnjz909apqqjgx6n9";
