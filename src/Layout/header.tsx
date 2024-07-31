@@ -1,20 +1,8 @@
-import { useLocation } from "react-router-dom";
-
-import CachedService from "Classes/cachedService";
-import { useSelector } from "Store";
 import ImageAudioPlayer from "Components/audioplayer";
 import { HIT_WEBSITE } from "Constants/misc";
+import NavbarLinks from "Components/navbarLinks";
 
 const Header = () => {
-  const path = useLocation();
-  const isOwner = useSelector((state) => state.staking.isOwner);
-
-  const moveToPage = (route: string) => {
-    CachedService.navigation(route);
-  };
-
-  const checkIfActive = (route: string) => path.pathname === route;
-
   return (
     <div
       className="flex flex-row justify-between items-center w-full p-4 px-2 sm:px-14 h-[90px]"
@@ -23,36 +11,8 @@ const Header = () => {
       <div className="flex gap-12 items-center">
         <LogoWebsite />
       </div>
-      <div className="flex flex-row items-center gap-8 text-xl">
-        {isOwner && (
-          <p
-            className={
-              "cursor-pointer hover:underline hover:text-accent " +
-              (checkIfActive("/admin") ? "text-accent underline" : "text-secondary")
-            }
-            onClick={() => moveToPage("/admin")}
-          >
-            Admin
-          </p>
-        )}
-        <p
-          className={
-            "cursor-pointer hover:underline hover:text-accent " +
-            (checkIfActive("/") ? "text-accent underline" : "text-secondary")
-          }
-          onClick={() => moveToPage("/")}
-        >
-          Stake HIT
-        </p>
-        {/* <p
-          className={
-            "cursor-pointer hover:underline hover:text-accent " +
-            (checkIfActive("/staking") ? "text-accent underline" : "text-secondary")
-          }
-          onClick={() => moveToPage("/staking")}
-        >
-          Validator Staking
-        </p> */}
+      <div className="flex-row items-center gap-8 text-xl hidden md:flex">
+        <NavbarLinks />
       </div>
       <div className="flex items-center justify-center gap-9">
         <p
