@@ -30,14 +30,14 @@ export default function Routes() {
         </MainLayout>
       ),
     },
-    {
-      path: "/staking",
-      element: (
-        <MainLayout>
-          <NodeStaking />
-        </MainLayout>
-      ),
-    },
+    // {
+    //   path: "/staking",
+    //   element: (
+    //     <MainLayout>
+    //       <NodeStaking />
+    //     </MainLayout>
+    //   ),
+    // },
     { path: "*", element: <Navigate to={"/"} replace={true} /> },
   ]);
 }

@@ -44,7 +44,7 @@ const Header = () => {
         >
           Stake HIT
         </p>
-        <p
+        {/* <p
           className={
             "cursor-pointer hover:underline hover:text-accent " +
             (checkIfActive("/staking") ? "text-accent underline" : "text-secondary")
@@ -52,7 +52,7 @@ const Header = () => {
           onClick={() => moveToPage("/staking")}
         >
           Validator Staking
-        </p>
+        </p> */}
       </div>
       <div className="flex items-center justify-center gap-9">
         <p
