@@ -20,6 +20,7 @@ const HitStakingPanel = () => {
             title="Your HIT Balance"
             value={formatTokenAmount(+hitBalance)}
             isLoading={balanceLoading}
+            tooltip={hitBalance}
           />
         </div>
         <div className="min-w-[300px]">
@@ -27,6 +28,7 @@ const HitStakingPanel = () => {
             title="Total Locked Rewards"
             value={formatTokenAmount(+lockedHITRewards) + " " + StakingTokens.HIT}
             isLoading={rugProofComponentDataLoading}
+            tooltip={lockedHITRewards}
           />
         </div>
       </div>

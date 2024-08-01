@@ -30,7 +30,11 @@ const StakingInfos = () => {
   const userStakeWorth = useMemo(() => {
     const worthInHit = calculateStHitWorthInHIT(stHitBalance, stakedHIT, stHIT_totalSupply);
     const worthInUsd = formatDollarAmount(worthInHit.multipliedBy(hitPrice).toNumber());
-    return { inHIT: formatTokenAmount(+worthInHit.toFixed(4)), inUsd: worthInUsd };
+    return {
+      inHIT: formatTokenAmount(+worthInHit.toFixed(4)),
+      inUsd: worthInUsd,
+      inRawHIT: worthInHit.toString(),
+    };
   }, [hitPrice, stHIT_totalSupply, stHitBalance, stakedHIT]);
 
   return (
@@ -43,6 +47,7 @@ const StakingInfos = () => {
           title="Total Staked"
           value={formatTokenAmount(+stakedHIT) + " " + StakingTokens.HIT}
           isLoading={poolDataLoading}
+          tooltip={stakedHIT}
         />
       </div>
       <div className="col-span-12 sm:col-span-6 flex items-center justify-center ">
@@ -50,6 +55,7 @@ const StakingInfos = () => {
           title="Total Locked Rewards"
           value={formatTokenAmount(+lockedHITRewards) + " " + StakingTokens.HIT}
           isLoading={rugProofComponentDataLoading}
+          tooltip={lockedHITRewards}
         />
       </div>
       <div className="col-span-12 sm:col-span-6 flex items-center justify-center ">
@@ -69,7 +75,8 @@ const StakingInfos = () => {
             title="Your stake is worth"
             value={
               <>
-                {userStakeWorth.inHIT} HIT <span className="text-xl">({userStakeWorth.inUsd})</span>
+                <span title={userStakeWorth.inRawHIT}>{userStakeWorth.inHIT}</span> HIT{" "}
+                <span className="text-xl">({userStakeWorth.inUsd})</span>
               </>
             }
             isLoading={poolDataLoading || stHitDataLoading}

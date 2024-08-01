@@ -1,15 +1,14 @@
 import { ReactNode } from "react";
 import Skeleton from "react-loading-skeleton";
 
-const InfoTile = ({
-  title,
-  value,
-  isLoading,
-}: {
+type Props = {
   title: string;
   value: string | number | ReactNode;
   isLoading: boolean;
-}) => {
+  tooltip?: string;
+};
+
+const InfoTile = ({ title, value, isLoading, tooltip }: Props) => {
   return (
     <div className="bg-accent rounded-lg px-3 py-2 w-full">
       <p className="font-semibold text-sm opacity-80">{title}</p>
@@ -22,7 +21,9 @@ const InfoTile = ({
           height={30}
         />
       ) : (
-        <div className="text-3xl mt-2">{value}</div>
+        <div className="text-3xl mt-2 cursor-pointer" title={tooltip}>
+          {value}
+        </div>
       )}
     </div>
   );

@@ -58,6 +58,7 @@ const ValidatorStaking = () => {
             title="Your HIT Balance"
             value={formatTokenAmount(+hitBalance)}
             isLoading={balanceLoading}
+            tooltip={hitBalance}
           />
         </div>
         <div className="min-w-[300px]">
@@ -65,6 +66,7 @@ const ValidatorStaking = () => {
             title="Your FOMO Balance"
             value={formatTokenAmount(+fomoBalance)}
             isLoading={balanceLoading}
+            tooltip={fomoBalance}
           />
         </div>
       </div>
@@ -74,6 +76,7 @@ const ValidatorStaking = () => {
             title="Total Locked HIT"
             value={formatTokenAmount(+lockedNodeStakingHits)}
             isLoading={nodeStakingComponentDataLoading}
+            tooltip={lockedNodeStakingHits}
           />
         </div>
         <div className="min-w-[300px]">
@@ -81,6 +84,7 @@ const ValidatorStaking = () => {
             title="Total Locked FOMO"
             value={formatTokenAmount(+lockedNodeStakingFomos)}
             isLoading={nodeStakingComponentDataLoading}
+            tooltip={lockedNodeStakingFomos}
           />
         </div>
       </div>

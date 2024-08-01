@@ -56,13 +56,13 @@ const Controls = () => {
               <div>
                 <div className="flex items-center">
                   <img src={hitLogo} alt="hit-logo" className="w-8" />
-                  <p className="text-2xl font-bold ml-1">
+                  <p className="text-2xl font-bold ml-1" title={claimableRewards.HIT}>
                     $HIT : {formatTokenAmount(Number(claimableRewards.HIT))}
                   </p>
                 </div>
                 <div className="flex items-center mt-2">
                   <img src={fomoLogo} alt="hit-logo" className="w-8" />
-                  <p className="text-2xl font-bold ml-1">
+                  <p className="text-2xl font-bold ml-1" title={claimableRewards.FOMO}>
                     $FOMO : {formatTokenAmount(Number(claimableRewards.FOMO))}
                   </p>
                 </div>
