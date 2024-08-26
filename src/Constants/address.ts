@@ -25,7 +25,7 @@ export const POOL_ADDRESS =
     ? "pool_tdx_2_1c3tt7jlhpycq6crjgmpcsqrur44u7hry97v20nvsw3fx5hsj52hcej"
     : "pool_rdx1cnv7v2rar2w2r4fa65tnrul09kphsp9f0xaq0c06c7ds4u2syga8ly";
 
-export const RUG_PRROF_STAKING_OWNER_BADGE_ADDRESS =
+export const RUG_PROOF_STAKING_OWNER_BADGE_ADDRESS =
   process.env.REACT_APP_ENVIRONMENT === Environment.dev
     ? "resource_tdx_2_1t5qu33df9s8txu0tcszr8c7n92xn278jrkclzv3hupf78fx74ezt96"
     : "resource_rdx1th9a8045tkufp07carehayjcfy5juslp93kvels9wnly9dg8elah64";

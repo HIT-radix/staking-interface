@@ -20,6 +20,7 @@ import {
   NFTmintToast,
   AssignRewardSuccessToast,
   ClaimSuccessToast,
+  ClaimAndStakeSuccessToast,
 } from "Components/toasts";
 import axios from "axios";
 import { HIT_SERVER_URL } from "Constants/endpoints";
@@ -33,6 +34,7 @@ import {
   getStakeInNodeValidatorManifest,
   getStakeTxManifest,
   getUnStakeTxManifest,
+  getWithdrawNodeStakingRewardAndStakeHITManifest,
   getWithdrawNodeStakingRewardsManifest,
 } from "./manifests";
 import { RewardTokenDistribution } from "Types/token";
@@ -252,6 +254,23 @@ export const withdrawNodeStakingRewards = async (userNftBadgeId: number) => {
       amount: "",
       txManifest: getWithdrawNodeStakingRewardsManifest(walletAddress, userNftBadgeId),
       ToastElement: ClaimSuccessToast,
+      tokenSymbol: StakingTokens.HIT,
+    });
+  } catch (error) {
+    console.log("Unable to withdraw node staking rewards");
+  }
+};
+
+export const withdrawNodeStakingRewardsAndStakeHIT = async (userNftBadgeId: number) => {
+  try {
+    const {
+      app: { walletAddress },
+    } = store.getState();
+
+    await baseTxSender({
+      amount: "",
+      txManifest: getWithdrawNodeStakingRewardAndStakeHITManifest(walletAddress, userNftBadgeId),
+      ToastElement: ClaimAndStakeSuccessToast,
       tokenSymbol: StakingTokens.HIT,
     });
   } catch (error) {

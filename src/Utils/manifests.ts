@@ -1,5 +1,5 @@
 import {
-  RUG_PRROF_STAKING_OWNER_BADGE_ADDRESS,
+  RUG_PROOF_STAKING_OWNER_BADGE_ADDRESS,
   HIT_RESOURCE_ADDRESS,
   NODE_LSU_ADDRESS,
   NODE_STAKING_AIRDROPPER_BADGE_ADDRESS,
@@ -74,7 +74,7 @@ export const getDistributeHitTxManifest = (walletAddress: string, amount: string
     CALL_METHOD
       Address("${walletAddress}")
       "create_proof_of_amount"
-      Address("${RUG_PRROF_STAKING_OWNER_BADGE_ADDRESS}")
+      Address("${RUG_PROOF_STAKING_OWNER_BADGE_ADDRESS}")
       Decimal("1")
     ;
 
@@ -103,7 +103,7 @@ export const getLockTxManifest = (walletAddress: string, amount: string) => {
     CALL_METHOD
       Address("${walletAddress}")
       "create_proof_of_amount"
-      Address("${RUG_PRROF_STAKING_OWNER_BADGE_ADDRESS}")
+      Address("${RUG_PROOF_STAKING_OWNER_BADGE_ADDRESS}")
       Decimal("1")
     ;
 
@@ -132,7 +132,7 @@ export const getDistributeLockHitTxManifest = (walletAddress: string, amount: st
     CALL_METHOD
       Address("${walletAddress}")
       "create_proof_of_amount"
-      Address("${RUG_PRROF_STAKING_OWNER_BADGE_ADDRESS}")
+      Address("${RUG_PROOF_STAKING_OWNER_BADGE_ADDRESS}")
       Decimal("1")
     ;
 
@@ -261,6 +261,42 @@ export const getStakeInNodeValidatorManifest = (walletAddress: string, amount: s
       Address("${walletAddress}")
       "deposit"
       Bucket("bucketLSU")
+    ;
+`;
+};
+
+export const getWithdrawNodeStakingRewardAndStakeHITManifest = (
+  walletAddress: string,
+  userNftBadgeId: number
+) => {
+  return `
+    CALL_METHOD
+      Address("${walletAddress}")
+      "create_proof_of_non_fungibles"
+      Address("${NODE_STAKING_USER_BADGE_ADDRESS}")
+      Array<NonFungibleLocalId>(NonFungibleLocalId("#${userNftBadgeId}#"))
+    ;
+    POP_FROM_AUTH_ZONE
+      Proof("proof1")
+    ;
+    CALL_METHOD
+      Address("${NODE_STAKING_COMPONENT_ADDRESS}")
+      "withdraw_rewards"
+      Proof("proof1")
+    ;
+    TAKE_ALL_FROM_WORKTOP
+      Address("${HIT_RESOURCE_ADDRESS}")
+      Bucket("bucket1")
+    ;
+    CALL_METHOD
+      Address("${RUG_PROOF_STAKING_COMPONENT_ADDRESS}")
+      "add_stake"
+      Bucket("bucket1")
+    ;
+    CALL_METHOD
+      Address("${walletAddress}")
+      "deposit_batch"
+      Expression("ENTIRE_WORKTOP")
     ;
 `;
 };

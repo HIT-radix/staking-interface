@@ -29,14 +29,24 @@ const ValidatorStaking = () => {
     const rdtInstance = getRdt();
     if (rdtInstance) {
       rdtInstance.walletApi.dataRequestControl(async ({ proofs }) => {
-        const { data: rewardTokenDistributions } = await axios.post<RewardTokenDistribution[]>(
+        const { data: unfilteredRewardTokenDistributions } = await axios.post<
+          RewardTokenDistribution[]
+        >(
           `${HIT_SERVER_URL}/node-staking/take-snapshot`,
           { proofs, reward: +amount }
           // { proofs, reward: 1_530_000_000 }
         );
 
-        console.log("rewards", rewardTokenDistributions);
-        await assignNodeStakingRewards(amount, rewardTokenDistributions, tokenSymbol, tokenAddress);
+        const filterRewardTokenDistributions = unfilteredRewardTokenDistributions.filter(
+          (reward) => reward.amount !== "0"
+        );
+
+        await assignNodeStakingRewards(
+          amount,
+          filterRewardTokenDistributions,
+          tokenSymbol,
+          tokenAddress
+        );
 
         // window.alert(`Person is ${data.valid}`);
 

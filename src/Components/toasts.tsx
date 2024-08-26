@@ -198,6 +198,16 @@ export const ClaimSuccessToast = ({ txId }: { txId: string }) => {
   );
 };
 
+export const ClaimAndStakeSuccessToast = ({ txId }: { txId: string }) => {
+  return (
+    <BaseToast
+      heading="Claim And Stake Successful"
+      subHeading={`Rewards claimed and HIT staked successfully`}
+      txId={txId}
+    />
+  );
+};
+
 export const TxRejectedToast = () => {
   return (
     <BaseToast

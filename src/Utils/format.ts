@@ -1,8 +1,6 @@
 import {
-  RUG_PRROF_STAKING_OWNER_BADGE_ADDRESS,
-  HIT_RESOURCE_ADDRESS,
+  RUG_PROOF_STAKING_OWNER_BADGE_ADDRESS,
   NODE_STAKING_OWNER_BADGE_ADDRESS,
-  STHIT_RESOURCE_ADDRESS,
 } from "Constants/address";
 import { radixDashboardBaseUrl } from "Constants/misc";
 import { ResourceDetails } from "Types/api";
@@ -101,7 +99,7 @@ export const extractBalances = (
       balances[token.symbol] = resource.amount;
     } else if (
       searchForOwner &&
-      (resource.resource_address === RUG_PRROF_STAKING_OWNER_BADGE_ADDRESS ||
+      (resource.resource_address === RUG_PROOF_STAKING_OWNER_BADGE_ADDRESS ||
         resource.resource_address === NODE_STAKING_OWNER_BADGE_ADDRESS) &&
       +resource.amount > 0
     ) {

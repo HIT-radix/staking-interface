@@ -1,15 +1,18 @@
 import redirectIcon from "Assets/Images/share.png";
 import InfoTile from "Components/infoTile";
 import { useSelector } from "Store";
-import { withdrawNodeStakingRewards } from "Utils/txSenders";
+import { withdrawNodeStakingRewards, withdrawNodeStakingRewardsAndStakeHIT } from "Utils/txSenders";
 import hitLogo from "Assets/Images/hit-logo.png";
 import fomoLogo from "Assets/Images/fomo.png";
 import { useEffect, useMemo, useState } from "react";
 import { fetchClaimableNodeStakingRewards } from "Utils/fetchers";
 import { ClaimableRewardsInfo } from "Types/token";
 import { formatTokenAmount } from "Utils/format";
+import { InfoTooltip } from "Components/tooltip";
 
 const Controls = () => {
+  const [shouldRestakeHIT, setShouldRestakeHIT] = useState(false);
+
   const NodeStakeNFTid = useSelector((state) => state.staking.NodeStakeNFTid);
   const nodeStakingRewardsLoading = useSelector((state) => state.loadings.nodeStakingRewards);
   const successTxCount = useSelector((state) => state.session.successTxCount);
@@ -30,6 +33,14 @@ const Controls = () => {
   const allowWithdraw = useMemo(() => {
     return Number(claimableRewards.HIT) > 0 || Number(claimableRewards.FOMO) > 0;
   }, [claimableRewards]);
+
+  const handleWithdrawRewards = (nftId: number) => {
+    if (shouldRestakeHIT) {
+      withdrawNodeStakingRewardsAndStakeHIT(nftId);
+    } else {
+      withdrawNodeStakingRewards(nftId);
+    }
+  };
 
   return (
     <div className="w-full mt-3">
@@ -71,12 +82,27 @@ const Controls = () => {
             isLoading={nodeStakingRewardsLoading}
           />
           {allowWithdraw && (
-            <div
-              className="btn bg-accent w-full hover:bg-accent mt-1"
-              onClick={() => withdrawNodeStakingRewards(NodeStakeNFTid)}
-            >
-              Withdraw Rewards 🎉
-            </div>
+            <>
+              <div
+                className="btn bg-accent w-full hover:bg-accent mt-1"
+                onClick={() => handleWithdrawRewards(NodeStakeNFTid)}
+              >
+                Withdraw Rewards 🎉
+              </div>
+              <div className="flex items-center justify-start mt-0.5">
+                <input
+                  type="checkbox"
+                  className="checkbox checkbox-accent checkbox-sm"
+                  onChange={(e) => setShouldRestakeHIT(e.target.checked)}
+                />
+                <p className="ml-2 text-accent">
+                  Withdraw and stake HIT in the same transaction?{" "}
+                  <span>
+                    <InfoTooltip text="Upon withdraw, HITs will be staked while you get stHIT and FOMO in your wallet" />
+                  </span>{" "}
+                </p>
+              </div>
+            </>
           )}
         </>
       )}

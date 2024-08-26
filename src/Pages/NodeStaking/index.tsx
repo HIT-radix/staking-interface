@@ -36,31 +36,6 @@ const NodeStaking = () => {
               <Controls />
             </>
           )}
-
-          {/* 
-      <div
-        className="btn bg-accent"
-        onClick={() => depositNodeStakingRewards("12", StakingTokens.HIT, HIT_RESOURCE_ADDRESS)}
-      >
-        Deposit Rewards
-      </div>
-      <div
-        className="btn bg-accent"
-        onClick={() =>
-          assignNodeStakingRewards(
-            "7",
-            [{ id: 2, amount: "7" }],
-            StakingTokens.HIT,
-            HIT_RESOURCE_ADDRESS
-          )
-        }
-      >
-        Assign Rewards
-      </div>
-      <div className="btn bg-accent" onClick={() => withdrawNodeStakingRewards(2)}>
-        Withdraw Rewards
-      </div>
-       */}
         </div>
       </div>
     </>
