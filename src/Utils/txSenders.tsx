@@ -37,7 +37,7 @@ import {
   getWithdrawNodeStakingRewardAndStakeHITManifest,
   getWithdrawNodeStakingRewardsManifest,
 } from "./manifests";
-import { RewardTokenDistribution } from "Types/token";
+import { ClaimableRewardsInfo, RewardTokenDistribution } from "Types/token";
 
 type Props = {
   amount: string;
@@ -261,18 +261,29 @@ export const withdrawNodeStakingRewards = async (userNftBadgeId: number) => {
   }
 };
 
-export const withdrawNodeStakingRewardsAndStakeHIT = async (userNftBadgeId: number) => {
+export const withdrawNodeStakingRewardsAndStakeHIT = async (
+  userNftBadgeId: number,
+  claimableRewards: ClaimableRewardsInfo
+) => {
   try {
     const {
       app: { walletAddress },
     } = store.getState();
 
-    await baseTxSender({
+    const isSuccess = await baseTxSender({
       amount: "",
       txManifest: getWithdrawNodeStakingRewardAndStakeHITManifest(walletAddress, userNftBadgeId),
       ToastElement: ClaimAndStakeSuccessToast,
       tokenSymbol: StakingTokens.HIT,
     });
+
+    if (isSuccess) {
+      await axios.post(`${HIT_SERVER_URL}/emit-stake-message`, {
+        message: `${formatTokenAmount(
+          Number(claimableRewards.HIT as string)
+        )} HIT has been staked! 💉`,
+      });
+    }
   } catch (error) {
     console.log("Unable to withdraw node staking rewards");
   }

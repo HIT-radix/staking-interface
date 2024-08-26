@@ -34,9 +34,9 @@ const Controls = () => {
     return Number(claimableRewards.HIT) > 0 || Number(claimableRewards.FOMO) > 0;
   }, [claimableRewards]);
 
-  const handleWithdrawRewards = (nftId: number) => {
+  const handleWithdrawRewards = (nftId: number, claimableRewards: ClaimableRewardsInfo) => {
     if (shouldRestakeHIT) {
-      withdrawNodeStakingRewardsAndStakeHIT(nftId);
+      withdrawNodeStakingRewardsAndStakeHIT(nftId, claimableRewards);
     } else {
       withdrawNodeStakingRewards(nftId);
     }
@@ -85,7 +85,7 @@ const Controls = () => {
             <>
               <div
                 className="btn bg-accent w-full hover:bg-accent mt-1"
-                onClick={() => handleWithdrawRewards(NodeStakeNFTid)}
+                onClick={() => handleWithdrawRewards(NodeStakeNFTid, claimableRewards)}
               >
                 Withdraw Rewards 🎉
               </div>
@@ -98,7 +98,7 @@ const Controls = () => {
                 <p className="ml-2 text-accent">
                   Withdraw and stake HIT in the same transaction?{" "}
                   <span>
-                    <InfoTooltip text="Upon withdraw, HITs will be staked while you get stHIT and FOMO in your wallet" />
+                    <InfoTooltip text="Upon withdraw, HITs will be staked so you get stHIT and FOMO in your wallet" />
                   </span>{" "}
                 </p>
               </div>
