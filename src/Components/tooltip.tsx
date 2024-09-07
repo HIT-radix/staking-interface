@@ -1,6 +1,8 @@
 import { ReactNode } from "react";
 
-import InfoIcon from "Assets/Svgs/info.svg";
+import InfoIconWhite from "Assets/Svgs/info.svg";
+import InfoIconGreen from "Assets/Svgs/info-green.svg";
+import { InfoTooltipProps } from "Types/misc";
 
 type Props = {
   children: ReactNode;
@@ -19,10 +21,14 @@ export const Tooltip = ({ children, twClasses = "", text }: Props) => {
   );
 };
 
-export const InfoTooltip = ({ text }: { text: string }) => {
+export const InfoTooltip = ({ text, infoColor = "white" }: InfoTooltipProps) => {
   return (
     <Tooltip text={text} twClasses="font-normal">
-      <img src={InfoIcon} alt="InfoIcon" className="ml-1" />
+      <img
+        src={infoColor === "white" ? InfoIconWhite : InfoIconGreen}
+        alt="InfoIcon"
+        className="ml-1"
+      />
     </Tooltip>
   );
 };

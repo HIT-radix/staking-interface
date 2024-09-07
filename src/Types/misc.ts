@@ -10,3 +10,8 @@ export enum Environment {
   dev = "dev",
   prod = "prod",
 }
+
+export type InfoTooltipProps = {
+  text: string;
+  infoColor?: "green" | "white";
+};

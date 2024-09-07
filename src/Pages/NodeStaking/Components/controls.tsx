@@ -16,6 +16,11 @@ const Controls = () => {
   const NodeStakeNFTid = useSelector((state) => state.staking.NodeStakeNFTid);
   const nodeStakingRewardsLoading = useSelector((state) => state.loadings.nodeStakingRewards);
   const successTxCount = useSelector((state) => state.session.successTxCount);
+  const lockedNodeStakingHits = useSelector((state) => state.staking.lockedNodeStakingHits);
+  const lockedNodeStakingFomos = useSelector((state) => state.staking.lockedNodeStakingFomos);
+  const nodeStakingComponentDataLoading = useSelector(
+    (state) => state.loadings.nodeStakingComponentDataLoading
+  );
 
   const [claimableRewards, setClaimableRewards] = useState<ClaimableRewardsInfo>({
     HIT: "0",
@@ -57,6 +62,32 @@ const Controls = () => {
         <span>
           <img src={redirectIcon} alt="redirectIcon" className="w-4" />
         </span>
+      </div>
+      <div className="mb-1">
+        <InfoTile
+          title="Total Locked Rewards in component🔒"
+          value={
+            <div>
+              <div className="flex items-center">
+                <img src={hitLogo} alt="hit-logo" className="w-5" />
+                <p className="text-lg font-semibold ml-1" title={lockedNodeStakingHits}>
+                  $HIT : {formatTokenAmount(+lockedNodeStakingHits)}
+                </p>
+              </div>
+              <div className="flex items-center mt-2">
+                <img src={fomoLogo} alt="hit-logo" className="w-5" />
+                <p className="text-lg font-semibold ml-1" title={lockedNodeStakingFomos}>
+                  $FOMO : {formatTokenAmount(+lockedNodeStakingFomos)}
+                </p>
+              </div>
+            </div>
+          }
+          isLoading={nodeStakingComponentDataLoading}
+          infoTooltipProps={{
+            text: "Total unclaimed rewards + rewards that are yet to be distributed.",
+            infoColor: "green",
+          }}
+        />
       </div>
 
       {NodeStakeNFTid && (

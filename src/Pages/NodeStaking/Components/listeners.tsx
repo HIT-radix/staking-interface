@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { useSelector } from "Store";
 import { getRdt } from "subs";
-import { findNodeStakeNFT } from "Utils/fetchers";
+import { fetchNodeStakingComponentDetails, findNodeStakeNFT } from "Utils/fetchers";
 
 const Listeners = () => {
   const walletAddress = useSelector((state) => state.app.walletAddress);
@@ -14,6 +14,10 @@ const Listeners = () => {
       findNodeStakeNFT(walletAddress);
     }
   }, [walletAddress, successTxCount]);
+
+  useEffect(() => {
+    fetchNodeStakingComponentDetails();
+  }, []);
 
   return <></>;
 };

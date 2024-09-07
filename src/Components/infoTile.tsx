@@ -1,17 +1,27 @@
 import { ReactNode } from "react";
 import Skeleton from "react-loading-skeleton";
+import { InfoTooltip } from "./tooltip";
+import { InfoTooltipProps } from "Types/misc";
 
 type Props = {
-  title: string;
+  title: string | ReactNode;
   value: string | number | ReactNode;
   isLoading: boolean;
   tooltip?: string;
+  infoTooltipProps?: InfoTooltipProps;
 };
 
-const InfoTile = ({ title, value, isLoading, tooltip }: Props) => {
+const InfoTile = ({ title, value, isLoading, tooltip, infoTooltipProps }: Props) => {
   return (
     <div className="bg-accent rounded-lg px-3 py-2 w-full">
-      <p className="font-semibold text-sm opacity-80">{title}</p>
+      {typeof title === "string" ? (
+        <div className="flex items-center">
+          <p className="font-semibold text-sm opacity-80 ">{title}</p>
+          {infoTooltipProps ? <InfoTooltip {...infoTooltipProps} /> : null}
+        </div>
+      ) : (
+        title
+      )}
       {isLoading ? (
         <Skeleton
           baseColor="#242d20"
