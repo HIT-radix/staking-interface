@@ -5,6 +5,7 @@ export type AppReducer = {
   walletData: WalletDataState;
   hitPrice: number;
   walletAddress: string;
+  fomoPrice: number;
 };
 
 export enum Percentage {
@@ -47,6 +48,7 @@ export enum StakingTokens {
 export type SessionReducer = {
   successTxCount: number;
   tokenData?: TokenData;
+  fomoTokenData?: TokenData;
   hitBalance: string;
   fomoBalance: string;
 };

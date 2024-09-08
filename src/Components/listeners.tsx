@@ -5,9 +5,9 @@ import { Tabs } from "Types/reducers";
 import {
   fetchBalances,
   fetchRugProofComponentDetails,
-  fetchHITdata,
   fetchPoolDetails,
   fetchStHITTotalSupply,
+  fetchHitFomoData,
 } from "Utils/fetchers";
 import { BN } from "Utils/format";
 import { useEffect } from "react";
@@ -29,7 +29,7 @@ const Listeners = () => {
   }, []);
 
   useEffect(() => {
-    fetchHITdata();
+    fetchHitFomoData();
     fetchRugProofComponentDetails();
   }, []);
 

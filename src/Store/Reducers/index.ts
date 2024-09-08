@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { persistReducer } from "redux-persist";
+import { createMigrate, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { createAction } from "@reduxjs/toolkit";
 
@@ -13,7 +13,15 @@ const persistConfig = {
   key: "hit-staking-ts",
   storage,
   whitelist: ["app"],
-  // migrate: createMigrate({}),
+  migrate: createMigrate({
+    1: (state: any) => ({
+      ...state,
+      app: {
+        ...state.app,
+        fomoPrice: 0,
+      },
+    }),
+  }),
 };
 
 export const logout = createAction("USER_LOGOUT");

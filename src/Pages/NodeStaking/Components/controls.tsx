@@ -7,14 +7,17 @@ import fomoLogo from "Assets/Images/fomo.png";
 import { useEffect, useMemo, useState } from "react";
 import { fetchClaimableNodeStakingRewards } from "Utils/fetchers";
 import { ClaimableRewardsInfo } from "Types/token";
-import { formatTokenAmount } from "Utils/format";
+import { BN, formatDollarAmount, formatTokenAmount } from "Utils/format";
 import { InfoTooltip } from "Components/tooltip";
 
 const Controls = () => {
   const [shouldRestakeHIT, setShouldRestakeHIT] = useState(false);
 
+  const hitPrice = useSelector((state) => state.app.hitPrice);
+  const fomoPrice = useSelector((state) => state.app.fomoPrice);
   const NodeStakeNFTid = useSelector((state) => state.staking.NodeStakeNFTid);
   const nodeStakingRewardsLoading = useSelector((state) => state.loadings.nodeStakingRewards);
+  const tokenDataLoading = useSelector((state) => state.loadings.tokenDataLoading);
   const successTxCount = useSelector((state) => state.session.successTxCount);
   const lockedNodeStakingHits = useSelector((state) => state.staking.lockedNodeStakingHits);
   const lockedNodeStakingFomos = useSelector((state) => state.staking.lockedNodeStakingFomos);
@@ -26,6 +29,29 @@ const Controls = () => {
     HIT: "0",
     FOMO: "0",
   });
+
+  const claimableRewardsInUsd = useMemo(() => {
+    if (claimableRewards.HIT && claimableRewards.FOMO && hitPrice && fomoPrice) {
+      let hitInUsd =
+        Number(claimableRewards.HIT) === 0
+          ? undefined
+          : formatDollarAmount(new BN(claimableRewards.HIT).multipliedBy(hitPrice).toNumber());
+
+      let fomoInUsd =
+        Number(claimableRewards.FOMO) === 0
+          ? undefined
+          : formatDollarAmount(new BN(claimableRewards.FOMO).multipliedBy(fomoPrice).toNumber());
+
+      return {
+        HIT: hitInUsd,
+        FOMO: fomoInUsd,
+      };
+    }
+    return {
+      HIT: undefined,
+      FOMO: undefined,
+    };
+  }, [hitPrice, fomoPrice, claimableRewards.HIT, claimableRewards.FOMO]);
 
   useEffect(() => {
     (async () => {
@@ -46,6 +72,21 @@ const Controls = () => {
       withdrawNodeStakingRewards(nftId);
     }
   };
+
+  const lockedRewards = useMemo(() => {
+    const HITinUSD = new BN(lockedNodeStakingHits).multipliedBy(hitPrice).toNumber();
+    const FOMOinUSD = new BN(lockedNodeStakingFomos).multipliedBy(fomoPrice).toNumber();
+    return {
+      HIT: {
+        amount: lockedNodeStakingHits,
+        inUSD: HITinUSD === 0 ? undefined : formatDollarAmount(HITinUSD),
+      },
+      FOMO: {
+        amount: lockedNodeStakingFomos,
+        inUSD: FOMOinUSD === 0 ? undefined : formatDollarAmount(FOMOinUSD),
+      },
+    };
+  }, [hitPrice, lockedNodeStakingFomos, lockedNodeStakingHits, fomoPrice]);
 
   return (
     <div className="w-full mt-3">
@@ -70,19 +111,25 @@ const Controls = () => {
             <div>
               <div className="flex items-center">
                 <img src={hitLogo} alt="hit-logo" className="w-5" />
-                <p className="text-lg font-semibold ml-1" title={lockedNodeStakingHits}>
-                  $HIT : {formatTokenAmount(+lockedNodeStakingHits)}
+                <p className="text-lg font-semibold ml-1" title={lockedRewards.HIT.amount}>
+                  $HIT : {formatTokenAmount(+lockedRewards.HIT.amount)}{" "}
+                  {lockedRewards.HIT.inUSD && (
+                    <span className="text-[16px]">({lockedRewards.HIT.inUSD})</span>
+                  )}
                 </p>
               </div>
               <div className="flex items-center mt-2">
                 <img src={fomoLogo} alt="hit-logo" className="w-5" />
-                <p className="text-lg font-semibold ml-1" title={lockedNodeStakingFomos}>
-                  $FOMO : {formatTokenAmount(+lockedNodeStakingFomos)}
+                <p className="text-lg font-semibold ml-1" title={lockedRewards.FOMO.amount}>
+                  $FOMO : {formatTokenAmount(+lockedRewards.FOMO.amount)}{" "}
+                  {lockedRewards.FOMO.inUSD && (
+                    <span className="text-[16px]">({lockedRewards.FOMO.inUSD})</span>
+                  )}
                 </p>
               </div>
             </div>
           }
-          isLoading={nodeStakingComponentDataLoading}
+          isLoading={nodeStakingComponentDataLoading || tokenDataLoading}
           infoTooltipProps={{
             text: "Total unclaimed rewards + rewards that are yet to be distributed.",
             infoColor: "green",
@@ -99,18 +146,24 @@ const Controls = () => {
                 <div className="flex items-center">
                   <img src={hitLogo} alt="hit-logo" className="w-8" />
                   <p className="text-2xl font-bold ml-1" title={claimableRewards.HIT}>
-                    $HIT : {formatTokenAmount(Number(claimableRewards.HIT))}
+                    $HIT : {formatTokenAmount(Number(claimableRewards.HIT))}{" "}
+                    {claimableRewardsInUsd.HIT && (
+                      <span className="text-lg">({claimableRewardsInUsd.HIT})</span>
+                    )}
                   </p>
                 </div>
                 <div className="flex items-center mt-2">
                   <img src={fomoLogo} alt="hit-logo" className="w-8" />
                   <p className="text-2xl font-bold ml-1" title={claimableRewards.FOMO}>
-                    $FOMO : {formatTokenAmount(Number(claimableRewards.FOMO))}
+                    $FOMO : {formatTokenAmount(Number(claimableRewards.FOMO))}{" "}
+                    {claimableRewardsInUsd.FOMO && (
+                      <span className="text-lg">({claimableRewardsInUsd.FOMO})</span>
+                    )}
                   </p>
                 </div>
               </div>
             }
-            isLoading={nodeStakingRewardsLoading}
+            isLoading={nodeStakingRewardsLoading || tokenDataLoading}
           />
           {allowWithdraw && (
             <>

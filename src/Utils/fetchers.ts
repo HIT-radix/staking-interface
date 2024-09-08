@@ -2,8 +2,8 @@ import axios, { AxiosResponse } from "axios";
 
 import { Ociswap_baseurl, networkRPC } from "Constants/endpoints";
 import { store } from "Store";
-import { setHitPrice } from "Store/Reducers/app";
-import { setFomoBalance, setHitBalance, updateTokenData } from "Store/Reducers/session";
+import { setHitFomoPrices } from "Store/Reducers/app";
+import { setFomoBalance, setHitBalance, updateHitFomoData } from "Store/Reducers/session";
 import {
   setIsOwner,
   setLockedHITRewards,
@@ -88,20 +88,44 @@ export const getSelectedBalance = () => {
   return currentTab === Tabs.stake ? BN(hitBalance) : BN(stHitBalance);
 };
 
-export const fetchHITdata = async () => {
+export const fetchHitFomoData = async () => {
+  let hitPrice: number | undefined = undefined;
+  let fomoPrice: number | undefined = undefined;
+  let hitData: TokenData | undefined = undefined;
+  let fomoData: TokenData | undefined = undefined;
   try {
     store.dispatch(setTokenDataLoading(true));
-    const data = await axios.get<any, AxiosResponse<TokenData>>(
-      `${Ociswap_baseurl}/tokens/resource_rdx1t4v2jke9xkcrqra9sf3lzgpxwdr590npkt03vufty4pwuu205q03az`
-    );
-    if (data.status === 200) {
-      store.dispatch(setHitPrice(+data.data.price.usd.now));
-      store.dispatch(updateTokenData(data.data));
+
+    // Use Promise.all to fetch both tokens data simultaneously
+    const [hitDataResponse, fomoDataResponse] = await Promise.all([
+      axios.get<any, AxiosResponse<TokenData>>(`${Ociswap_baseurl}/tokens/${HIT_RESOURCE_ADDRESS}`),
+      axios.get<any, AxiosResponse<TokenData>>(
+        `${Ociswap_baseurl}/tokens/${FOMO_RESOURCE_ADDRESS}`
+      ),
+    ]);
+
+    // Handle HIT token response
+    if (hitDataResponse.status === 200) {
+      hitPrice = +hitDataResponse.data.price.usd.now;
+      hitData = hitDataResponse.data;
+    } else {
+      console.error("Failed to fetch HIT token data", hitDataResponse.status);
+    }
+
+    // Handle FOMO token response
+    if (fomoDataResponse.status === 200) {
+      fomoPrice = +fomoDataResponse.data.price.usd.now;
+      fomoData = fomoDataResponse.data;
+    } else {
+      console.error("Failed to fetch FOMO token data", fomoDataResponse.status);
     }
   } catch (error) {
-    console.log("error in fetchHITdata", error);
+    console.error("Error fetching token data", error);
+  } finally {
+    store.dispatch(setHitFomoPrices({ hit: hitPrice, fomo: fomoPrice }));
+    store.dispatch(updateHitFomoData({ hit: hitData, fomo: fomoData }));
+    store.dispatch(setTokenDataLoading(false));
   }
-  store.dispatch(setTokenDataLoading(false));
 };
 
 export const fetchStHITTotalSupply = async () => {
