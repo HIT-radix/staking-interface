@@ -36,7 +36,7 @@ export type StakingReducer = {
   NodeStakeNFTid?: number;
   lockedNodeStakingHits: string;
   lockedNodeStakingFomos: string;
-  oldLockedNodeStakingFomos: string;
+  // oldLockedNodeStakingFomos: string;
 };
 
 export enum StakingTokens {

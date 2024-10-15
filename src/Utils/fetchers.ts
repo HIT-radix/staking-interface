@@ -10,7 +10,7 @@ import {
   setLockedNodeStakingFomos,
   setLockedNodeStakingHits,
   setNodeStakeNFTid,
-  setOldLockedNodeStakingFomos,
+  // setOldLockedNodeStakingFomos,
   setStHitBalance,
   setStHitTotalSupply,
   setStakedHIT,
@@ -29,8 +29,8 @@ import {
   HIT_RESOURCE_ADDRESS,
   FOMO_RESOURCE_ADDRESS,
   NODE_STAKING_COMPONENT_ADDRESS,
-  OLD_FOMO_RESOURCE_ADDRESS,
-  OLD_NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS,
+  // OLD_FOMO_RESOURCE_ADDRESS,
+  // OLD_NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS,
 } from "Constants/address";
 import {
   setRugProofComponentDataLoading,
@@ -203,7 +203,7 @@ export const fetchRugProofComponentDetails = async () => {
 export const fetchNodeStakingComponentDetails = async () => {
   let lockedHITs = "0";
   let lockedFOMOs = "0";
-  let oldLockedFOMOs = "0";
+  // let oldLockedFOMOs = "0";
   try {
     store.dispatch(setNodeStakingComponentDataLoading(true));
     const response = await axios.post<any, AxiosResponse<EntityDetails>>(
@@ -217,18 +217,18 @@ export const fetchNodeStakingComponentDetails = async () => {
       const { balances } = extractBalances(response.data.items[0].fungible_resources.items, [
         { symbol: StakingTokens.HIT, address: HIT_RESOURCE_ADDRESS },
         { symbol: StakingTokens.FOMO, address: FOMO_RESOURCE_ADDRESS },
-        { symbol: `old${StakingTokens.FOMO}`, address: OLD_FOMO_RESOURCE_ADDRESS },
+        // { symbol: `old${StakingTokens.FOMO}`, address: OLD_FOMO_RESOURCE_ADDRESS },
       ]);
       lockedHITs = balances[StakingTokens.HIT];
       lockedFOMOs = balances[StakingTokens.FOMO];
-      oldLockedFOMOs = balances[`old${StakingTokens.FOMO}`];
+      // oldLockedFOMOs = balances[`old${StakingTokens.FOMO}`];
     }
   } catch (error) {
     console.log("error in fetchNodeStakingComponentDetails", error);
   }
   store.dispatch(setLockedNodeStakingHits(lockedHITs));
   store.dispatch(setLockedNodeStakingFomos(lockedFOMOs));
-  store.dispatch(setOldLockedNodeStakingFomos(oldLockedFOMOs));
+  // store.dispatch(setOldLockedNodeStakingFomos(oldLockedFOMOs));
   store.dispatch(setNodeStakingComponentDataLoading(false));
 };
 
@@ -256,10 +256,14 @@ export const fetchClaimableNodeStakingRewards = async (nftId: number) => {
   const keyValueAddressesWithTheirTokens = [
     { address: NODE_STAKING_HIT_KEY_VALUE_STORE_ADDRESS, token: StakingTokens.HIT },
     { address: NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS, token: StakingTokens.FOMO },
-    { address: OLD_NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS, token: `old${StakingTokens.FOMO}` },
+    // { address: OLD_NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS, token: `old${StakingTokens.FOMO}` },
   ];
 
-  let claimableRewards = { HIT: "0", FOMO: "0", oldFOMO: "0" };
+  let claimableRewards = {
+    HIT: "0",
+    FOMO: "0",
+    // oldFOMO: "0"
+  };
 
   try {
     store.dispatch(setNodeStakingRewardsLoading(true));
