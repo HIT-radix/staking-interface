@@ -3,7 +3,8 @@ import InfoTile from "Components/infoTile";
 import { useSelector } from "Store";
 import { withdrawNodeStakingRewards, withdrawNodeStakingRewardsAndStakeHIT } from "Utils/txSenders";
 import hitLogo from "Assets/Images/hit-logo.png";
-import fomoLogo from "Assets/Images/fomo.png";
+// import fomoLogo from "Assets/Images/fomo.png";
+import newfomoLogo from "Assets/Images/fomo-new.jpg";
 import { useEffect, useMemo, useState } from "react";
 import { fetchClaimableNodeStakingRewards } from "Utils/fetchers";
 import { ClaimableRewardsInfo } from "Types/token";
@@ -21,13 +22,15 @@ const Controls = () => {
   const successTxCount = useSelector((state) => state.session.successTxCount);
   const lockedNodeStakingHits = useSelector((state) => state.staking.lockedNodeStakingHits);
   const lockedNodeStakingFomos = useSelector((state) => state.staking.lockedNodeStakingFomos);
+  // const oldLockedNodeStakingFomos = useSelector((state) => state.staking.oldLockedNodeStakingFomos);
   const nodeStakingComponentDataLoading = useSelector(
     (state) => state.loadings.nodeStakingComponentDataLoading
   );
 
-  const [claimableRewards, setClaimableRewards] = useState<ClaimableRewardsInfo>({
+  const [claimableRewards, setClaimableRewards] = useState({
     HIT: "0",
     FOMO: "0",
+    // oldFOMO: "0",
   });
 
   const claimableRewardsInUsd = useMemo(() => {
@@ -42,16 +45,23 @@ const Controls = () => {
           ? undefined
           : formatDollarAmount(new BN(claimableRewards.FOMO).multipliedBy(fomoPrice).toNumber());
 
+      // let oldFomoInUsd =
+      //   Number(claimableRewards.oldFOMO) === 0
+      //     ? undefined
+      //     : formatDollarAmount(new BN(claimableRewards.oldFOMO).multipliedBy(fomoPrice).toNumber());
+
       return {
         HIT: hitInUsd,
         FOMO: fomoInUsd,
+        // oldFOMO: oldFomoInUsd,
       };
     }
     return {
       HIT: undefined,
       FOMO: undefined,
+      oldFOMO: undefined,
     };
-  }, [hitPrice, fomoPrice, claimableRewards.HIT, claimableRewards.FOMO]);
+  }, [claimableRewards.HIT, claimableRewards.FOMO, hitPrice, fomoPrice]);
 
   useEffect(() => {
     (async () => {
@@ -76,6 +86,7 @@ const Controls = () => {
   const lockedRewards = useMemo(() => {
     const HITinUSD = new BN(lockedNodeStakingHits).multipliedBy(hitPrice).toNumber();
     const FOMOinUSD = new BN(lockedNodeStakingFomos).multipliedBy(fomoPrice).toNumber();
+    // const oldFOMOinUSD = new BN(oldLockedNodeStakingFomos).multipliedBy(fomoPrice).toNumber();
     return {
       HIT: {
         amount: lockedNodeStakingHits,
@@ -85,6 +96,10 @@ const Controls = () => {
         amount: lockedNodeStakingFomos,
         inUSD: FOMOinUSD === 0 ? undefined : formatDollarAmount(FOMOinUSD),
       },
+      // oldFOMO: {
+      //   amount: oldLockedNodeStakingFomos,
+      //   inUSD: oldFOMOinUSD === 0 ? undefined : formatDollarAmount(oldFOMOinUSD),
+      // },
     };
   }, [hitPrice, lockedNodeStakingFomos, lockedNodeStakingHits, fomoPrice]);
 
@@ -110,7 +125,7 @@ const Controls = () => {
           value={
             <div>
               <div className="flex items-center">
-                <img src={hitLogo} alt="hit-logo" className="w-5" />
+                <img src={hitLogo} alt="hit-logo" className="w-5 h-5 rounded-full" />
                 <p className="text-lg font-semibold ml-1" title={lockedRewards.HIT.amount}>
                   $HIT : {formatTokenAmount(+lockedRewards.HIT.amount)}{" "}
                   {lockedRewards.HIT.inUSD && (
@@ -119,7 +134,7 @@ const Controls = () => {
                 </p>
               </div>
               <div className="flex items-center mt-2">
-                <img src={fomoLogo} alt="hit-logo" className="w-5" />
+                <img src={newfomoLogo} alt="hit-logo" className="w-5 h-5 rounded-full" />
                 <p className="text-lg font-semibold ml-1" title={lockedRewards.FOMO.amount}>
                   $FOMO : {formatTokenAmount(+lockedRewards.FOMO.amount)}{" "}
                   {lockedRewards.FOMO.inUSD && (
@@ -127,6 +142,16 @@ const Controls = () => {
                   )}
                 </p>
               </div>
+              {/* <div className="flex items-center mt-2">
+                <img src={fomoLogo} alt="hit-logo" className="w-5 h-5 rounded-full" />
+                <p className="text-lg font-semibold ml-1" title={lockedRewards.oldFOMO.amount}>
+                  $FOMO : {formatTokenAmount(+lockedRewards.oldFOMO.amount)}{" "}
+                  {lockedRewards.oldFOMO.inUSD && (
+                    <span className="text-[16px]">({lockedRewards.oldFOMO.inUSD})</span>
+                  )}
+                </p>
+                <p className="text-sm ml-2 font-semibold opacity-80">(old)</p>
+              </div> */}
             </div>
           }
           isLoading={nodeStakingComponentDataLoading || tokenDataLoading}
@@ -144,7 +169,7 @@ const Controls = () => {
             value={
               <div>
                 <div className="flex items-center">
-                  <img src={hitLogo} alt="hit-logo" className="w-8" />
+                  <img src={hitLogo} alt="hit-logo" className="w-7 h-7 rounded-full" />
                   <p className="text-2xl font-bold ml-1" title={claimableRewards.HIT}>
                     $HIT : {formatTokenAmount(Number(claimableRewards.HIT))}{" "}
                     {claimableRewardsInUsd.HIT && (
@@ -153,14 +178,24 @@ const Controls = () => {
                   </p>
                 </div>
                 <div className="flex items-center mt-2">
-                  <img src={fomoLogo} alt="hit-logo" className="w-8" />
+                  <img src={newfomoLogo} alt="hit-logo" className="w-7 h-7 rounded-full" />
                   <p className="text-2xl font-bold ml-1" title={claimableRewards.FOMO}>
                     $FOMO : {formatTokenAmount(Number(claimableRewards.FOMO))}{" "}
                     {claimableRewardsInUsd.FOMO && (
                       <span className="text-lg">({claimableRewardsInUsd.FOMO})</span>
-                    )}
+                    )}{" "}
                   </p>
                 </div>
+                {/* <div className="flex items-center mt-2">
+                  <img src={fomoLogo} alt="hit-logo" className="w-7 h-7 rounded-full" />
+                  <p className="text-2xl font-bold ml-1" title={claimableRewards.oldFOMO}>
+                    $FOMO : {formatTokenAmount(Number(claimableRewards.oldFOMO))}{" "}
+                    {claimableRewardsInUsd.oldFOMO && (
+                      <span className="text-lg">({claimableRewardsInUsd.oldFOMO})</span>
+                    )}{" "}
+                  </p>
+                  <p className="text-sm ml-2 font-semibold opacity-80">(old)</p>
+                </div> */}
               </div>
             }
             isLoading={nodeStakingRewardsLoading || tokenDataLoading}
