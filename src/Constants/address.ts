@@ -69,6 +69,11 @@ export const NODE_STAKING_HIT_KEY_VALUE_STORE_ADDRESS =
 export const NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS =
   process.env.REACT_APP_ENVIRONMENT === Environment.dev
     ? "internal_keyvaluestore_tdx_2_1kzlxcs94slutg6raf9gc9kde7xyv7zd2dkqfkx0p2n80uhl88esah5"
+    : "internal_keyvaluestore_rdx1kz354c7kuzqjz9fmp0qvn7gulha678edjw5u02tugvt0tejepnzmu9";
+
+export const OLD_NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS =
+  process.env.REACT_APP_ENVIRONMENT === Environment.dev
+    ? "internal_keyvaluestore_tdx_2_1kzlxcs94slutg6raf9gc9kde7xyv7zd2dkqfkx0p2n80uhl88esah5"
     : "internal_keyvaluestore_rdx1kqc5uy3gu2j6v9sdjrz72n0axlmldvkqu24evdyqdjrh23xqd0demj";
 
 export const OLD_FOMO_RESOURCE_ADDRESS =

@@ -10,12 +10,13 @@ import {
   setLockedNodeStakingFomos,
   setLockedNodeStakingHits,
   setNodeStakeNFTid,
+  setOldLockedNodeStakingFomos,
   setStHitBalance,
   setStHitTotalSupply,
   setStakedHIT,
 } from "Store/Reducers/staking";
 import { StakingTokens, Tabs } from "Types/reducers";
-import { ClaimableRewardsInfo, TokenData } from "Types/token";
+import { TokenData } from "Types/token";
 import { BN, extractBalances } from "./format";
 import { EntityDetails } from "Types/api";
 import {
@@ -28,6 +29,8 @@ import {
   HIT_RESOURCE_ADDRESS,
   FOMO_RESOURCE_ADDRESS,
   NODE_STAKING_COMPONENT_ADDRESS,
+  OLD_FOMO_RESOURCE_ADDRESS,
+  OLD_NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS,
 } from "Constants/address";
 import {
   setRugProofComponentDataLoading,
@@ -200,6 +203,7 @@ export const fetchRugProofComponentDetails = async () => {
 export const fetchNodeStakingComponentDetails = async () => {
   let lockedHITs = "0";
   let lockedFOMOs = "0";
+  let oldLockedFOMOs = "0";
   try {
     store.dispatch(setNodeStakingComponentDataLoading(true));
     const response = await axios.post<any, AxiosResponse<EntityDetails>>(
@@ -213,15 +217,18 @@ export const fetchNodeStakingComponentDetails = async () => {
       const { balances } = extractBalances(response.data.items[0].fungible_resources.items, [
         { symbol: StakingTokens.HIT, address: HIT_RESOURCE_ADDRESS },
         { symbol: StakingTokens.FOMO, address: FOMO_RESOURCE_ADDRESS },
+        { symbol: `old${StakingTokens.FOMO}`, address: OLD_FOMO_RESOURCE_ADDRESS },
       ]);
       lockedHITs = balances[StakingTokens.HIT];
       lockedFOMOs = balances[StakingTokens.FOMO];
+      oldLockedFOMOs = balances[`old${StakingTokens.FOMO}`];
     }
   } catch (error) {
     console.log("error in fetchNodeStakingComponentDetails", error);
   }
   store.dispatch(setLockedNodeStakingHits(lockedHITs));
   store.dispatch(setLockedNodeStakingFomos(lockedFOMOs));
+  store.dispatch(setOldLockedNodeStakingFomos(oldLockedFOMOs));
   store.dispatch(setNodeStakingComponentDataLoading(false));
 };
 
@@ -249,9 +256,10 @@ export const fetchClaimableNodeStakingRewards = async (nftId: number) => {
   const keyValueAddressesWithTheirTokens = [
     { address: NODE_STAKING_HIT_KEY_VALUE_STORE_ADDRESS, token: StakingTokens.HIT },
     { address: NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS, token: StakingTokens.FOMO },
+    { address: OLD_NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS, token: `old${StakingTokens.FOMO}` },
   ];
 
-  let claimableRewards: ClaimableRewardsInfo = { HIT: "0", FOMO: "0" };
+  let claimableRewards = { HIT: "0", FOMO: "0", oldFOMO: "0" };
 
   try {
     store.dispatch(setNodeStakingRewardsLoading(true));
@@ -266,9 +274,13 @@ export const fetchClaimableNodeStakingRewards = async (nftId: number) => {
       )
     );
     keyValueDataResponses.forEach((response, index) => {
-      if (response.entries[0].value.programmatic_json.kind === "Decimal") {
-        claimableRewards[keyValueAddressesWithTheirTokens[index].token] =
-          response.entries[0].value.programmatic_json.value;
+      if (
+        response.entries.length > 0 &&
+        response.entries[0].value.programmatic_json.kind === "Decimal"
+      ) {
+        claimableRewards[
+          keyValueAddressesWithTheirTokens[index].token as keyof typeof claimableRewards
+        ] = response.entries[0].value.programmatic_json.value;
       }
     });
   } catch (error) {
