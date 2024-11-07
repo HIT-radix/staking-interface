@@ -106,6 +106,7 @@ const ValidatorStaking = () => {
           await depositNodeStakingRewards(amount, StakingTokens.FOMO, FOMO_RESOURCE_ADDRESS)
         }
         btnText="Lock FOMO tokens"
+        tokenSymbol={StakingTokens.FOMO}
       />
       <GeneralOwnerInterface
         heading="Take Snapshot and Distribute locked HIT"
@@ -124,6 +125,7 @@ const ValidatorStaking = () => {
           await verifyAndDistribute(amount, StakingTokens.FOMO, FOMO_RESOURCE_ADDRESS)
         }
         btnText="Distribute FOMO tokens"
+        tokenSymbol={StakingTokens.FOMO}
       />
     </div>
   );

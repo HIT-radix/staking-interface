@@ -12,6 +12,7 @@ type Props = {
   balance: string;
   onButtonClick: (amount: string) => Promise<void>;
   btnText: string;
+  tokenSymbol?: StakingTokens;
 };
 
 const GeneralOwnerInterface = ({
@@ -20,6 +21,7 @@ const GeneralOwnerInterface = ({
   heading,
   placeholder,
   btnText,
+  tokenSymbol = StakingTokens.HIT,
 }: Props) => {
   const [amount, setAmount] = useState("");
   const walletAddress = useSelector((state) => state.app.walletAddress);
@@ -52,11 +54,11 @@ const GeneralOwnerInterface = ({
         : !amount
         ? "Enter an amount"
         : isInSufficientBalance
-        ? `Insufficient ${StakingTokens.HIT}`
+        ? `Insufficient ${tokenSymbol}`
         : txInProgress
         ? "Processing"
         : btnText,
-    [amount, isInSufficientBalance, txInProgress, walletAddress, btnText]
+    [amount, tokenSymbol, isInSufficientBalance, txInProgress, walletAddress, btnText]
   );
 
   const handleClick = async () => {
