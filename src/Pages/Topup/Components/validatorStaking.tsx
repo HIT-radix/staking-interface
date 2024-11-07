@@ -29,26 +29,14 @@ const ValidatorStaking = () => {
     const rdtInstance = getRdt();
     if (rdtInstance) {
       rdtInstance.walletApi.dataRequestControl(async ({ proofs }) => {
-        const { data: unfilteredRewardTokenDistributions } = await axios.post<
-          RewardTokenDistribution[]
-        >(
+        const { data: RewardTokenDistributions } = await axios.post<RewardTokenDistribution[]>(
           `${HIT_SERVER_URL}/node-staking/take-snapshot`,
           { proofs, reward: +amount }
-          // { proofs, reward: 1_530_000_000 }
         );
 
-        const filterRewardTokenDistributions = unfilteredRewardTokenDistributions.filter(
-          (reward) => reward.amount !== "0"
-        );
+        console.log("RewardTokenDistributions", RewardTokenDistributions);
 
-        await assignNodeStakingRewards(
-          amount,
-          filterRewardTokenDistributions,
-          tokenSymbol,
-          tokenAddress
-        );
-
-        // window.alert(`Person is ${data.valid}`);
+        await assignNodeStakingRewards(amount, RewardTokenDistributions, tokenSymbol, tokenAddress);
 
         // reset this so it does not trigger on wallet connect button
         rdtInstance.walletApi.dataRequestControl(async () => {});

@@ -50,7 +50,7 @@ interface Details {
   package_address: string;
   blueprint_name: string;
   blueprint_version: string;
-  state: { default_deposit_rule: string };
+  state: Record<string, any>;
   role_assignments: {
     owner: {
       rule: {

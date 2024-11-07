@@ -201,9 +201,10 @@ export const fetchRugProofComponentDetails = async () => {
 };
 
 export const fetchNodeStakingComponentDetails = async () => {
-  let lockedHITs = "0";
-  let lockedFOMOs = "0";
-  // let oldLockedFOMOs = "0";
+  let totalHITs = "0";
+  let totalFOMOs = "0";
+  let assignedHITS = "0";
+  let assignedFOMOs = "0";
   try {
     store.dispatch(setNodeStakingComponentDataLoading(true));
     const response = await axios.post<any, AxiosResponse<EntityDetails>>(
@@ -219,15 +220,27 @@ export const fetchNodeStakingComponentDetails = async () => {
         { symbol: StakingTokens.FOMO, address: FOMO_RESOURCE_ADDRESS },
         // { symbol: `old${StakingTokens.FOMO}`, address: OLD_FOMO_RESOURCE_ADDRESS },
       ]);
-      lockedHITs = balances[StakingTokens.HIT];
-      lockedFOMOs = balances[StakingTokens.FOMO];
+      totalHITs = balances[StakingTokens.HIT];
+      totalFOMOs = balances[StakingTokens.FOMO];
       // oldLockedFOMOs = balances[`old${StakingTokens.FOMO}`];
+      console.log("response", response);
+      response.data.items[0].details.state.fields[2].entries.forEach((entry: any) => {
+        console.log("entry", entry);
+        switch (entry.key.value) {
+          case HIT_RESOURCE_ADDRESS:
+            assignedHITS = entry.value.fields[1].value;
+            break;
+          case FOMO_RESOURCE_ADDRESS:
+            assignedFOMOs = entry.value.fields[1].value;
+            break;
+        }
+      });
     }
   } catch (error) {
     console.log("error in fetchNodeStakingComponentDetails", error);
   }
-  store.dispatch(setLockedNodeStakingHits(lockedHITs));
-  store.dispatch(setLockedNodeStakingFomos(lockedFOMOs));
+  store.dispatch(setLockedNodeStakingHits(BN(totalHITs).minus(assignedHITS).toString()));
+  store.dispatch(setLockedNodeStakingFomos(BN(totalFOMOs).minus(assignedFOMOs).toString()));
   // store.dispatch(setOldLockedNodeStakingFomos(oldLockedFOMOs));
   store.dispatch(setNodeStakingComponentDataLoading(false));
 };
