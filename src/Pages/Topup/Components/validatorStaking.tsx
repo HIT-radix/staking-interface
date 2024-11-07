@@ -1,15 +1,17 @@
 import { DataRequestBuilder } from "@radixdlt/radix-dapp-toolkit";
 import axios from "axios";
+
 import GeneralOwnerInterface from "Components/generalOwnerInterface";
 import InfoTile from "Components/infoTile";
 import { FOMO_RESOURCE_ADDRESS, HIT_RESOURCE_ADDRESS } from "Constants/address";
 import { HIT_SERVER_URL } from "Constants/endpoints";
-import { useSelector } from "Store";
+import { dispatch, useSelector } from "Store";
+import { setRewardsModalData } from "Store/Reducers/session";
 import { getRdt } from "subs";
 import { StakingTokens } from "Types/reducers";
 import { RewardTokenDistribution } from "Types/token";
 import { formatTokenAmount } from "Utils/format";
-import { assignNodeStakingRewards, depositNodeStakingRewards } from "Utils/txSenders";
+import { depositNodeStakingRewards } from "Utils/txSenders";
 
 const ValidatorStaking = () => {
   const hitBalance = useSelector((state) => state.session.hitBalance);
@@ -34,9 +36,10 @@ const ValidatorStaking = () => {
           { proofs, reward: +amount }
         );
 
-        console.log("RewardTokenDistributions", RewardTokenDistributions);
-
-        await assignNodeStakingRewards(amount, RewardTokenDistributions, tokenSymbol, tokenAddress);
+        dispatch(
+          setRewardsModalData({ amount, RewardTokenDistributions, tokenSymbol, tokenAddress })
+        );
+        (document.getElementById("DistributionModal") as HTMLDialogElement).showModal();
 
         // reset this so it does not trigger on wallet connect button
         rdtInstance.walletApi.dataRequestControl(async () => {});

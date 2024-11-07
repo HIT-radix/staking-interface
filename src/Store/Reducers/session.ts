@@ -8,6 +8,7 @@ const initialState: SessionReducer = {
   hitBalance: "0",
   fomoBalance: "0",
   fomoTokenData: undefined,
+  rewardsModalData: undefined,
 };
 
 const session = createSlice({
@@ -34,6 +35,9 @@ const session = createSlice({
         state.fomoTokenData = action.payload.fomo;
       }
     },
+    setRewardsModalData(state, action: PayloadAction<SessionReducer["rewardsModalData"]>) {
+      state.rewardsModalData = action.payload;
+    },
   },
 });
 
@@ -45,4 +49,5 @@ export const {
   setHitBalance,
   setFomoBalance,
   updateHitFomoData,
+  setRewardsModalData,
 } = session.actions;

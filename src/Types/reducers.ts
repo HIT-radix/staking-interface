@@ -1,5 +1,5 @@
 import { WalletDataState } from "@radixdlt/radix-dapp-toolkit";
-import { TokenData } from "./token";
+import { RewardTokenDistribution, TokenData } from "./token";
 
 export type AppReducer = {
   walletData: WalletDataState;
@@ -52,6 +52,12 @@ export type SessionReducer = {
   fomoTokenData?: TokenData;
   hitBalance: string;
   fomoBalance: string;
+  rewardsModalData?: {
+    amount: string;
+    RewardTokenDistributions: RewardTokenDistribution[];
+    tokenSymbol: StakingTokens;
+    tokenAddress: string;
+  };
 };
 
 export type LoadingReducer = {
