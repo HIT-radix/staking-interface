@@ -223,9 +223,7 @@ export const fetchNodeStakingComponentDetails = async () => {
       totalHITs = balances[StakingTokens.HIT];
       totalFOMOs = balances[StakingTokens.FOMO];
       // oldLockedFOMOs = balances[`old${StakingTokens.FOMO}`];
-      console.log("response", response);
       response.data.items[0].details.state.fields[2].entries.forEach((entry: any) => {
-        console.log("entry", entry);
         switch (entry.key.value) {
           case HIT_RESOURCE_ADDRESS:
             assignedHITS = entry.value.fields[1].value;
