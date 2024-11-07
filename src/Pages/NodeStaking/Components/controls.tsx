@@ -156,7 +156,7 @@ const Controls = () => {
           }
           isLoading={nodeStakingComponentDataLoading || tokenDataLoading}
           infoTooltipProps={{
-            text: "Total unclaimed rewards + rewards that are yet to be distributed.",
+            text: "Rewards that are yet to be distributed among Stakers holding above NFT.",
             infoColor: "green",
           }}
         />
