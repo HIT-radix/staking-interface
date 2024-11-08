@@ -55,6 +55,7 @@ export enum StakingTokens {
   StHIT = "StHIT",
   FOMO = "FOMO",
   XRD = "XRD",
+  LSU = "LSU",
 }
 
 export type SessionReducer = {

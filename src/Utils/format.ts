@@ -153,3 +153,19 @@ export const toLocaleFormat = (value: string) => {
 export const formatRewardTokenDistribution = (
   rewardTokenDistributions: RewardTokenDistribution[]
 ) => rewardTokenDistributions.map(({ id, amount }) => `${id}u64 => Decimal("${amount}")`).join(",");
+
+export const calculateEstimatedUnlockDate = (epochUnlocked: number, currentEpoch: number) => {
+  const minutesPerEpoch = 5;
+  const currentDate = new Date();
+  const unlockDate = new Date(
+    currentDate.getTime() + (epochUnlocked - currentEpoch) * minutesPerEpoch * 60000
+  );
+  return unlockDate.toLocaleString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+};
