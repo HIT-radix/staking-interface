@@ -29,10 +29,12 @@ import {
   getDepositNodeStakingRewardsManifest,
   getDistributeHitTxManifest,
   getDistributeLockHitTxManifest,
+  getFinishUnlockLSUProcessManifest,
   getLockTxManifest,
   getMintNodeStakingRewardsNFTbadgeManifest,
   getStakeInNodeValidatorManifest,
   getStakeTxManifest,
+  getUnlockEarnedLSUManifest,
   getUnStakeTxManifest,
   getWithdrawNodeStakingRewardAndStakeHITManifest,
   getWithdrawNodeStakingRewardsManifest,
@@ -303,5 +305,39 @@ export const stakeInNodeValidator = async (amount: string) => {
     });
   } catch (error) {
     console.log("Unable to stake in node validator");
+  }
+};
+
+export const unlockNodeEarnedLSUs = async (amount: string) => {
+  try {
+    const {
+      app: { walletAddress },
+    } = store.getState();
+
+    return await baseTxSender({
+      amount,
+      txManifest: getUnlockEarnedLSUManifest(walletAddress, amount),
+      ToastElement: StakeSuccessToast,
+      tokenSymbol: StakingTokens.LSU,
+    });
+  } catch (error) {
+    console.log("Unable to unlock LSU in node validator");
+  }
+};
+
+export const finishNodeLSUnlockProcess = async () => {
+  try {
+    const {
+      app: { walletAddress },
+    } = store.getState();
+
+    return await baseTxSender({
+      amount: "0",
+      txManifest: getFinishUnlockLSUProcessManifest(walletAddress),
+      ToastElement: StakeSuccessToast,
+      tokenSymbol: StakingTokens.LSU,
+    });
+  } catch (error) {
+    console.log("Unable to finish unlock LSU process in node validator");
   }
 };

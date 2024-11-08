@@ -6,6 +6,7 @@ import { UnlockingRewards } from "Types/api";
 import { StakingTokens } from "Types/reducers";
 import { fetchValidatorInfo } from "Utils/fetchers";
 import { calculateEstimatedUnlockDate, formatTokenAmount } from "Utils/format";
+import { finishNodeLSUnlockProcess, unlockNodeEarnedLSUs } from "Utils/txSenders";
 
 const NodeManager = () => {
   const {
@@ -59,10 +60,9 @@ const NodeManager = () => {
         heading="Unlock Earned LSUs"
         placeholder="Enter LSU amount to unlock"
         balance={currentlyEarnedLockedLSUs}
-        onButtonClick={
-          async (amount) => {}
-          //   await depositNodeStakingRewards(amount, StakingTokens.HIT, HIT_RESOURCE_ADDRESS)
-        }
+        onButtonClick={async (amount) => {
+          await unlockNodeEarnedLSUs(amount);
+        }}
         btnText="Unlock Earned LSUs"
         tokenSymbol={StakingTokens.LSU}
       />
@@ -86,7 +86,11 @@ const NodeManager = () => {
         />
       </div>
       <div
-        // onClick={handleClick}
+        onClick={async () => {
+          if (Number(unlockedLSUs) > 0) {
+            await finishNodeLSUnlockProcess();
+          }
+        }}
         className={`btn btn-accent px-20 ${
           Number(unlockedLSUs) > 0 ? "cursor-pointer opacity-100" : "cursor-not-allowed opacity-30"
         }`}

@@ -300,3 +300,43 @@ export const getWithdrawNodeStakingRewardAndStakeHITManifest = (
     ;
 `;
 };
+
+export const getUnlockEarnedLSUManifest = (walletAddress: string, amount: string) => {
+  return `
+    CALL_METHOD 
+      Address("${walletAddress}") 
+      "create_proof_of_non_fungibles" 
+      Address("resource_rdx1nfxxxxxxxxxxvdrwnrxxxxxxxxx004365253834xxxxxxxxxvdrwnr") 
+      Array<NonFungibleLocalId>( 
+        NonFungibleLocalId("[83b22a601b755ba5fe0fde3edcde69b84c8cbf60f637320672115e5e8400]") 
+      )
+    ; 
+    CALL_METHOD 
+      Address("${NODE_VALIDATOR_ADDRESS}") 
+      "start_unlock_owner_stake_units" 
+      Decimal("${amount}")
+    ;
+  `;
+};
+
+export const getFinishUnlockLSUProcessManifest = (walletAddress: string) => {
+  return `
+    CALL_METHOD 
+      Address("${walletAddress}") 
+      "create_proof_of_non_fungibles" 
+      Address("resource_rdx1nfxxxxxxxxxxvdrwnrxxxxxxxxx004365253834xxxxxxxxxvdrwnr") 
+      Array<NonFungibleLocalId>( 
+        NonFungibleLocalId("[83b22a601b755ba5fe0fde3edcde69b84c8cbf60f637320672115e5e8400]") 
+      )
+    ; 
+    CALL_METHOD 
+      Address("${NODE_VALIDATOR_ADDRESS}") 
+      "finish_unlock_owner_stake_units"
+    ;
+    CALL_METHOD
+      Address("${walletAddress}")
+      "deposit_batch"
+      Expression("ENTIRE_WORKTOP")
+    ;
+  `;
+};
