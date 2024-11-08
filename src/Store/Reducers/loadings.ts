@@ -11,6 +11,7 @@ const initialState: LoadingReducer = {
   findingNodeNFT: false,
   nodeStakingRewards: false,
   nodeStakingComponentDataLoading: false,
+  validatorDataLoading: false,
 };
 
 const loadings = createSlice({
@@ -44,6 +45,9 @@ const loadings = createSlice({
     setNodeStakingComponentDataLoading(state, action: PayloadAction<boolean>) {
       state.nodeStakingComponentDataLoading = action.payload;
     },
+    setValidatorDataLoading(state, action: PayloadAction<boolean>) {
+      state.validatorDataLoading = action.payload;
+    },
   },
 });
 
@@ -59,4 +63,5 @@ export const {
   setFindingNodeNFT,
   setNodeStakingRewardsLoading,
   setNodeStakingComponentDataLoading,
+  setValidatorDataLoading,
 } = loadings.actions;
