@@ -21,6 +21,8 @@ import {
   AssignRewardSuccessToast,
   ClaimSuccessToast,
   ClaimAndStakeSuccessToast,
+  ClaimLSUSuccessToast,
+  UnlockLSUSuccessToast,
 } from "Components/toasts";
 import axios from "axios";
 import { HIT_SERVER_URL } from "Constants/endpoints";
@@ -317,7 +319,7 @@ export const unlockNodeEarnedLSUs = async (amount: string) => {
     return await baseTxSender({
       amount,
       txManifest: getUnlockEarnedLSUManifest(walletAddress, amount),
-      ToastElement: StakeSuccessToast,
+      ToastElement: UnlockLSUSuccessToast,
       tokenSymbol: StakingTokens.LSU,
     });
   } catch (error) {
@@ -325,16 +327,16 @@ export const unlockNodeEarnedLSUs = async (amount: string) => {
   }
 };
 
-export const finishNodeLSUnlockProcess = async () => {
+export const finishNodeLSUnlockProcess = async (amount: string) => {
   try {
     const {
       app: { walletAddress },
     } = store.getState();
 
     return await baseTxSender({
-      amount: "0",
+      amount: amount,
       txManifest: getFinishUnlockLSUProcessManifest(walletAddress),
-      ToastElement: StakeSuccessToast,
+      ToastElement: ClaimLSUSuccessToast,
       tokenSymbol: StakingTokens.LSU,
     });
   } catch (error) {

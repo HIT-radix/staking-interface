@@ -276,3 +276,57 @@ export const WalletConnectedToast = ({ walletAddress }: { walletAddress: string 
     />
   );
 };
+
+export const UnlockLSUSuccessToast = ({
+  amount,
+  token,
+  txId,
+}: {
+  amount: string;
+  token: StakingTokens;
+  txId: string;
+}) => {
+  return (
+    <BaseToast
+      heading="Unlock Transaction Successful"
+      subHeading={
+        <>
+          <span className="font-semibold mr-1">
+            {amount} <span className="mesh-text-gradient">{token}s</span>
+          </span>
+          unlocked successfully.
+        </>
+      }
+      twHeadingClass="text-base-content"
+      twSubHeadingClass="text-base-content"
+      txId={txId}
+    />
+  );
+};
+
+export const ClaimLSUSuccessToast = ({
+  amount,
+  token,
+  txId,
+}: {
+  amount: string;
+  token: StakingTokens;
+  txId: string;
+}) => {
+  return (
+    <BaseToast
+      heading="Claim Transaction Successful"
+      subHeading={
+        <>
+          <span className="font-semibold mr-1">
+            {amount} <span className="mesh-text-gradient">{token}s</span>
+          </span>
+          claimed successfully.
+        </>
+      }
+      twHeadingClass="text-base-content"
+      twSubHeadingClass="text-base-content"
+      txId={txId}
+    />
+  );
+};

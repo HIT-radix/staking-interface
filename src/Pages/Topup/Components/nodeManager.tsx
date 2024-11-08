@@ -88,7 +88,7 @@ const NodeManager = () => {
       <div
         onClick={async () => {
           if (Number(unlockedLSUs) > 0) {
-            await finishNodeLSUnlockProcess();
+            await finishNodeLSUnlockProcess(unlockedLSUs);
           }
         }}
         className={`btn btn-accent px-20 ${
