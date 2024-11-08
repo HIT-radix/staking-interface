@@ -8,6 +8,7 @@ const initialState: NodeManagerReducer = {
   totalStakedXrds: "0",
   totalXrdsLeavingOurNode: "0",
   unlockingLSUsBreakdown: [],
+  epoch: 0,
 };
 
 const nodeManager = createSlice({
@@ -26,7 +27,7 @@ const nodeManager = createSlice({
     setTotalXrdsLeavingOurNode(state, action: PayloadAction<string>) {
       state.totalXrdsLeavingOurNode = action.payload;
     },
-    setUnlockingLSUsBreakdown(state, action: PayloadAction<UnlockingRewards[]>) {
+    setUnlockingLSUsBreakdown(state, action: PayloadAction<UnlockingRewards>) {
       state.unlockingLSUsBreakdown = action.payload;
     },
     setValidatorInfo(state, action: PayloadAction<NodeManagerReducer>) {
@@ -35,6 +36,7 @@ const nodeManager = createSlice({
       state.totalStakedXrds = action.payload.totalStakedXrds;
       state.totalXrdsLeavingOurNode = action.payload.totalXrdsLeavingOurNode;
       state.unlockingLSUsBreakdown = action.payload.unlockingLSUsBreakdown;
+      state.epoch = action.payload.epoch;
     },
   },
 });

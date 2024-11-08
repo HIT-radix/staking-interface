@@ -45,7 +45,8 @@ export type NodeManagerReducer = {
   currentlyEarnedLockedLSUs: string;
   totalXrdsLeavingOurNode: string;
   totalStakedXrds: string;
-  unlockingLSUsBreakdown: UnlockingRewards[];
+  unlockingLSUsBreakdown: UnlockingRewards;
+  epoch: number;
 };
 
 export enum StakingTokens {

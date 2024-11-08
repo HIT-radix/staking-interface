@@ -1,7 +1,14 @@
-import InfoTile from "Components/infoTile";
-import React from "react";
+// import InfoTile from "Components/infoTile";
+import { useEffect } from "react";
+import { fetchValidatorInfo } from "Utils/fetchers";
 
 const NodeManager = () => {
+  useEffect(() => {
+    (async () => {
+      await fetchValidatorInfo();
+    })();
+  }, []);
+
   return (
     <div className="flex flex-col items-center">
       <div className="min-w-[300px]">

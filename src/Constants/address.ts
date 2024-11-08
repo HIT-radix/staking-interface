@@ -78,3 +78,15 @@ export const OLD_NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS =
 
 export const OLD_FOMO_RESOURCE_ADDRESS =
   "resource_rdx1t4a42s786rs0nz6lv3skg2kvk94alxrpd5v73q9e7jrt33fsalcg0m";
+
+export const NODE_CURRENTLY_EARNED_LSU_VAULT_ADDRESS =
+  "internal_vault_rdx1trjet2x0609mecejd3yruksu28g8sqz4rgza4785mv4fha0d2exyp8";
+
+export const NODE_OWNER_UNLOCKING_LSU_VAULT_ADDRESS =
+  "internal_vault_rdx1tqejzx2nshr8c9s4hvjwkxf8whutrv2cwzn79z2th5mepfhyfxrrne";
+
+export const NODE_TOTAL_STAKED_XRD_VAULT_ADDRESS =
+  "internal_vault_rdx1tzxln4dwz2rj8dd9qsaha5fx5ujc8l2l4rgcmruuuqmmyfegp7h099";
+
+export const NODE_UNSTAKING_XRD_VAULT_ADDRESS =
+  "internal_vault_rdx1tzukc8dxghnlq8gw686s0vc86ss88978lde48ef0ars2c2lmh387pt";
