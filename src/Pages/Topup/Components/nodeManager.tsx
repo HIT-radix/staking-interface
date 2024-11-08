@@ -85,17 +85,14 @@ const NodeManager = () => {
           tooltip={unlockedLSUs}
         />
       </div>
-      <GeneralOwnerInterface
-        heading="Claim Unlocked LSUs"
-        placeholder="Enter LSU amount to claim"
-        balance={unlockedLSUs}
-        onButtonClick={
-          async (amount) => {}
-          //   await depositNodeStakingRewards(amount, StakingTokens.HIT, HIT_RESOURCE_ADDRESS)
-        }
-        btnText="Claim Unlocked LSUs"
-        tokenSymbol={StakingTokens.LSU}
-      />
+      <div
+        // onClick={handleClick}
+        className={`btn btn-accent px-20 ${
+          Number(unlockedLSUs) > 0 ? "cursor-pointer opacity-100" : "cursor-not-allowed opacity-30"
+        }`}
+      >
+        Claim Unlocked LSUs
+      </div>
     </div>
   );
 };
