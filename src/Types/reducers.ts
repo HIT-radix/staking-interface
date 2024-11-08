@@ -45,6 +45,7 @@ export type NodeManagerReducer = {
   currentlyEarnedLockedLSUs: string;
   totalXrdsLeavingOurNode: string;
   totalStakedXrds: string;
+  unlockedLSUs: string;
   unlockingLSUsBreakdown: UnlockingRewards;
   epoch: number;
 };

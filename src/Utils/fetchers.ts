@@ -318,24 +318,29 @@ export const fetchValidatorInfo = async () => {
   const res = await CachedService.gatewayApi.state.innerClient.stateEntityDetails({
     stateEntityDetailsRequest: { addresses: [NODE_VALIDATOR_ADDRESS], aggregation_level: "Vault" },
   });
+
   const vaultsBalance: Record<string, string> = {};
   let rewardsInUnlockingProcess: UnlockingRewards = [];
   const epoch = res.ledger_state.epoch;
+  let unlockedLSUs = "0";
 
-  res.items[0]?.fungible_resources?.items.forEach((resource) => {
+  const validatorInfo = res.items[0];
+
+  validatorInfo?.fungible_resources?.items.forEach((resource) => {
     if (resource.aggregation_level === "Vault") {
       resource.vaults.items.forEach((vault) => {
         vaultsBalance[vault.vault_address] = vault.amount;
       });
     }
   });
-  if (res.items[0]?.details?.type === "Component") {
-    if (
-      res.items[0]?.details?.state &&
-      "pending_owner_stake_unit_withdrawals" in res.items[0]?.details.state
-    ) {
-      rewardsInUnlockingProcess = res.items[0]?.details.state
-        .pending_owner_stake_unit_withdrawals as UnlockingRewards;
+  if (validatorInfo?.details?.type === "Component") {
+    const validatorState = validatorInfo?.details?.state;
+    if (validatorState && "pending_owner_stake_unit_withdrawals" in validatorState) {
+      rewardsInUnlockingProcess =
+        validatorState.pending_owner_stake_unit_withdrawals as UnlockingRewards;
+    }
+    if (validatorState && "already_unlocked_owner_stake_unit_amount" in validatorState) {
+      unlockedLSUs = validatorState.already_unlocked_owner_stake_unit_amount as string;
     }
   }
 
@@ -347,6 +352,7 @@ export const fetchValidatorInfo = async () => {
       totalXrdsLeavingOurNode: vaultsBalance[NODE_UNSTAKING_XRD_VAULT_ADDRESS] || "0",
       unlockingLSUsBreakdown: rewardsInUnlockingProcess,
       epoch,
+      unlockedLSUs,
     })
   );
   store.dispatch(setValidatorDataLoading(false));
