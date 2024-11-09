@@ -13,7 +13,7 @@ const AdminPanel = () => {
   >("Rug Proof");
   const isOwner = useSelector((state) => state.staking.isOwner);
 
-  return true ? (
+  return isOwner ? (
     <div>
       <Listeners />
       <Tabs stakingType={managementType} setStakingType={setStakingType} />
