@@ -87,13 +87,12 @@ const NodeManager = () => {
       </div>
       <div
         onClick={async () => {
-          if (Number(unlockedLSUs) > 0) {
-            await finishNodeLSUnlockProcess(unlockedLSUs);
-          }
+          await finishNodeLSUnlockProcess(unlockedLSUs);
         }}
-        className={`btn btn-accent px-20 ${
-          Number(unlockedLSUs) > 0 ? "cursor-pointer opacity-100" : "cursor-not-allowed opacity-30"
-        }`}
+        // className={`btn btn-accent px-20 ${
+        //   Number(unlockedLSUs) > 0 ? "cursor-pointer opacity-100" : "cursor-not-allowed opacity-30"
+        // }`}
+        className={`btn btn-accent px-20 cursor-pointer opacity-100`}
       >
         Claim Unlocked LSUs
       </div>
