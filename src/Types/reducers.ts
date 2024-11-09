@@ -79,7 +79,6 @@ export type LoadingReducer = {
   poolDataLoading: boolean;
   rugProofComponentDataLoading: boolean;
   stHitDataLoading: boolean;
-  findingNodeNFT: boolean;
   nodeStakingRewards: boolean;
   nodeStakingComponentDataLoading: boolean;
   validatorDataLoading: boolean;

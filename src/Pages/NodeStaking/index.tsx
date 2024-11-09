@@ -7,7 +7,7 @@ import Controls from "./Components/controls";
 
 const NodeStaking = () => {
   const walletAddress = useSelector((state) => state.app.walletAddress);
-  const findingNodeNFT = useSelector((state) => state.loadings.findingNodeNFT);
+  const balanceLoading = useSelector((state) => state.loadings.balanceLoading);
 
   const connectWallet = () => {
     const rdt = getRdt();
@@ -28,7 +28,7 @@ const NodeStaking = () => {
             <div className="btn bg-accent " onClick={connectWallet}>
               Connect Wallet
             </div>
-          ) : findingNodeNFT ? (
+          ) : balanceLoading ? (
             <LoadingSkeleton />
           ) : (
             <>

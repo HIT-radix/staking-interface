@@ -17,7 +17,7 @@ import {
 } from "Store/Reducers/staking";
 import { StakingTokens, Tabs } from "Types/reducers";
 import { TokenData } from "Types/token";
-import { BN, extractBalances } from "./format";
+import { BN, extractBalances, extractBalancesNew } from "./format";
 import { EntityDetails, UnlockingRewards } from "Types/api";
 import {
   NODE_STAKING_USER_BADGE_ADDRESS,
@@ -39,7 +39,6 @@ import {
 } from "Constants/address";
 import {
   setRugProofComponentDataLoading,
-  setFindingNodeNFT,
   setNodeStakingRewardsLoading,
   setPoolDataLoading,
   setStHitDataLoading,
@@ -49,44 +48,104 @@ import {
 } from "Store/Reducers/loadings";
 import CachedService from "Classes/cachedService";
 import { setValidatorInfo } from "Store/Reducers/nodeManager";
+import {
+  FungibleResourcesCollectionItem,
+  NonFungibleResourcesCollectionItem,
+  StateEntityFungiblesPageResponse,
+  StateEntityNonFungiblesPageResponse,
+} from "@radixdlt/babylon-gateway-api-sdk";
 
 export const fetchBalances = async (walletAddress: string) => {
   let HITbalance = "0";
   let stHITbalance = "0";
   let fomobalance = "0";
   let isOwner = false;
+  let nftId: number | undefined = undefined;
+
   if (walletAddress) {
     try {
-      const response = await axios.post<any, AxiosResponse<EntityDetails>>(
-        `${networkRPC}/state/entity/details`,
-        {
-          addresses: [walletAddress],
+      const allFungibleItems = await fetchAllFungibles(walletAddress);
+      const allNonFungibleItems = await fetchAllNonFungibles(walletAddress);
+      allNonFungibleItems.some((nonfungItem) => {
+        if (
+          nonfungItem.aggregation_level === "Vault" &&
+          nonfungItem.resource_address === NODE_STAKING_USER_BADGE_ADDRESS
+        ) {
+          if (nonfungItem.vaults.items[0].items) {
+            const userNftid = Number(nonfungItem.vaults.items[0].items[0].replace(/#/g, ""));
+            nftId = Number.isNaN(userNftid) ? undefined : userNftid;
+            return true;
+          }
         }
-      );
+        return false;
+      });
 
-      if (response.status === 200) {
-        const { balances, isOwner: isOwnerFound } = extractBalances(
-          response.data.items[0].fungible_resources.items,
-          [
-            { symbol: StakingTokens.HIT, address: HIT_RESOURCE_ADDRESS },
-            { symbol: StakingTokens.StHIT, address: STHIT_RESOURCE_ADDRESS },
-            { symbol: StakingTokens.FOMO, address: FOMO_RESOURCE_ADDRESS },
-          ],
-          true
-        );
-        HITbalance = balances[StakingTokens.HIT];
-        stHITbalance = balances[StakingTokens.StHIT];
-        fomobalance = balances[StakingTokens.FOMO];
-        isOwner = isOwnerFound;
-      }
+      const { balances, isOwner: isOwnerFound } = extractBalancesNew(
+        allFungibleItems,
+        [
+          { symbol: StakingTokens.HIT, address: HIT_RESOURCE_ADDRESS },
+          { symbol: StakingTokens.StHIT, address: STHIT_RESOURCE_ADDRESS },
+          { symbol: StakingTokens.FOMO, address: FOMO_RESOURCE_ADDRESS },
+        ],
+        true
+      );
+      HITbalance = balances[StakingTokens.HIT];
+      stHITbalance = balances[StakingTokens.StHIT];
+      fomobalance = balances[StakingTokens.FOMO];
+      isOwner = isOwnerFound;
     } catch (error) {
       console.log("error in fetchBalances", error);
     }
   }
+  store.dispatch(setNodeStakeNFTid(nftId));
   store.dispatch(setHitBalance(HITbalance));
   store.dispatch(setStHitBalance(stHITbalance));
   store.dispatch(setFomoBalance(fomobalance));
   store.dispatch(setIsOwner(isOwner));
+};
+
+const fetchAllFungibles = async (walletAddress: string) => {
+  let allFungibleItems: FungibleResourcesCollectionItem[] = [];
+  let nextCursor = undefined;
+  let response: StateEntityFungiblesPageResponse;
+  let state_version: number | undefined = undefined;
+  do {
+    response = await CachedService.gatewayApi.state.innerClient.entityFungiblesPage({
+      stateEntityFungiblesPageRequest: {
+        address: walletAddress,
+        cursor: nextCursor,
+        aggregation_level: "Global",
+        at_ledger_state: state_version ? { state_version } : undefined,
+      },
+    });
+
+    allFungibleItems = allFungibleItems.concat(response.items);
+    nextCursor = response.next_cursor;
+    state_version = response.ledger_state.state_version;
+  } while (nextCursor);
+  return allFungibleItems;
+};
+
+const fetchAllNonFungibles = async (walletAddress: string) => {
+  let allNonFungibleItems: NonFungibleResourcesCollectionItem[] = [];
+  let nextCursor = undefined;
+  let response: StateEntityNonFungiblesPageResponse;
+  let state_version: number | undefined = undefined;
+  do {
+    response = await CachedService.gatewayApi.state.innerClient.entityNonFungiblesPage({
+      stateEntityNonFungiblesPageRequest: {
+        address: walletAddress,
+        cursor: nextCursor,
+        aggregation_level: "Vault",
+        opt_ins: { non_fungible_include_nfids: true },
+        at_ledger_state: state_version ? { state_version } : undefined,
+      },
+    });
+    allNonFungibleItems = allNonFungibleItems.concat(response.items);
+    nextCursor = response.next_cursor;
+    state_version = response.ledger_state.state_version;
+  } while (nextCursor);
+  return allNonFungibleItems;
 };
 
 export const getSelectedBalance = () => {
@@ -248,26 +307,6 @@ export const fetchNodeStakingComponentDetails = async () => {
   store.dispatch(setLockedNodeStakingFomos(BN(totalFOMOs).minus(assignedFOMOs).toString()));
   // store.dispatch(setOldLockedNodeStakingFomos(oldLockedFOMOs));
   store.dispatch(setNodeStakingComponentDataLoading(false));
-};
-
-export const findNodeStakeNFT = async (walletAddress: string) => {
-  store.dispatch(setFindingNodeNFT(true));
-  const details = await CachedService.gatewayApi.state.getEntityDetailsVaultAggregated(
-    walletAddress
-  );
-  let nftId: number | undefined = undefined;
-  details.non_fungible_resources.items.some((nft_resource) => {
-    if (nft_resource.resource_address === NODE_STAKING_USER_BADGE_ADDRESS) {
-      if (nft_resource.vaults.items[0].items) {
-        const userNftid = Number(nft_resource.vaults.items[0].items[0].replace(/#/g, ""));
-        nftId = Number.isNaN(userNftid) ? undefined : userNftid;
-        return true;
-      }
-    }
-    return false;
-  });
-  store.dispatch(setNodeStakeNFTid(nftId));
-  store.dispatch(setFindingNodeNFT(false));
 };
 
 export const fetchClaimableNodeStakingRewards = async (nftId: number) => {

@@ -8,6 +8,7 @@ import { parseUnits as parseUnitsEthers } from "ethers";
 import BigNumber from "bignumber.js";
 import numbro from "numbro";
 import { RewardTokenDistribution } from "Types/token";
+import { FungibleResourcesCollectionItem } from "@radixdlt/babylon-gateway-api-sdk";
 
 export const BN = BigNumber.clone({
   DECIMAL_PLACES: 18,
@@ -112,6 +113,52 @@ export const extractBalances = (
       (searchForOwner ? isOwner === true : true)
     ) {
       break;
+    }
+  }
+
+  return {
+    balances,
+    isOwner,
+  };
+};
+
+export const extractBalancesNew = (
+  resources: FungibleResourcesCollectionItem[],
+  tokens: {
+    symbol: string;
+    address: string;
+  }[],
+  searchForOwner: boolean = false
+) => {
+  const balances: { [symbol: string]: string } = {};
+  let isOwner = false;
+
+  // Initialize all token balances to "0"
+  for (const token of tokens) {
+    balances[token.symbol] = "0";
+  }
+
+  for (const resource of resources) {
+    if (resource.aggregation_level === "Global") {
+      const token = tokens.find((t) => t.address === resource.resource_address);
+      if (token) {
+        balances[token.symbol] = resource.amount;
+      } else if (
+        searchForOwner &&
+        (resource.resource_address === RUG_PROOF_STAKING_OWNER_BADGE_ADDRESS ||
+          resource.resource_address === NODE_STAKING_OWNER_BADGE_ADDRESS) &&
+        +resource.amount > 0
+      ) {
+        isOwner = true;
+      }
+
+      // Break the loop if all balances are found and check isOwner is true only if searchForOwner is true
+      if (
+        tokens.every((token) => balances[token.symbol] !== "0") &&
+        (searchForOwner ? isOwner === true : true)
+      ) {
+        break;
+      }
     }
   }
 
