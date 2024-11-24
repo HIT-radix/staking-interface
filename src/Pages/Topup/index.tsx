@@ -5,12 +5,9 @@ import HitStakingPanel from "./Components/hitStakingPanel";
 import ValidatorStaking from "./Components/validatorStaking";
 import Listeners from "./Components/listeners";
 import { useSelector } from "Store";
-import NodeManager from "./Components/nodeManager";
 
 const AdminPanel = () => {
-  const [managementType, setStakingType] = useState<
-    "Rug Proof" | "Validator" | "Validator Manager"
-  >("Rug Proof");
+  const [managementType, setStakingType] = useState<"Rug Proof" | "Validator">("Rug Proof");
   const isOwner = useSelector((state) => state.staking.isOwner);
 
   return isOwner ? (
@@ -21,9 +18,7 @@ const AdminPanel = () => {
         <HitStakingPanel />
       ) : managementType === "Validator" ? (
         <ValidatorStaking />
-      ) : (
-        <NodeManager />
-      )}
+      ) : null}
     </div>
   ) : null;
 };

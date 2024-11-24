@@ -18,7 +18,7 @@ import {
 import { StakingTokens, Tabs } from "Types/reducers";
 import { TokenData } from "Types/token";
 import { BN, extractBalances, extractBalancesNew } from "./format";
-import { EntityDetails, UnlockingRewards } from "Types/api";
+import { EntityDetails } from "Types/api";
 import {
   NODE_STAKING_USER_BADGE_ADDRESS,
   NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS,
@@ -29,11 +29,6 @@ import {
   HIT_RESOURCE_ADDRESS,
   FOMO_RESOURCE_ADDRESS,
   NODE_STAKING_COMPONENT_ADDRESS,
-  NODE_VALIDATOR_ADDRESS,
-  NODE_CURRENTLY_EARNED_LSU_VAULT_ADDRESS,
-  NODE_OWNER_UNLOCKING_LSU_VAULT_ADDRESS,
-  NODE_TOTAL_STAKED_XRD_VAULT_ADDRESS,
-  NODE_UNSTAKING_XRD_VAULT_ADDRESS,
   // OLD_FOMO_RESOURCE_ADDRESS,
   // OLD_NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS,
 } from "Constants/address";
@@ -44,10 +39,8 @@ import {
   setStHitDataLoading,
   setTokenDataLoading,
   setNodeStakingComponentDataLoading,
-  setValidatorDataLoading,
 } from "Store/Reducers/loadings";
 import CachedService from "Classes/cachedService";
-import { setValidatorInfo } from "Store/Reducers/nodeManager";
 import {
   FungibleResourcesCollectionItem,
   NonFungibleResourcesCollectionItem,
@@ -349,50 +342,4 @@ export const fetchClaimableNodeStakingRewards = async (nftId: number) => {
   }
   store.dispatch(setNodeStakingRewardsLoading(false));
   return claimableRewards;
-};
-
-export const fetchValidatorInfo = async () => {
-  store.dispatch(setValidatorDataLoading(true));
-
-  const res = await CachedService.gatewayApi.state.innerClient.stateEntityDetails({
-    stateEntityDetailsRequest: { addresses: [NODE_VALIDATOR_ADDRESS], aggregation_level: "Vault" },
-  });
-
-  const vaultsBalance: Record<string, string> = {};
-  let rewardsInUnlockingProcess: UnlockingRewards = [];
-  const epoch = res.ledger_state.epoch;
-  let unlockedLSUs = "0";
-
-  const validatorInfo = res.items[0];
-
-  validatorInfo?.fungible_resources?.items.forEach((resource) => {
-    if (resource.aggregation_level === "Vault") {
-      resource.vaults.items.forEach((vault) => {
-        vaultsBalance[vault.vault_address] = vault.amount;
-      });
-    }
-  });
-  if (validatorInfo?.details?.type === "Component") {
-    const validatorState = validatorInfo?.details?.state;
-    if (validatorState && "pending_owner_stake_unit_withdrawals" in validatorState) {
-      rewardsInUnlockingProcess =
-        validatorState.pending_owner_stake_unit_withdrawals as UnlockingRewards;
-    }
-    if (validatorState && "already_unlocked_owner_stake_unit_amount" in validatorState) {
-      unlockedLSUs = validatorState.already_unlocked_owner_stake_unit_amount as string;
-    }
-  }
-
-  store.dispatch(
-    setValidatorInfo({
-      currentlyEarnedLockedLSUs: vaultsBalance[NODE_CURRENTLY_EARNED_LSU_VAULT_ADDRESS] || "0",
-      ownerLSUsInUnlockingProcess: vaultsBalance[NODE_OWNER_UNLOCKING_LSU_VAULT_ADDRESS] || "0",
-      totalStakedXrds: vaultsBalance[NODE_TOTAL_STAKED_XRD_VAULT_ADDRESS] || "0",
-      totalXrdsLeavingOurNode: vaultsBalance[NODE_UNSTAKING_XRD_VAULT_ADDRESS] || "0",
-      unlockingLSUsBreakdown: rewardsInUnlockingProcess,
-      epoch,
-      unlockedLSUs,
-    })
-  );
-  store.dispatch(setValidatorDataLoading(false));
 };

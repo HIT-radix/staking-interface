@@ -7,7 +7,6 @@ import app from "./app";
 import session from "./session";
 import loadings from "./loadings";
 import staking from "./staking";
-import nodeManager from "./nodeManager";
 
 const persistConfig = {
   version: 1,
@@ -32,7 +31,6 @@ const reducers = combineReducers({
   session,
   loadings,
   staking,
-  nodeManager,
 });
 
 const rootReducer = (state: any, action: any) => {

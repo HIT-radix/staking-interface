@@ -1,6 +1,5 @@
 import { WalletDataState } from "@radixdlt/radix-dapp-toolkit";
 import { RewardTokenDistribution, TokenData } from "./token";
-import { UnlockingRewards } from "./api";
 
 export type AppReducer = {
   walletData: WalletDataState;
@@ -40,16 +39,6 @@ export type StakingReducer = {
   // oldLockedNodeStakingFomos: string;
 };
 
-export type NodeManagerReducer = {
-  ownerLSUsInUnlockingProcess: string;
-  currentlyEarnedLockedLSUs: string;
-  totalXrdsLeavingOurNode: string;
-  totalStakedXrds: string;
-  unlockedLSUs: string;
-  unlockingLSUsBreakdown: UnlockingRewards;
-  epoch: number;
-};
-
 export enum StakingTokens {
   HIT = "HIT",
   StHIT = "StHIT",
@@ -81,5 +70,4 @@ export type LoadingReducer = {
   stHitDataLoading: boolean;
   nodeStakingRewards: boolean;
   nodeStakingComponentDataLoading: boolean;
-  validatorDataLoading: boolean;
 };

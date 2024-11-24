@@ -88,8 +88,3 @@ interface Item {
 export interface EntityDetails {
   items: Item[];
 }
-
-export type UnlockingRewards = {
-  epoch_unlocked: number;
-  stake_unit_amount: string;
-}[];
