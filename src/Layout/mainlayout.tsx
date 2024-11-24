@@ -1,18 +1,17 @@
 import { ReactNode } from "react";
 
-import Header from "./header";
 import Footer from "./footer";
-import MobileNavbar from "./mobileNavbar";
 import DistributionModal from "Pages/Topup/Components/distributionModal";
+import MobileDrawer from "./drawer";
 
 const MainLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
-      <Header />
-      <MobileNavbar />
-      {children}
-      <DistributionModal />
-      <Footer />
+      <MobileDrawer>
+        {children}
+        <DistributionModal />
+        <Footer />
+      </MobileDrawer>
     </>
   );
 };
