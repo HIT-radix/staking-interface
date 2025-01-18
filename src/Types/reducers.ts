@@ -59,6 +59,8 @@ export type SessionReducer = {
     RewardTokenDistributions: RewardTokenDistribution[];
     tokenSymbol: StakingTokens;
     tokenAddress: string;
+    snapshot: number;
+    timestamp: number;
   };
 };
 

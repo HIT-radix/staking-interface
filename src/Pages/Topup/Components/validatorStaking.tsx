@@ -32,7 +32,7 @@ const ValidatorStaking = () => {
     if (rdtInstance) {
       rdtInstance.walletApi.dataRequestControl(async ({ proofs }) => {
         const {
-          data: { rewardsList },
+          data: { rewardsList, snapshot_state_version },
         } = await axios.post<SnapshotApiResponse>(`${HIT_SERVER_URL}/node-staking/take-snapshot`, {
           proofs,
           reward: +amount,
@@ -44,6 +44,8 @@ const ValidatorStaking = () => {
             RewardTokenDistributions: rewardsList,
             tokenSymbol,
             tokenAddress,
+            snapshot: snapshot_state_version,
+            timestamp: Date.now(),
           })
         );
         (document.getElementById("DistributionModal") as HTMLDialogElement).showModal();

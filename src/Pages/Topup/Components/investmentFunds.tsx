@@ -16,7 +16,7 @@ const InvestmentFunds = () => {
     if (rdtInstance) {
       rdtInstance.walletApi.dataRequestControl(async ({ proofs }) => {
         const {
-          data: { rewardsList },
+          data: { rewardsList, snapshot_state_version },
         } = await axios.post<SnapshotApiResponse>(`${HIT_SERVER_URL}/node-staking/take-snapshot`, {
           proofs,
           reward: 1,
@@ -28,6 +28,8 @@ const InvestmentFunds = () => {
             RewardTokenDistributions: rewardsList,
             tokenSymbol: StakingTokens.XUSDT,
             tokenAddress: XUSDT_RESOURCE_ADDRESS,
+            snapshot: snapshot_state_version,
+            timestamp: Date.now(),
           })
         );
         (document.getElementById("SnapshotModal") as HTMLDialogElement).showModal();
@@ -42,7 +44,7 @@ const InvestmentFunds = () => {
     }
   };
   return (
-    <div className="flex flex-col items-center justify-center text-accent border">
+    <div className="flex flex-col items-center justify-center text-accent">
       <div className="btn btn-accent mb-6 mt-3" onClick={takeSnapshot}>
         Take Snapshot <Camera />
       </div>
