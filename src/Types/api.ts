@@ -1,3 +1,5 @@
+import { RewardTokenDistribution } from "./token";
+
 export interface ResourceDetails {
   amount: string;
   last_updated_at_state_version: number;
@@ -88,3 +90,8 @@ interface Item {
 export interface EntityDetails {
   items: Item[];
 }
+
+export type SnapshotApiResponse = {
+  rewardsList: RewardTokenDistribution[];
+  snapshot_state_version: number;
+};

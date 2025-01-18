@@ -57,9 +57,9 @@ export interface TokenData {
   volume: Volume;
 }
 
-export type RewardTokenDistribution = {
+export interface RewardTokenDistribution {
   id: number;
   amount: string;
-};
+}
 
 export type ClaimableRewardsInfo = Partial<Record<StakingTokens, string>>;

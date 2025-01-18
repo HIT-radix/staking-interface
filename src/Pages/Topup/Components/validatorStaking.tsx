@@ -8,8 +8,8 @@ import { HIT_SERVER_URL } from "Constants/endpoints";
 import { dispatch, useSelector } from "Store";
 import { setRewardsModalData } from "Store/Reducers/session";
 import { getRdt } from "subs";
+import { SnapshotApiResponse } from "Types/api";
 import { StakingTokens } from "Types/reducers";
-import { RewardTokenDistribution } from "Types/token";
 import { formatTokenAmount } from "Utils/format";
 import { depositNodeStakingRewards } from "Utils/txSenders";
 
@@ -31,13 +31,20 @@ const ValidatorStaking = () => {
     const rdtInstance = getRdt();
     if (rdtInstance) {
       rdtInstance.walletApi.dataRequestControl(async ({ proofs }) => {
-        const { data: RewardTokenDistributions } = await axios.post<RewardTokenDistribution[]>(
-          `${HIT_SERVER_URL}/node-staking/take-snapshot`,
-          { proofs, reward: +amount }
-        );
+        const {
+          data: { rewardsList },
+        } = await axios.post<SnapshotApiResponse>(`${HIT_SERVER_URL}/node-staking/take-snapshot`, {
+          proofs,
+          reward: +amount,
+        });
 
         dispatch(
-          setRewardsModalData({ amount, RewardTokenDistributions, tokenSymbol, tokenAddress })
+          setRewardsModalData({
+            amount,
+            RewardTokenDistributions: rewardsList,
+            tokenSymbol,
+            tokenAddress,
+          })
         );
         (document.getElementById("DistributionModal") as HTMLDialogElement).showModal();
 
