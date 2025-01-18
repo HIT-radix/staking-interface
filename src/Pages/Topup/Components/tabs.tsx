@@ -1,46 +1,59 @@
-import { CommonTabClass } from "Components/tabs";
+import React from "react";
+import { ChevronDown } from "lucide-react";
 
-const Tabs = ({
-  stakingType,
-  setStakingType,
-}: {
+interface DropDownProps {
   stakingType: "Rug Proof" | "Validator";
   setStakingType: (type: "Rug Proof" | "Validator") => void;
-}) => {
+}
+
+const Dropdown: React.FC<DropDownProps> = ({ stakingType, setStakingType }) => {
   return (
-    <div className="flex items-center justify-center mb-10">
-      <div className="tabs mb-3 bg-base-200 px-1.5 py-1.5 rounded-lg w-[90vw] max-w-[30rem] border border-secondary">
+    <div className="mb-5 flex flex-col items-center justify-center">
+      <div className="font-bold text-accent text-lg mb-2">Admin Type:</div>
+      <div className="dropdown w-full max-w-xs">
         <div
-          role="tab"
-          className={`${CommonTabClass} w-full ${stakingType === "Rug Proof" ? "bg-accent" : ""}`}
-          onClick={() => setStakingType("Rug Proof")}
+          tabIndex={0}
+          className="border border-accent text-white cursor-pointer w-full bg-base-200 px-4 py-3 rounded-lg flex items-center justify-between"
         >
-          <p
-            className={`my-1.5 ${
-              stakingType === "Rug Proof" ? "tab-active text-primary" : "text-secondary"
-            }`}
-          >
-            Rug Proof HIT Staking
-          </p>
+          {stakingType === "Rug Proof"
+            ? "Rug Proof HIT Staking"
+            : stakingType === "Validator"
+            ? "ADDIX FOMO Validator Staking"
+            : ""}
+          <ChevronDown />
         </div>
-        <div
-          role="tab"
-          className={`${CommonTabClass} w-full ${
-            stakingType === "Validator" ? "bg-accent" : ""
-          } h-full`}
-          onClick={() => setStakingType("Validator")}
+        <ul
+          tabIndex={0}
+          className="dropdown-content border border-base-content menu p-2 shadow bg-base-content text-secondary rounded-box w-full z-50 mt-1"
         >
-          <p
-            className={`my-1.5 ${
-              stakingType === "Validator" ? "tab-active text-primary" : "text-secondary"
-            }`}
-          >
-            ADDIX FOMO Validator Staking
-          </p>
-        </div>
+          <li>
+            <div
+              className={`${
+                stakingType === "Rug Proof"
+                  ? "bg-accent text-base-100 hover:bg-accent hover:text-base-100"
+                  : " hover:bg-base-200"
+              }`}
+              onClick={() => setStakingType("Rug Proof")}
+            >
+              Rug Proof HIT Staking
+            </div>
+          </li>
+          <li>
+            <div
+              className={`${
+                stakingType === "Validator"
+                  ? "bg-accent text-base-100 hover:bg-accent hover:text-base-100"
+                  : " hover:bg-base-200"
+              }`}
+              onClick={() => setStakingType("Validator")}
+            >
+              ADDIX FOMO Validator Staking
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   );
 };
 
-export default Tabs;
+export default Dropdown;
