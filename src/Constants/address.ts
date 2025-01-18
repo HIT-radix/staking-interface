@@ -90,3 +90,6 @@ export const NODE_TOTAL_STAKED_XRD_VAULT_ADDRESS =
 
 export const NODE_UNSTAKING_XRD_VAULT_ADDRESS =
   "internal_vault_rdx1tzukc8dxghnlq8gw686s0vc86ss88978lde48ef0ars2c2lmh387pt";
+
+export const XUSDT_RESOURCE_ADDRESS =
+  "resource_rdx1thrvr3xfs2tarm2dl9emvs26vjqxu6mqvfgvqjne940jv0lnrrg7rw";
