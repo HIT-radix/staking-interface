@@ -17,10 +17,13 @@ const InvestmentFunds = () => {
       rdtInstance.walletApi.dataRequestControl(async ({ proofs }) => {
         const {
           data: { rewardsList, snapshot_state_version },
-        } = await axios.post<SnapshotApiResponse>(`${HIT_SERVER_URL}/node-staking/take-snapshot`, {
-          proofs,
-          reward: 1,
-        });
+        } = await axios.post<SnapshotApiResponse>(
+          `${HIT_SERVER_URL}/node-staking/take-n-save-snapshot`,
+          {
+            proofs,
+            reward: 1,
+          }
+        );
 
         dispatch(
           setRewardsModalData({
