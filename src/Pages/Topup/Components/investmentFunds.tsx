@@ -1,5 +1,5 @@
 import GeneralOwnerInterface from "Components/generalOwnerInterface";
-import { Camera } from "lucide-react";
+import { ArrowRight, Camera, Save } from "lucide-react";
 import { StakingTokens } from "Types/reducers";
 import { getRdt } from "subs";
 import axios from "axios";
@@ -49,7 +49,7 @@ const InvestmentFunds = () => {
   return (
     <div className="flex flex-col items-center justify-center text-accent">
       <div className="btn btn-accent mb-6 mt-3" onClick={takeSnapshot}>
-        Take Snapshot <Camera />
+        Take & Save Snapshot <Camera /> <ArrowRight /> <Save />
       </div>
       <GeneralOwnerInterface
         heading="Lock xUSDT for Future Rewards"
