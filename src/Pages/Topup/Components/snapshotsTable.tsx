@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { HIT_SERVER_URL } from "Constants/endpoints";
 import { SnapshotDB } from "Types/api";
-import { dispatch } from "Store";
-import { setRewardsModalData } from "Store/Reducers/session";
+import { dispatch, useSelector } from "Store";
+import { setSelectedSnapshots, setRewardsModalData } from "Store/Reducers/session";
 import { StakingTokens } from "Types/reducers";
 import { XUSDT_RESOURCE_ADDRESS } from "Constants/address";
 
 const SnapshotsTable = () => {
   const [snapshots, setSnapshots] = useState<SnapshotDB[]>([]);
-  const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const selectedRows = useSelector((state) => state.session.selectedSnapshots);
 
   const getAllSnaps = async () => {
     const from = new Date(new Date().getFullYear(), 0, 1).getTime();
@@ -26,15 +26,21 @@ const SnapshotsTable = () => {
     getAllSnaps();
   }, []);
 
-  const handleCheckboxChange = (index: number) => {
-    setSelectedRows((prevSelectedRows) =>
-      prevSelectedRows.includes(index)
-        ? prevSelectedRows.filter((i) => i !== index)
-        : [...prevSelectedRows, index]
+  const handleCheckboxChange = (snapshot: SnapshotDB) => {
+    dispatch(
+      setSelectedSnapshots(
+        selectedRows.some((ss) => ss.snapshot === snapshot.snapshot)
+          ? selectedRows.filter((ss) => ss.snapshot !== snapshot.snapshot)
+          : [...selectedRows, snapshot]
+        // selectedRows.(index)
+        //   ? selectedRows.filter((i) => i !== index)
+        //   : [...selectedRows, index]
+      )
     );
   };
 
-  const isRowSelected = (index: number) => selectedRows.includes(index);
+  const isRowSelected = (snapshot: SnapshotDB) =>
+    selectedRows.some((ss) => ss.snapshot === snapshot.snapshot);
 
   const onShowData = (snapshot: SnapshotDB) => {
     dispatch(
@@ -60,9 +66,9 @@ const SnapshotsTable = () => {
               type="checkbox"
               onChange={(e) => {
                 if (e.target.checked) {
-                  setSelectedRows(snapshots.map((_, index) => index));
+                  dispatch(setSelectedSnapshots(snapshots.map((ss) => ss)));
                 } else {
-                  setSelectedRows([]);
+                  dispatch(setSelectedSnapshots([]));
                 }
               }}
               checked={selectedRows.length === snapshots.length}
@@ -75,15 +81,15 @@ const SnapshotsTable = () => {
       </thead>
       <tbody>
         {snapshots.map((snapshot, index) => (
-          <tr key={index} className={isRowSelected(index) ? "bg-base-content/40" : ""}>
+          <tr key={index} className={isRowSelected(snapshot) ? "bg-base-content/40" : ""}>
             <td
               className="border px-4 py-2 text-center cursor-pointer"
-              onClick={() => handleCheckboxChange(index)}
+              onClick={() => handleCheckboxChange(snapshot)}
             >
               <input
                 className="checkbox checkbox-accent"
                 type="checkbox"
-                checked={isRowSelected(index)}
+                checked={isRowSelected(snapshot)}
                 // onChange={() => handleCheckboxChange(index)}
               />
             </td>
