@@ -4,6 +4,7 @@ import Footer from "./footer";
 import DistributionModal from "Pages/Topup/Components/distributionModal";
 import MobileDrawer from "./drawer";
 import SnapshotModal from "Pages/Topup/Components/snapshotModal";
+import SnapshotDetailModal from "Pages/Topup/Components/snapshotDetailModal";
 
 const MainLayout = ({ children }: { children: ReactNode }) => {
   return (
@@ -12,6 +13,7 @@ const MainLayout = ({ children }: { children: ReactNode }) => {
         {children}
         <DistributionModal />
         <SnapshotModal />
+        <SnapshotDetailModal />
         <Footer />
       </MobileDrawer>
     </>

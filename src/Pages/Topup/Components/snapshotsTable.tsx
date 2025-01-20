@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { HIT_SERVER_URL } from "Constants/endpoints";
 import { SnapshotDB } from "Types/api";
+import { dispatch } from "Store";
+import { setRewardsModalData } from "Store/Reducers/session";
+import { StakingTokens } from "Types/reducers";
+import { XUSDT_RESOURCE_ADDRESS } from "Constants/address";
 
 const SnapshotsTable = () => {
   const [snapshots, setSnapshots] = useState<SnapshotDB[]>([]);
@@ -31,6 +35,20 @@ const SnapshotsTable = () => {
   };
 
   const isRowSelected = (index: number) => selectedRows.includes(index);
+
+  const onShowData = (snapshot: SnapshotDB) => {
+    dispatch(
+      setRewardsModalData({
+        amount: "1",
+        RewardTokenDistributions: snapshot.data,
+        tokenSymbol: StakingTokens.XUSDT,
+        tokenAddress: XUSDT_RESOURCE_ADDRESS,
+        snapshot: snapshot.snapshot,
+        timestamp: snapshot.timestamp,
+      })
+    );
+    (document.getElementById("SnapshotDetailModal") as HTMLDialogElement).showModal();
+  };
 
   return (
     <table className="table-auto w-full">
@@ -81,7 +99,7 @@ const SnapshotsTable = () => {
             </td>
             <td className="border px-4 py-2 text-center">{snapshot.snapshot}</td>
             <td className="border px-4 py-2 flex items-center justify-center">
-              <button className="btn btn-accent" onClick={() => console.log(snapshot.data)}>
+              <button className="btn btn-accent" onClick={() => onShowData(snapshot)}>
                 Show Data
               </button>
             </td>
