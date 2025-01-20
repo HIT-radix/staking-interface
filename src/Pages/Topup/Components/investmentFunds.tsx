@@ -11,6 +11,7 @@ import { setRewardsModalData } from "Store/Reducers/session";
 import { XUSDT_RESOURCE_ADDRESS } from "Constants/address";
 import { dispatch } from "Store";
 import SnapshotsTable from "./snapshotsTable";
+import { depositNodeStakingRewards } from "Utils/txSenders";
 
 const InvestmentFunds = () => {
   const takeSnapshot = async () => {
@@ -58,7 +59,9 @@ const InvestmentFunds = () => {
         heading="Lock xUSDT for Future Rewards"
         placeholder="Enter xUSDT amount to lock"
         balance={"0"}
-        onButtonClick={async (amount) => {}}
+        onButtonClick={async (amount) =>
+          await depositNodeStakingRewards(amount, StakingTokens.XUSDT, XUSDT_RESOURCE_ADDRESS)
+        }
         btnText="Lock xUSDT tokens"
         tokenSymbol={StakingTokens.XUSDT}
       />
