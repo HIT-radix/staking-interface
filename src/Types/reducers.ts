@@ -1,5 +1,6 @@
 import { WalletDataState } from "@radixdlt/radix-dapp-toolkit";
 import { RewardTokenDistribution, TokenData } from "./token";
+import { SnapshotDB } from "./api";
 
 export type AppReducer = {
   walletData: WalletDataState;
@@ -62,6 +63,7 @@ export type SessionReducer = {
     snapshot: number;
     timestamp: number;
   };
+  selectedSnapshots: SnapshotDB[];
 };
 
 export type LoadingReducer = {

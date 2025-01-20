@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { SnapshotDB } from "Types/api";
 import { SessionReducer } from "Types/reducers";
 import { TokenData } from "Types/token";
 
@@ -9,6 +10,7 @@ const initialState: SessionReducer = {
   fomoBalance: "0",
   fomoTokenData: undefined,
   rewardsModalData: undefined,
+  selectedSnapshots: [],
 };
 
 const session = createSlice({
@@ -38,6 +40,9 @@ const session = createSlice({
     setRewardsModalData(state, action: PayloadAction<SessionReducer["rewardsModalData"]>) {
       state.rewardsModalData = action.payload;
     },
+    setSelectedSnapshots(state, action: PayloadAction<SnapshotDB[]>) {
+      state.selectedSnapshots = action.payload;
+    },
   },
 });
 
@@ -50,4 +55,5 @@ export const {
   setFomoBalance,
   updateHitFomoData,
   setRewardsModalData,
+  setSelectedSnapshots,
 } = session.actions;
