@@ -73,7 +73,7 @@ const InvestmentFunds = () => {
         btnText="Distribute xUSDT"
         tokenSymbol={StakingTokens.XUSDT}
       />
-      <div className="border w-[95vw] max-w-[700px]">
+      <div className="w-[95vw] max-w-[700px]">
         <SnapshotsTable />
       </div>
     </div>
