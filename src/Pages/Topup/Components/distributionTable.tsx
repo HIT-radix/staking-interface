@@ -12,8 +12,8 @@ const DistributionTable = ({ distribution }: { distribution: RewardTokenDistribu
       <tbody>
         {distribution.map((item) => (
           <tr key={item.id}>
-            <td className="border px-4 py-2">{item.id}</td>
-            <td className="border px-4 py-2">{item.amount}</td>
+            <td className="border px-4 py-2 text-center">{item.id}</td>
+            <td className="border px-4 py-2 text-center">{item.amount}</td>
           </tr>
         ))}
       </tbody>
