@@ -95,3 +95,9 @@ export type SnapshotApiResponse = {
   rewardsList: RewardTokenDistribution[];
   snapshot_state_version: number;
 };
+
+export type SnapshotDB = {
+  snapshot: number;
+  timestamp: number;
+  data: RewardTokenDistribution[];
+};

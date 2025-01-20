@@ -1,14 +1,16 @@
-import GeneralOwnerInterface from "Components/generalOwnerInterface";
 import { ArrowRight, Camera, Save } from "lucide-react";
+import axios from "axios";
+import { DataRequestBuilder } from "@radixdlt/radix-dapp-toolkit";
+
+import GeneralOwnerInterface from "Components/generalOwnerInterface";
 import { StakingTokens } from "Types/reducers";
 import { getRdt } from "subs";
-import axios from "axios";
 import { SnapshotApiResponse } from "Types/api";
 import { HIT_SERVER_URL } from "Constants/endpoints";
 import { setRewardsModalData } from "Store/Reducers/session";
 import { XUSDT_RESOURCE_ADDRESS } from "Constants/address";
 import { dispatch } from "Store";
-import { DataRequestBuilder } from "@radixdlt/radix-dapp-toolkit";
+import SnapshotsTable from "./snapshotsTable";
 
 const InvestmentFunds = () => {
   const takeSnapshot = async () => {
@@ -46,6 +48,7 @@ const InvestmentFunds = () => {
       );
     }
   };
+
   return (
     <div className="flex flex-col items-center justify-center text-accent">
       <div className="btn btn-accent mb-6 mt-3" onClick={takeSnapshot}>
@@ -67,6 +70,9 @@ const InvestmentFunds = () => {
         btnText="Distribute xUSDT"
         tokenSymbol={StakingTokens.XUSDT}
       />
+      <div className="border w-[95vw] max-w-[700px]">
+        <SnapshotsTable />
+      </div>
     </div>
   );
 };
