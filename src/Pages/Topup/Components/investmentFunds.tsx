@@ -7,11 +7,12 @@ import { StakingTokens } from "Types/reducers";
 import { getRdt } from "subs";
 import { SnapshotApiResponse } from "Types/api";
 import { HIT_SERVER_URL } from "Constants/endpoints";
-import { setRewardsModalData } from "Store/Reducers/session";
+import { incrementSuccessTxCount, setRewardsModalData } from "Store/Reducers/session";
 import { XUSDT_RESOURCE_ADDRESS } from "Constants/address";
 import { dispatch } from "Store";
 import SnapshotsTable from "./snapshotsTable";
 import { depositNodeStakingRewards } from "Utils/txSenders";
+import { calculateAvgShareOfSnapshots } from "Utils/format";
 
 const InvestmentFunds = () => {
   const takeSnapshot = async () => {
@@ -38,6 +39,7 @@ const InvestmentFunds = () => {
             timestamp: Date.now(),
           })
         );
+        dispatch(incrementSuccessTxCount());
         (document.getElementById("SnapshotModal") as HTMLDialogElement).showModal();
 
         // reset this so it does not trigger on wallet connect button
@@ -68,8 +70,8 @@ const InvestmentFunds = () => {
       <GeneralOwnerInterface
         heading="Distribute locked xUSDT"
         placeholder="Enter xUSDT amount to distribute"
-        balance={"0"}
-        onButtonClick={async (amount) => {}}
+        balance={"9999999"}
+        onButtonClick={async (amount) => await calculateAvgShareOfSnapshots(amount)}
         btnText="Distribute xUSDT"
         tokenSymbol={StakingTokens.XUSDT}
       />

@@ -1,6 +1,7 @@
 import {
   RUG_PROOF_STAKING_OWNER_BADGE_ADDRESS,
   NODE_STAKING_OWNER_BADGE_ADDRESS,
+  XUSDT_RESOURCE_ADDRESS,
 } from "Constants/address";
 import { radixDashboardBaseUrl } from "Constants/misc";
 import { ResourceDetails } from "Types/api";
@@ -9,6 +10,9 @@ import BigNumber from "bignumber.js";
 import numbro from "numbro";
 import { RewardTokenDistribution } from "Types/token";
 import { FungibleResourcesCollectionItem } from "@radixdlt/babylon-gateway-api-sdk";
+import { dispatch, store } from "Store";
+import { setRewardsModalData } from "Store/Reducers/session";
+import { StakingTokens } from "Types/reducers";
 
 export const BN = BigNumber.clone({
   DECIMAL_PLACES: 18,
@@ -215,4 +219,40 @@ export const calculateEstimatedUnlockDate = (epochUnlocked: number, currentEpoch
     minute: "2-digit",
     hour12: true,
   });
+};
+
+export const calculateAvgShareOfSnapshots = (amount: string) => {
+  const selectedSnapshots = store.getState().session.selectedSnapshots;
+  const totalAmounts: { [id: number]: string } = {};
+  const snapshotCount = selectedSnapshots.length;
+
+  selectedSnapshots.forEach((snapshot) => {
+    snapshot.data.forEach((distribution) => {
+      const { id, amount } = distribution;
+      if (!totalAmounts[id]) {
+        totalAmounts[id] = "0";
+      }
+      totalAmounts[id] = new BN(totalAmounts[id]).plus(amount).toString();
+    });
+  });
+
+  const avgShares: RewardTokenDistribution[] = [];
+  for (const id in totalAmounts) {
+    avgShares.push({
+      id: parseInt(id),
+      amount: new BN(totalAmounts[id]).dividedBy(snapshotCount).multipliedBy(amount).toString(),
+    });
+  }
+
+  dispatch(
+    setRewardsModalData({
+      amount,
+      RewardTokenDistributions: avgShares,
+      tokenSymbol: StakingTokens.XUSDT,
+      tokenAddress: XUSDT_RESOURCE_ADDRESS,
+      snapshot: 0,
+      timestamp: 0,
+    })
+  );
+  (document.getElementById("DistributionModal") as HTMLDialogElement).showModal();
 };
