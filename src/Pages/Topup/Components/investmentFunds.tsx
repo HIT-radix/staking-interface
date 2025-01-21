@@ -13,11 +13,13 @@ import { XUSDT_RESOURCE_ADDRESS } from "Constants/address";
 import { dispatch, useSelector } from "Store";
 import SnapshotsTable from "./snapshotsTable";
 import { depositNodeStakingRewards } from "Utils/txSenders";
-import { calculateAvgShareOfSnapshots } from "Utils/format";
+import { calculateAvgShareOfSnapshots, formatTokenAmount } from "Utils/format";
+import InfoTile from "Components/infoTile";
 
 const InvestmentFunds = () => {
   const selectedRows = useSelector((state) => state.session.selectedSnapshots);
   const xusdtBalance = useSelector((state) => state.session.xusdtBalance);
+  const balanceLoading = useSelector((state) => state.loadings.balanceLoading);
   const takeSnapshot = async () => {
     const rdtInstance = getRdt();
     if (rdtInstance) {
@@ -58,7 +60,28 @@ const InvestmentFunds = () => {
   const enableDistribution = useMemo(() => selectedRows.length > 0, [selectedRows]);
 
   return (
-    <div className="flex flex-col items-center justify-center text-accent">
+    <div className="flex flex-col items-center justify-center">
+      <div>
+        <div className="flex items-center justify-center gap-3 mb-4">
+          <div className="min-w-[300px]">
+            <InfoTile
+              title="Your xUSDT Balance"
+              value={formatTokenAmount(+xusdtBalance)}
+              isLoading={balanceLoading}
+              tooltip={xusdtBalance}
+            />
+          </div>
+          {/* <div className="min-w-[300px]">
+            <InfoTile
+              title="Total Locked xUSDTs"
+              value={formatTokenAmount(0) + " " + StakingTokens.XUSDT}
+              isLoading={false}
+              tooltip={"0"}
+            />
+          </div> */}
+        </div>
+      </div>
+
       <div className="btn btn-accent mb-6 mt-3" onClick={takeSnapshot}>
         Take & Save Snapshot <Camera /> <ArrowRight /> <Save />
       </div>
