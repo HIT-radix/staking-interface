@@ -14,6 +14,7 @@ import {
   setLockedHITRewards,
   setLockedNodeStakingFomos,
   setLockedNodeStakingHits,
+  setLockedNodeStakingxUSDTs,
   setNodeStakeNFTid,
   // setOldLockedNodeStakingFomos,
   setStHitBalance,
@@ -272,8 +273,11 @@ export const fetchRugProofComponentDetails = async () => {
 export const fetchNodeStakingComponentDetails = async () => {
   let totalHITs = "0";
   let totalFOMOs = "0";
+  let totalXUSDTs = "0";
+
   let assignedHITS = "0";
   let assignedFOMOs = "0";
+  let assignedXUSDTs = "0";
   try {
     store.dispatch(setNodeStakingComponentDataLoading(true));
     const response = await axios.post<any, AxiosResponse<EntityDetails>>(
@@ -287,11 +291,11 @@ export const fetchNodeStakingComponentDetails = async () => {
       const { balances } = extractBalances(response.data.items[0].fungible_resources.items, [
         { symbol: StakingTokens.HIT, address: HIT_RESOURCE_ADDRESS },
         { symbol: StakingTokens.FOMO, address: FOMO_RESOURCE_ADDRESS },
-        // { symbol: `old${StakingTokens.FOMO}`, address: OLD_FOMO_RESOURCE_ADDRESS },
+        { symbol: StakingTokens.XUSDT, address: XUSDT_RESOURCE_ADDRESS },
       ]);
       totalHITs = balances[StakingTokens.HIT];
       totalFOMOs = balances[StakingTokens.FOMO];
-      // oldLockedFOMOs = balances[`old${StakingTokens.FOMO}`];
+      totalXUSDTs = balances[StakingTokens.XUSDT];
       response.data.items[0].details.state.fields[2].entries.forEach((entry: any) => {
         switch (entry.key.value) {
           case HIT_RESOURCE_ADDRESS:
@@ -299,6 +303,9 @@ export const fetchNodeStakingComponentDetails = async () => {
             break;
           case FOMO_RESOURCE_ADDRESS:
             assignedFOMOs = entry.value.fields[1].value;
+            break;
+          case XUSDT_RESOURCE_ADDRESS:
+            assignedXUSDTs = entry.value.fields[1].value;
             break;
         }
       });
@@ -308,7 +315,7 @@ export const fetchNodeStakingComponentDetails = async () => {
   }
   store.dispatch(setLockedNodeStakingHits(BN(totalHITs).minus(assignedHITS).toString()));
   store.dispatch(setLockedNodeStakingFomos(BN(totalFOMOs).minus(assignedFOMOs).toString()));
-  // store.dispatch(setOldLockedNodeStakingFomos(oldLockedFOMOs));
+  store.dispatch(setLockedNodeStakingxUSDTs(BN(totalXUSDTs).minus(assignedXUSDTs).toString()));
   store.dispatch(setNodeStakingComponentDataLoading(false));
 };
 

@@ -20,6 +20,11 @@ const InvestmentFunds = () => {
   const selectedRows = useSelector((state) => state.session.selectedSnapshots);
   const xusdtBalance = useSelector((state) => state.session.xusdtBalance);
   const balanceLoading = useSelector((state) => state.loadings.balanceLoading);
+  const nodeStakingComponentDataLoading = useSelector(
+    (state) => state.loadings.nodeStakingComponentDataLoading
+  );
+  const lockedNodeStakingxUSDTs = useSelector((state) => state.staking.lockedNodeStakingxUSDTs);
+
   const takeSnapshot = async () => {
     const rdtInstance = getRdt();
     if (rdtInstance) {
@@ -71,14 +76,14 @@ const InvestmentFunds = () => {
               tooltip={xusdtBalance}
             />
           </div>
-          {/* <div className="min-w-[300px]">
+          <div className="min-w-[300px]">
             <InfoTile
               title="Total Locked xUSDTs"
-              value={formatTokenAmount(0) + " " + StakingTokens.XUSDT}
-              isLoading={false}
-              tooltip={"0"}
+              value={formatTokenAmount(+lockedNodeStakingxUSDTs)}
+              isLoading={nodeStakingComponentDataLoading}
+              tooltip={lockedNodeStakingxUSDTs}
             />
-          </div> */}
+          </div>
         </div>
       </div>
 
