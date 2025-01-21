@@ -36,6 +36,7 @@ import {
   FOMO_RESOURCE_ADDRESS,
   NODE_STAKING_COMPONENT_ADDRESS,
   XUSDT_RESOURCE_ADDRESS,
+  NODE_STAKING_XUSDT_KEY_VALUE_STORE_ADDRESS,
   // OLD_FOMO_RESOURCE_ADDRESS,
   // OLD_NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS,
 } from "Constants/address";
@@ -323,12 +324,13 @@ export const fetchClaimableNodeStakingRewards = async (nftId: number) => {
   const keyValueAddressesWithTheirTokens = [
     { address: NODE_STAKING_HIT_KEY_VALUE_STORE_ADDRESS, token: StakingTokens.HIT },
     { address: NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS, token: StakingTokens.FOMO },
-    // { address: OLD_NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS, token: `old${StakingTokens.FOMO}` },
+    { address: NODE_STAKING_XUSDT_KEY_VALUE_STORE_ADDRESS, token: StakingTokens.XUSDT },
   ];
 
   let claimableRewards = {
     HIT: "0",
     FOMO: "0",
+    XUSDT: "0",
     // oldFOMO: "0"
   };
 

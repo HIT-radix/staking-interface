@@ -10,6 +10,17 @@ export const STHIT_RESOURCE_ADDRESS =
     ? "resource_tdx_2_1th3frqxwmg4hqej6ae5p8lfe5x5lm7nvdf3gpxa7xfdtq89knqzpft"
     : "resource_rdx1thhxseekkanlykgpa5zxz77g2slpv462stkl3hcx4pytjcupd0qj5f";
 
+export const FOMO_RESOURCE_ADDRESS =
+  process.env.REACT_APP_ENVIRONMENT === Environment.dev
+    ? "resource_tdx_2_1tknqxat0qc4ydc3k3z45mkree0p27nkp9eteeeurc6xlmlxj3pm5cv"
+    : "resource_rdx1t5l954908vmg465pkj7j37z0fn4j33cdjt2g6czavjde406y4uxdy9";
+
+export const OLD_FOMO_RESOURCE_ADDRESS =
+  "resource_rdx1t4a42s786rs0nz6lv3skg2kvk94alxrpd5v73q9e7jrt33fsalcg0m";
+
+export const XUSDT_RESOURCE_ADDRESS =
+  "resource_rdx1thrvr3xfs2tarm2dl9emvs26vjqxu6mqvfgvqjne940jv0lnrrg7rw";
+
 export const RUG_PROOF_STAKING_COMPONENT_ADDRESS =
   process.env.REACT_APP_ENVIRONMENT === Environment.dev
     ? "component_tdx_2_1cqkezyxf9ulzwu8hakr3g0r0yfmj9xr0rnjujyy28c03ephl4wjwwk"
@@ -34,11 +45,6 @@ export const NODE_STAKING_COMPONENT_ADDRESS =
   process.env.REACT_APP_ENVIRONMENT === Environment.dev
     ? "component_tdx_2_1crf2uqm3tcqqdml0tqq04wurmqrhdkca7cscsuxr45lghhvv72zgnx"
     : "component_rdx1cqpv4nfsgfk9c2r9ymnqyksfkjsg07mfc49m9qw3dpgzrmjmsuuquv";
-
-export const FOMO_RESOURCE_ADDRESS =
-  process.env.REACT_APP_ENVIRONMENT === Environment.dev
-    ? "resource_tdx_2_1tknqxat0qc4ydc3k3z45mkree0p27nkp9eteeeurc6xlmlxj3pm5cv"
-    : "resource_rdx1t5l954908vmg465pkj7j37z0fn4j33cdjt2g6czavjde406y4uxdy9";
 
 export const NODE_STAKING_OWNER_BADGE_ADDRESS =
   process.env.REACT_APP_ENVIRONMENT === Environment.dev
@@ -66,6 +72,9 @@ export const NODE_STAKING_HIT_KEY_VALUE_STORE_ADDRESS =
     ? "internal_keyvaluestore_tdx_2_1kqv4x2fctjx2esglff4t85gx033ruyaxyh2ct72k2d7q2l7899am5g"
     : "internal_keyvaluestore_rdx1krxnad7sk0dsz2f5j27lxgq74uvwq0h5xyzd2rwvhs0xy5td6zf583";
 
+export const NODE_STAKING_XUSDT_KEY_VALUE_STORE_ADDRESS =
+  "internal_keyvaluestore_rdx1kp9qyednfzecfxnpz2f8pmlllhehzsytexwc3p8z5xdg966afewhye";
+
 export const NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS =
   process.env.REACT_APP_ENVIRONMENT === Environment.dev
     ? "internal_keyvaluestore_tdx_2_1kzlxcs94slutg6raf9gc9kde7xyv7zd2dkqfkx0p2n80uhl88esah5"
@@ -75,9 +84,6 @@ export const OLD_NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS =
   process.env.REACT_APP_ENVIRONMENT === Environment.dev
     ? "internal_keyvaluestore_tdx_2_1kzlxcs94slutg6raf9gc9kde7xyv7zd2dkqfkx0p2n80uhl88esah5"
     : "internal_keyvaluestore_rdx1kqc5uy3gu2j6v9sdjrz72n0axlmldvkqu24evdyqdjrh23xqd0demj";
-
-export const OLD_FOMO_RESOURCE_ADDRESS =
-  "resource_rdx1t4a42s786rs0nz6lv3skg2kvk94alxrpd5v73q9e7jrt33fsalcg0m";
 
 export const NODE_CURRENTLY_EARNED_LSU_VAULT_ADDRESS =
   "internal_vault_rdx1trjet2x0609mecejd3yruksu28g8sqz4rgza4785mv4fha0d2exyp8";
@@ -90,6 +96,3 @@ export const NODE_TOTAL_STAKED_XRD_VAULT_ADDRESS =
 
 export const NODE_UNSTAKING_XRD_VAULT_ADDRESS =
   "internal_vault_rdx1tzukc8dxghnlq8gw686s0vc86ss88978lde48ef0ars2c2lmh387pt";
-
-export const XUSDT_RESOURCE_ADDRESS =
-  "resource_rdx1thrvr3xfs2tarm2dl9emvs26vjqxu6mqvfgvqjne940jv0lnrrg7rw";
