@@ -17,6 +17,7 @@ import { calculateAvgShareOfSnapshots } from "Utils/format";
 
 const InvestmentFunds = () => {
   const selectedRows = useSelector((state) => state.session.selectedSnapshots);
+  const xusdtBalance = useSelector((state) => state.session.xusdtBalance);
   const takeSnapshot = async () => {
     const rdtInstance = getRdt();
     if (rdtInstance) {
@@ -64,7 +65,7 @@ const InvestmentFunds = () => {
       <GeneralOwnerInterface
         heading="Lock xUSDT for Future Rewards"
         placeholder="Enter xUSDT amount to lock"
-        balance={"0"}
+        balance={xusdtBalance}
         onButtonClick={async (amount) =>
           await depositNodeStakingRewards(amount, StakingTokens.XUSDT, XUSDT_RESOURCE_ADDRESS)
         }
