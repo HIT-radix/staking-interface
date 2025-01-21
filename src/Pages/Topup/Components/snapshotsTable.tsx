@@ -58,7 +58,7 @@ const SnapshotsTable = () => {
   };
 
   return (
-    <table className="table-auto w-full">
+    <table className="table-auto w-full text-accent">
       <thead>
         <tr>
           <th className="px-4 py-2">
