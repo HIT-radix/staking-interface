@@ -10,6 +10,7 @@ import { XUSDT_RESOURCE_ADDRESS } from "Constants/address";
 const SnapshotsTable = () => {
   const [snapshots, setSnapshots] = useState<SnapshotDB[]>([]);
   const selectedRows = useSelector((state) => state.session.selectedSnapshots);
+  const successTxCount = useSelector((state) => state.session.successTxCount);
 
   const getAllSnaps = async () => {
     const from = new Date(new Date().getFullYear(), 0, 1).getTime();
@@ -24,7 +25,7 @@ const SnapshotsTable = () => {
 
   useEffect(() => {
     getAllSnaps();
-  }, []);
+  }, [successTxCount]);
 
   const handleCheckboxChange = (snapshot: SnapshotDB) => {
     dispatch(
@@ -90,7 +91,7 @@ const SnapshotsTable = () => {
                 className="checkbox checkbox-accent"
                 type="checkbox"
                 checked={isRowSelected(snapshot)}
-                // onChange={() => handleCheckboxChange(index)}
+                onChange={() => {}}
               />
             </td>
             <td className="border px-4 py-2 text-center">
