@@ -64,6 +64,7 @@ export type SessionReducer = {
     timestamp: number;
   };
   selectedSnapshots: SnapshotDB[];
+  xusdtBalance: string;
 };
 
 export type LoadingReducer = {

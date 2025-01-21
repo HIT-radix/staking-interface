@@ -3,7 +3,12 @@ import axios, { AxiosResponse } from "axios";
 import { Ociswap_baseurl, networkRPC } from "Constants/endpoints";
 import { store } from "Store";
 import { setHitFomoPrices } from "Store/Reducers/app";
-import { setFomoBalance, setHitBalance, updateHitFomoData } from "Store/Reducers/session";
+import {
+  setFomoBalance,
+  setHitBalance,
+  setxusdtBalance,
+  updateHitFomoData,
+} from "Store/Reducers/session";
 import {
   setIsOwner,
   setLockedHITRewards,
@@ -29,6 +34,7 @@ import {
   HIT_RESOURCE_ADDRESS,
   FOMO_RESOURCE_ADDRESS,
   NODE_STAKING_COMPONENT_ADDRESS,
+  XUSDT_RESOURCE_ADDRESS,
   // OLD_FOMO_RESOURCE_ADDRESS,
   // OLD_NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS,
 } from "Constants/address";
@@ -52,6 +58,7 @@ export const fetchBalances = async (walletAddress: string) => {
   let HITbalance = "0";
   let stHITbalance = "0";
   let fomobalance = "0";
+  let xUSDTbalance = "0";
   let isOwner = false;
   let nftId: number | undefined = undefined;
 
@@ -79,12 +86,14 @@ export const fetchBalances = async (walletAddress: string) => {
           { symbol: StakingTokens.HIT, address: HIT_RESOURCE_ADDRESS },
           { symbol: StakingTokens.StHIT, address: STHIT_RESOURCE_ADDRESS },
           { symbol: StakingTokens.FOMO, address: FOMO_RESOURCE_ADDRESS },
+          { symbol: StakingTokens.XUSDT, address: XUSDT_RESOURCE_ADDRESS },
         ],
         true
       );
       HITbalance = balances[StakingTokens.HIT];
       stHITbalance = balances[StakingTokens.StHIT];
       fomobalance = balances[StakingTokens.FOMO];
+      xUSDTbalance = balances[StakingTokens.XUSDT];
       isOwner = isOwnerFound;
     } catch (error) {
       console.log("error in fetchBalances", error);
@@ -94,6 +103,7 @@ export const fetchBalances = async (walletAddress: string) => {
   store.dispatch(setHitBalance(HITbalance));
   store.dispatch(setStHitBalance(stHITbalance));
   store.dispatch(setFomoBalance(fomobalance));
+  store.dispatch(setxusdtBalance(xUSDTbalance));
   store.dispatch(setIsOwner(isOwner));
 };
 
