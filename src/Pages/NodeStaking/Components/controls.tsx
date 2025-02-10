@@ -83,11 +83,11 @@ const Controls = () => {
     return {
       HIT: {
         amount: lockedNodeStakingHits,
-        inUSD: HITinUSD === 0 ? undefined : formatDollarAmount(HITinUSD),
+        inUSD: HITinUSD === 0 ? undefined : HITinUSD.toFixed(2),
       },
       FOMO: {
         amount: lockedNodeStakingFomos,
-        inUSD: FOMOinUSD === 0 ? undefined : formatDollarAmount(FOMOinUSD),
+        inUSD: FOMOinUSD === 0 ? undefined : FOMOinUSD.toFixed(2),
       },
     };
   }, [hitPrice, lockedNodeStakingFomos, lockedNodeStakingHits, fomoPrice]);
@@ -118,7 +118,7 @@ const Controls = () => {
                 <p className="text-lg font-semibold ml-1" title={lockedRewards.HIT.amount}>
                   $HIT : {formatTokenAmount(+lockedRewards.HIT.amount)}{" "}
                   {lockedRewards.HIT.inUSD && (
-                    <span className="text-[16px]">({lockedRewards.HIT.inUSD})</span>
+                    <span className="text-[16px]">(${lockedRewards.HIT.inUSD})</span>
                   )}
                 </p>
               </div>
@@ -127,7 +127,7 @@ const Controls = () => {
                 <p className="text-lg font-semibold ml-1" title={lockedRewards.FOMO.amount}>
                   $FOMO : {formatTokenAmount(+lockedRewards.FOMO.amount)}{" "}
                   {lockedRewards.FOMO.inUSD && (
-                    <span className="text-[16px]">({lockedRewards.FOMO.inUSD})</span>
+                    <span className="text-[16px]">(${lockedRewards.FOMO.inUSD})</span>
                   )}
                 </p>
               </div>
