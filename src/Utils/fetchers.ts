@@ -1,9 +1,10 @@
 import axios, { AxiosResponse } from "axios";
 
 import { Ociswap_baseurl, networkRPC } from "Constants/endpoints";
-import { store } from "Store";
+import { dispatch, store } from "Store";
 import { setHitFomoPrices } from "Store/Reducers/app";
 import {
+  setFelixWallet,
   setFomoBalance,
   setHitBalance,
   setxusdtBalance,
@@ -22,7 +23,7 @@ import {
   setStakedHIT,
 } from "Store/Reducers/staking";
 import { StakingTokens, Tabs } from "Types/reducers";
-import { TokenData } from "Types/token";
+import { FungibleBalances, NonFungibleBalances, TokenData } from "Types/token";
 import { BN, extractBalances, extractBalancesNew } from "./format";
 import { EntityDetails } from "Types/api";
 import {
@@ -37,6 +38,7 @@ import {
   NODE_STAKING_COMPONENT_ADDRESS,
   XUSDT_RESOURCE_ADDRESS,
   NODE_STAKING_XUSDT_KEY_VALUE_STORE_ADDRESS,
+  FELIX_WALLET_ADDRESS,
   // OLD_FOMO_RESOURCE_ADDRESS,
   // OLD_NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS,
 } from "Constants/address";
@@ -361,4 +363,40 @@ export const fetchClaimableNodeStakingRewards = async (nftId: number) => {
   }
   store.dispatch(setNodeStakingRewardsLoading(false));
   return claimableRewards;
+};
+
+export const fetchFelixWalletBalance = async () => {
+  const [fungibleBalances, nonFungibleBalances] = await Promise.all([
+    fetchAllFungibles(FELIX_WALLET_ADDRESS),
+    fetchAllNonFungibles(FELIX_WALLET_ADDRESS),
+  ]);
+
+  let formattedFungibleBalances: FungibleBalances = {};
+  fungibleBalances.forEach((balance) => {
+    if (balance.aggregation_level === "Global") {
+      const amount = balance.amount;
+      const tokenAddress = balance.resource_address;
+      if (+amount > 0) {
+        formattedFungibleBalances[tokenAddress] = { tokenAddress, amount };
+      }
+    }
+  });
+
+  let formattedNonFungibleBalances: NonFungibleBalances = {};
+  nonFungibleBalances.forEach((item) => {
+    if (item.aggregation_level === "Vault") {
+      const collectionAddress = item.resource_address;
+      const ids = item.vaults.items[0].items;
+      if (ids && ids.length > 0) {
+        formattedNonFungibleBalances[collectionAddress] = { collectionAddress, ids };
+      }
+    }
+  });
+
+  dispatch(
+    setFelixWallet({
+      fungible: formattedFungibleBalances,
+      nonFungible: formattedNonFungibleBalances,
+    })
+  );
 };
