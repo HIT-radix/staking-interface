@@ -63,3 +63,7 @@ export interface RewardTokenDistribution {
 }
 
 export type ClaimableRewardsInfo = Partial<Record<StakingTokens, string>>;
+
+export type FungibleBalances = Record<string, { tokenAddress: string; amount: string }>;
+
+export type NonFungibleBalances = Record<string, { collectionAddress: string; ids: string[] }>;

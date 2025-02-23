@@ -12,6 +12,7 @@ const initialState: SessionReducer = {
   fomoTokenData: undefined,
   rewardsModalData: undefined,
   selectedSnapshots: [],
+  felixWallet: { fungible: {}, nonFungible: {} },
 };
 
 const session = createSlice({
@@ -47,6 +48,9 @@ const session = createSlice({
     setSelectedSnapshots(state, action: PayloadAction<SnapshotDB[]>) {
       state.selectedSnapshots = action.payload;
     },
+    setFelixWallet(state, action: PayloadAction<SessionReducer["felixWallet"]>) {
+      state.felixWallet = action.payload;
+    },
   },
 });
 
@@ -61,4 +65,5 @@ export const {
   setRewardsModalData,
   setSelectedSnapshots,
   setxusdtBalance,
+  setFelixWallet,
 } = session.actions;

@@ -1,5 +1,5 @@
 import { WalletDataState } from "@radixdlt/radix-dapp-toolkit";
-import { RewardTokenDistribution, TokenData } from "./token";
+import { FungibleBalances, NonFungibleBalances, RewardTokenDistribution, TokenData } from "./token";
 import { SnapshotDB } from "./api";
 
 export type AppReducer = {
@@ -65,6 +65,10 @@ export type SessionReducer = {
   };
   selectedSnapshots: SnapshotDB[];
   xusdtBalance: string;
+  felixWallet: {
+    fungible: FungibleBalances;
+    nonFungible: NonFungibleBalances;
+  };
 };
 
 export type LoadingReducer = {
