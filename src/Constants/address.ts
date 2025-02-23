@@ -96,3 +96,15 @@ export const NODE_TOTAL_STAKED_XRD_VAULT_ADDRESS =
 
 export const NODE_UNSTAKING_XRD_VAULT_ADDRESS =
   "internal_vault_rdx1tzukc8dxghnlq8gw686s0vc86ss88978lde48ef0ars2c2lmh387pt";
+
+export const FELIX_WALLET_ADDRESS =
+  "account_rdx129xg758ryxg7xc080nv0c0k9xrcdv3ezve6kqpj665q38cv23kamph";
+
+export const XUSDC_RESOURCE_ADDRESS =
+  "resource_rdx1t4upr78guuapv5ept7d7ptekk9mqhy605zgms33mcszen8l9fac8vf";
+
+export const WEFT_W2_xUSDT_RESOURCE_ADDRESS =
+  "resource_rdx1t5ljp8amkf76mrn5txmmemkrmjwt5r0ajjnljvyunh27gm0n295dfn";
+
+export const WEFT_W2_xUSDC_RESOURCE_ADDRESS =
+  "resource_rdx1thw2u4uss739j8cqumehgf5wyw26chcfu98newsu42zhln7wd050ee";
