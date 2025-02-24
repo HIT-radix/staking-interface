@@ -42,6 +42,7 @@ import {
   getWithdrawNodeStakingRewardsManifest,
 } from "./manifests";
 import { ClaimableRewardsInfo, RewardTokenDistribution } from "Types/token";
+import { generateRandomNonce } from "@radixdlt/radix-engine-toolkit";
 
 type Props = {
   amount: string;
@@ -342,4 +343,29 @@ export const finishNodeLSUnlockProcess = async (amount: string) => {
   } catch (error) {
     console.log("Unable to finish unlock LSU process in node validator");
   }
+};
+
+export const simulateTx = async (manifest: string) => {
+  const latestLedgerState =
+    await CachedService.gatewayApi.transaction.innerClient.transactionConstruction();
+
+  const nonce = generateRandomNonce();
+
+  const preview = await CachedService.gatewayApi.transaction.innerClient.transactionPreview({
+    transactionPreviewRequest: {
+      manifest,
+      nonce,
+      tip_percentage: 0,
+      flags: {
+        use_free_credit: true,
+        assume_all_signature_proofs: true,
+        skip_epoch_check: true,
+      },
+      start_epoch_inclusive: latestLedgerState.ledger_state.epoch,
+      end_epoch_exclusive: latestLedgerState.ledger_state.epoch + 1,
+      signer_public_keys: [],
+    },
+  });
+  console.log("preview", preview);
+  return preview;
 };
