@@ -108,3 +108,15 @@ export const WEFT_W2_xUSDT_RESOURCE_ADDRESS =
 
 export const WEFT_W2_xUSDC_RESOURCE_ADDRESS =
   "resource_rdx1thw2u4uss739j8cqumehgf5wyw26chcfu98newsu42zhln7wd050ee";
+
+export const WEFT_KEY_VALUE_STORE_ADDRESS =
+  "internal_keyvaluestore_rdx1kzjr763caq96j0kv883vy8gnf3jvrrp7dfm9zr5n0akryvzsxvyujc";
+
+export const STAB_XUSDC_LIQUIDITY_RECEIPT =
+  "resource_rdx1ngt09n8lg292hnzwvz5j6hl0aexja9ggh84qyam3xk3vcala72c2um";
+
+export const SURGE_EXCHANGE_COMPONENT =
+  "component_rdx1cqrfmpkp96hvlykahmhmu2w48kk2w7w35396vkrze9jwufxtvdzlkk";
+
+export const SURGE_SLP_TOKEN =
+  "resource_rdx1t48x0z68dm6z422wxyctj5wvnt2nh95lvmly65vxzywdkd24zypl5d";
