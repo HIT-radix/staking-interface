@@ -8,6 +8,7 @@ import CachedService from "Classes/cachedService";
 const Stake = lazy(() => import("Pages/Stake"));
 const Topup = lazy(() => import("Pages/Topup"));
 const NodeStaking = lazy(() => import("Pages/NodeStaking"));
+const InvestmentFunds = lazy(() => import("Pages/InvestmentFunds"));
 
 export default function Routes() {
   const navigate = useNavigate();
@@ -35,6 +36,14 @@ export default function Routes() {
       element: (
         <MainLayout>
           <NodeStaking />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/investments",
+      element: (
+        <MainLayout>
+          <InvestmentFunds />
         </MainLayout>
       ),
     },
