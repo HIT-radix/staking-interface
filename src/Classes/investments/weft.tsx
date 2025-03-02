@@ -52,7 +52,7 @@ class WeftInvestment {
     });
     const weftUSDTInvestment = new Decimal(weftXUSDTamount).div(unitRatioXUSDT).toString();
     const weftUSDCInvestment = new Decimal(weftXUSDCamount).div(unitRatioXUSDC).toString();
-    return weftUSDTInvestment + weftUSDCInvestment;
+    return new Decimal(weftUSDTInvestment).add(weftUSDCInvestment).toString();
   }
 }
 const weftInvestor = new WeftInvestment();
