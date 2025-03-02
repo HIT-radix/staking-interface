@@ -55,5 +55,6 @@ class WeftInvestment {
     return weftUSDTInvestment + weftUSDCInvestment;
   }
 }
+const weftInvestor = new WeftInvestment();
 
-export default WeftInvestment;
+export default weftInvestor;

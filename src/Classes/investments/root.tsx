@@ -48,5 +48,6 @@ class RootInvestment {
     return "0";
   }
 }
+const rootInvestor = new RootInvestment();
 
-export default RootInvestment;
+export default rootInvestor;

@@ -29,5 +29,6 @@ class SurgeInvestment {
     return new Decimal(lp_price).mul(felixSLPtokens).toString();
   }
 }
+const surgeInvestor = new SurgeInvestment();
 
-export default SurgeInvestment;
+export default surgeInvestor;
