@@ -366,6 +366,5 @@ export const simulateTx = async (manifest: string) => {
       signer_public_keys: [],
     },
   });
-  console.log("preview", preview);
   return preview;
 };
