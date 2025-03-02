@@ -366,37 +366,43 @@ export const fetchClaimableNodeStakingRewards = async (nftId: number) => {
 };
 
 export const fetchFelixWalletBalance = async () => {
-  const [fungibleBalances, nonFungibleBalances] = await Promise.all([
-    fetchAllFungibles(FELIX_WALLET_ADDRESS),
-    fetchAllNonFungibles(FELIX_WALLET_ADDRESS),
-  ]);
+  try {
+    const [fungibleBalances, nonFungibleBalances] = await Promise.all([
+      fetchAllFungibles(FELIX_WALLET_ADDRESS),
+      fetchAllNonFungibles(FELIX_WALLET_ADDRESS),
+    ]);
 
-  let formattedFungibleBalances: FungibleBalances = {};
-  fungibleBalances.forEach((balance) => {
-    if (balance.aggregation_level === "Global") {
-      const amount = balance.amount;
-      const tokenAddress = balance.resource_address;
-      if (+amount > 0) {
-        formattedFungibleBalances[tokenAddress] = { tokenAddress, amount };
+    let formattedFungibleBalances: FungibleBalances = {};
+    fungibleBalances.forEach((balance) => {
+      if (balance.aggregation_level === "Global") {
+        const amount = balance.amount;
+        const tokenAddress = balance.resource_address;
+        if (+amount > 0) {
+          formattedFungibleBalances[tokenAddress] = { tokenAddress, amount };
+        }
       }
-    }
-  });
+    });
 
-  let formattedNonFungibleBalances: NonFungibleBalances = {};
-  nonFungibleBalances.forEach((item) => {
-    if (item.aggregation_level === "Vault") {
-      const collectionAddress = item.resource_address;
-      const ids = item.vaults.items[0].items;
-      if (ids && ids.length > 0) {
-        formattedNonFungibleBalances[collectionAddress] = { collectionAddress, ids };
+    let formattedNonFungibleBalances: NonFungibleBalances = {};
+    nonFungibleBalances.forEach((item) => {
+      if (item.aggregation_level === "Vault") {
+        const collectionAddress = item.resource_address;
+        const ids = item.vaults.items[0].items;
+        if (ids && ids.length > 0) {
+          formattedNonFungibleBalances[collectionAddress] = { collectionAddress, ids };
+        }
       }
-    }
-  });
+    });
 
-  dispatch(
-    setFelixWallet({
-      fungible: formattedFungibleBalances,
-      nonFungible: formattedNonFungibleBalances,
-    })
-  );
+    dispatch(
+      setFelixWallet({
+        fungible: formattedFungibleBalances,
+        nonFungible: formattedNonFungibleBalances,
+      })
+    );
+    return true;
+  } catch (error) {
+    console.log("error in fetchFelixWalletBalance", error);
+    return false;
+  }
 };
