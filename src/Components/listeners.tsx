@@ -8,7 +8,6 @@ import {
   fetchPoolDetails,
   fetchStHITTotalSupply,
   fetchHitFomoData,
-  fetchFelixWalletBalance,
 } from "Utils/fetchers";
 import { BN } from "Utils/format";
 import { useEffect } from "react";
@@ -24,7 +23,6 @@ const Listeners = () => {
 
   useEffect(() => {
     initializeSubscriptions();
-    fetchFelixWalletBalance();
     return () => {
       unsubscribeAll();
     };
