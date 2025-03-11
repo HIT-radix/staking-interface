@@ -7,6 +7,7 @@ import InfoTile from "Components/infoTile";
 import { formatDollarAmount } from "Utils/format";
 import Skeleton from "react-loading-skeleton";
 import { fetchFelixWalletBalance } from "Utils/fetchers";
+import c9Investor from "Classes/investments/stab";
 
 const InvesmentFunds = () => {
   const [loading, setLoading] = useState(true);
@@ -14,6 +15,7 @@ const InvesmentFunds = () => {
     weft: 0,
     surge: 0,
     root: 0,
+    c9: 0,
   });
 
   useEffect(() => {
@@ -21,15 +23,18 @@ const InvesmentFunds = () => {
       try {
         const isFetched = await fetchFelixWalletBalance();
         if (isFetched) {
-          const [weftInvestment, surgeInvestment, rootInvestment] = await Promise.all([
-            weftInvestor.getInvestment(),
-            surgeInvestor.getInvestment(),
-            rootInvestor.getInvestment(),
-          ]);
+          const [weftInvestment, surgeInvestment, rootInvestment, caviarNineInvestment] =
+            await Promise.all([
+              weftInvestor.getInvestment(),
+              surgeInvestor.getInvestment(),
+              rootInvestor.getInvestment(),
+              c9Investor.getInvestment(),
+            ]);
           setInvestments({
             weft: +weftInvestment,
             surge: +surgeInvestment,
             root: +rootInvestment,
+            c9: +caviarNineInvestment,
           });
         }
       } catch (err) {
@@ -41,7 +46,7 @@ const InvesmentFunds = () => {
     fetchInvestments();
   }, []);
 
-  const totalFunds = investments.weft + investments.surge + investments.root;
+  const totalFunds = investments.weft + investments.surge + investments.root + investments.c9;
 
   return (
     <div className="max-w-screen-xl mx-auto w-full pt-4 px-2 ">
@@ -68,14 +73,14 @@ const InvesmentFunds = () => {
           ) : (
             <Chart
               options={{
-                labels: ["Weft Finance", "Root Finance", "Surge Finance"],
+                labels: ["Weft Finance", "Root Finance", "Surge Finance", "CaviarNine"],
                 dataLabels: {},
                 legend: {
                   show: true,
                   labels: { colors: "#fff" },
                 },
               }}
-              series={[investments.weft, investments.root, investments.surge]}
+              series={[investments.weft, investments.root, investments.surge, investments.c9]}
               type="donut"
               width="380"
             />
@@ -137,6 +142,22 @@ const InvesmentFunds = () => {
                   />
                 ) : (
                   formatDollarAmount(investments.surge)
+                )}
+              </td>
+            </tr>
+            <tr className="text-white border-b border-white/20">
+              <th>4</th>
+              <td className="font-semibold">CaviarNine</td>
+              <td className="font-semibold">
+                {loading ? (
+                  <Skeleton
+                    baseColor="#242d20"
+                    highlightColor="#A0D490"
+                    width="40px"
+                    style={{ opacity: 0.5 }}
+                  />
+                ) : (
+                  formatDollarAmount(investments.c9)
                 )}
               </td>
             </tr>
