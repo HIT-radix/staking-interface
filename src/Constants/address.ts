@@ -126,3 +126,6 @@ export const ROOT_xUSDT_POOL_ADDRESS =
 
 export const ROOT_CDP_NFT_ADDRESS =
   "resource_rdx1ngekvyag42r0xkhy2ds08fcl7f2ncgc0g74yg6wpeeyc4vtj03sa9f";
+
+export const STAB_RESOURCE_ADDRESS =
+  "resource_rdx1t40lchq8k38eu4ztgve5svdpt0uxqmkvpy4a2ghnjcxjtdxttj9uam";
