@@ -8,6 +8,7 @@ import { formatDollarAmount } from "Utils/format";
 import Skeleton from "react-loading-skeleton";
 import { fetchFelixWalletBalance } from "Utils/fetchers";
 import c9Investor from "Classes/investments/stab";
+import investBg from "Assets/Images/investment-bg.jpeg";
 
 const InvesmentFunds = () => {
   const [loading, setLoading] = useState(true);
@@ -49,122 +50,131 @@ const InvesmentFunds = () => {
   const totalFunds = investments.weft + investments.surge + investments.root + investments.c9;
 
   return (
-    <div className="max-w-screen-xl mx-auto w-full pt-4 px-2 ">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="flex items-center justify-center">
-          <div className="min-w-[300px]">
-            <InfoTile
-              title="Total funds invested"
-              value={formatDollarAmount(totalFunds)}
-              isLoading={loading}
-              tooltip={totalFunds.toString()}
-            />
+    <>
+      <div className="relative w-full">
+        <img
+          src={investBg}
+          alt="Invest Background"
+          className="absolute inset-0 w-full h-[100vh] object-cover filter brightness-50 opacity-30"
+        />
+        <div className="relative max-w-screen-xl mx-auto w-full pt-4 px-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex items-center justify-center">
+              <div className="min-w-[300px]">
+                <InfoTile
+                  title="Total funds invested"
+                  value={formatDollarAmount(totalFunds)}
+                  isLoading={loading}
+                  tooltip={totalFunds.toString()}
+                />
+              </div>
+            </div>
+            <div className="flex items-center justify-center">
+              {loading ? (
+                <Skeleton
+                  baseColor="#242d20"
+                  highlightColor="#A0D490"
+                  width="380px"
+                  height="300px"
+                  style={{ opacity: 0.5 }}
+                />
+              ) : (
+                <Chart
+                  options={{
+                    labels: ["Weft Finance", "Root Finance", "Surge Finance", "CaviarNine"],
+                    dataLabels: {},
+                    legend: {
+                      show: true,
+                      labels: { colors: "#fff" },
+                    },
+                  }}
+                  series={[investments.weft, investments.root, investments.surge, investments.c9]}
+                  type="donut"
+                  width="380"
+                />
+              )}
+            </div>
+          </div>
+          <div className="overflow-x-auto mt-4">
+            <table className="table">
+              <thead className="bg-white text-primary">
+                <tr>
+                  <th></th>
+                  <th>Investment</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="text-white border-b border-white/20">
+                  <th>1</th>
+                  <td className="font-semibold">Weft Finance</td>
+                  <td className="font-semibold">
+                    {loading ? (
+                      <Skeleton
+                        baseColor="#242d20"
+                        highlightColor="#A0D490"
+                        width="40px"
+                        style={{ opacity: 0.5 }}
+                      />
+                    ) : (
+                      formatDollarAmount(investments.weft)
+                    )}
+                  </td>
+                </tr>
+                <tr className="text-white border-b border-white/20">
+                  <th>2</th>
+                  <td className="font-semibold">Root Finance</td>
+                  <td className="font-semibold">
+                    {loading ? (
+                      <Skeleton
+                        baseColor="#242d20"
+                        highlightColor="#A0D490"
+                        width="40px"
+                        style={{ opacity: 0.5 }}
+                      />
+                    ) : (
+                      formatDollarAmount(investments.root)
+                    )}
+                  </td>
+                </tr>
+                <tr className="text-white border-b border-white/20">
+                  <th>3</th>
+                  <td className="font-semibold">Surge Finance</td>
+                  <td className="font-semibold">
+                    {loading ? (
+                      <Skeleton
+                        baseColor="#242d20"
+                        highlightColor="#A0D490"
+                        width="40px"
+                        style={{ opacity: 0.5 }}
+                      />
+                    ) : (
+                      formatDollarAmount(investments.surge)
+                    )}
+                  </td>
+                </tr>
+                <tr className="text-white border-b border-white/20">
+                  <th>4</th>
+                  <td className="font-semibold">CaviarNine</td>
+                  <td className="font-semibold">
+                    {loading ? (
+                      <Skeleton
+                        baseColor="#242d20"
+                        highlightColor="#A0D490"
+                        width="40px"
+                        style={{ opacity: 0.5 }}
+                      />
+                    ) : (
+                      formatDollarAmount(investments.c9)
+                    )}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
-        <div className="flex items-center justify-center">
-          {loading ? (
-            <Skeleton
-              baseColor="#242d20"
-              highlightColor="#A0D490"
-              width="380px"
-              height="300px"
-              style={{ opacity: 0.5 }}
-            />
-          ) : (
-            <Chart
-              options={{
-                labels: ["Weft Finance", "Root Finance", "Surge Finance", "CaviarNine"],
-                dataLabels: {},
-                legend: {
-                  show: true,
-                  labels: { colors: "#fff" },
-                },
-              }}
-              series={[investments.weft, investments.root, investments.surge, investments.c9]}
-              type="donut"
-              width="380"
-            />
-          )}
-        </div>
       </div>
-      <div className="overflow-x-auto mt-4">
-        <table className="table">
-          <thead className="bg-white text-primary">
-            <tr>
-              <th></th>
-              <th>Investment</th>
-              <th>Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="text-white border-b border-white/20">
-              <th>1</th>
-              <td className="font-semibold">Weft Finance</td>
-              <td className="font-semibold">
-                {loading ? (
-                  <Skeleton
-                    baseColor="#242d20"
-                    highlightColor="#A0D490"
-                    width="40px"
-                    style={{ opacity: 0.5 }}
-                  />
-                ) : (
-                  formatDollarAmount(investments.weft)
-                )}
-              </td>
-            </tr>
-            <tr className="text-white border-b border-white/20">
-              <th>2</th>
-              <td className="font-semibold">Root Finance</td>
-              <td className="font-semibold">
-                {loading ? (
-                  <Skeleton
-                    baseColor="#242d20"
-                    highlightColor="#A0D490"
-                    width="40px"
-                    style={{ opacity: 0.5 }}
-                  />
-                ) : (
-                  formatDollarAmount(investments.root)
-                )}
-              </td>
-            </tr>
-            <tr className="text-white border-b border-white/20">
-              <th>3</th>
-              <td className="font-semibold">Surge Finance</td>
-              <td className="font-semibold">
-                {loading ? (
-                  <Skeleton
-                    baseColor="#242d20"
-                    highlightColor="#A0D490"
-                    width="40px"
-                    style={{ opacity: 0.5 }}
-                  />
-                ) : (
-                  formatDollarAmount(investments.surge)
-                )}
-              </td>
-            </tr>
-            <tr className="text-white border-b border-white/20">
-              <th>4</th>
-              <td className="font-semibold">CaviarNine</td>
-              <td className="font-semibold">
-                {loading ? (
-                  <Skeleton
-                    baseColor="#242d20"
-                    highlightColor="#A0D490"
-                    width="40px"
-                    style={{ opacity: 0.5 }}
-                  />
-                ) : (
-                  formatDollarAmount(investments.c9)
-                )}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    </>
   );
 };
 
