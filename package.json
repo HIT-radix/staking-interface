@@ -28,6 +28,7 @@
     "path": "^0.12.7",
     "postcss": "8.4.33",
     "react": "^18.2.0",
+    "react-animated-numbers": "^1.0.0",
     "react-apexcharts": "^1.7.0",
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18.2.0",
