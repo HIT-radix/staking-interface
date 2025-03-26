@@ -9,6 +9,7 @@ import Skeleton from "react-loading-skeleton";
 import { fetchFelixWalletBalance } from "Utils/fetchers";
 import c9Investor from "Classes/investments/stab";
 import investBg from "Assets/Images/investment-bg.jpeg";
+import AnimatedNumbers from "react-animated-numbers";
 
 const InvesmentFunds = () => {
   const [loading, setLoading] = useState(true);
@@ -60,13 +61,36 @@ const InvesmentFunds = () => {
         <div className="relative max-w-screen-xl mx-auto w-full pt-4 px-2">
           <div className="grid grid-cols-1 my-10">
             <div className="flex items-center justify-center">
-              <div className="min-w-[300px]">
-                <InfoTile
-                  title="Total funds invested"
-                  value={formatDollarAmount(totalFunds)}
-                  isLoading={loading}
-                  tooltip={totalFunds.toString()}
-                />
+              <div
+              // className="flex items-center justify-center"
+              >
+                <p className="text-white text-center text-xl font-bold ">Total Investments</p>
+                {!loading && (
+                  <div
+                    className="flex items-center justify-center "
+                    style={{
+                      backgroundImage:
+                        "radial-gradient(circle, rgba(255,215,0,0.5) 20%, transparent 80%)",
+                      overflow: "visible",
+                      // filter: "blur(8px)",
+                    }}
+                  >
+                    <p style={{ fontSize: 80, color: "white", fontWeight: "bold" }}>$</p>
+                    <AnimatedNumbers
+                      includeComma
+                      transitions={(index) => ({
+                        type: "spring",
+                        duration: 5,
+                      })}
+                      animateToNumber={Number(totalFunds.toFixed(2))}
+                      fontStyle={{
+                        fontSize: 80,
+                        color: "white",
+                        fontWeight: "bold",
+                      }}
+                    />
+                  </div>
+                )}
               </div>
             </div>
             {/* <div className="flex items-center justify-center">
