@@ -26,29 +26,31 @@ const MobileDrawer = ({ children }: { children: ReactNode }) => {
           <li
             className={
               "menu-item text-xl ml-2 my-3 cursor-pointer " +
-              (checkIfActive("/") ? "text-accent underline" : "text-secondary")
+              (checkIfActive("/fund") || checkIfActive("/")
+                ? "text-accent underline"
+                : "text-secondary")
             }
             onClick={() => moveToPage("/")}
+          >
+            FOMO $HIT Fund
+          </li>
+          <li
+            className={
+              "menu-item text-xl ml-2 my-3 cursor-pointer " +
+              (checkIfActive("/hit-staking") ? "text-accent underline" : "text-secondary")
+            }
+            onClick={() => moveToPage("/hit-staking")}
           >
             Stake HIT
           </li>
           <li
             className={
               "menu-item text-xl ml-2 my-3 cursor-pointer " +
-              (checkIfActive("/staking") ? "text-accent underline" : "text-secondary")
+              (checkIfActive("/node-staking") ? "text-accent underline" : "text-secondary")
             }
-            onClick={() => moveToPage("/staking")}
+            onClick={() => moveToPage("/node-staking")}
           >
             Node Staking
-          </li>
-          <li
-            className={
-              "menu-item text-xl ml-2 my-3 cursor-pointer " +
-              (checkIfActive("/fund") ? "text-accent underline" : "text-secondary")
-            }
-            onClick={() => moveToPage("/fund")}
-          >
-            FOMO $HIT Fund
           </li>
           <li
             className={"menu-item text-xl ml-2 my-3 cursor-pointer text-secondary"}
