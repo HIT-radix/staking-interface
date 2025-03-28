@@ -19,6 +19,14 @@ export default function Routes() {
       path: "/",
       element: (
         <MainLayout>
+          <InvestmentFunds />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/hit-staking",
+      element: (
+        <MainLayout>
           <Stake />
         </MainLayout>
       ),
@@ -32,7 +40,7 @@ export default function Routes() {
       ),
     },
     {
-      path: "/staking",
+      path: "/node-staking",
       element: (
         <MainLayout>
           <NodeStaking />
