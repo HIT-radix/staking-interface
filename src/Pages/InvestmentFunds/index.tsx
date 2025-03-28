@@ -152,7 +152,7 @@ const InvesmentFunds = () => {
                 <thead className="bg-white text-primary">
                   <tr>
                     <th></th>
-                    <th>Investment</th>
+                    <th>DeFi Platform</th>
                     <th>Value</th>
                   </tr>
                 </thead>
