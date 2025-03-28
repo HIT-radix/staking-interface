@@ -64,7 +64,9 @@ const InvesmentFunds = () => {
               <div
               // className="flex items-center justify-center"
               >
-                <p className="text-white text-center text-xl font-bold ">Total Investments</p>
+                <p className="text-white text-center text-xl font-bold ">
+                  FOMO $HIT Fund Market Value
+                </p>
                 {!loading && (
                   <div
                     className="flex items-center justify-center "
