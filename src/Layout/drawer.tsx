@@ -44,7 +44,7 @@ const MobileDrawer = ({ children }: { children: ReactNode }) => {
           <li
             className={
               "menu-item text-xl ml-2 my-3 cursor-pointer " +
-              (checkIfActive("/staking") ? "text-accent underline" : "text-secondary")
+              (checkIfActive("/fund") ? "text-accent underline" : "text-secondary")
             }
             onClick={() => moveToPage("/fund")}
           >
