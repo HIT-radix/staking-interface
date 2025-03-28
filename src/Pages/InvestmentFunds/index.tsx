@@ -149,8 +149,8 @@ const InvesmentFunds = () => {
             </div>
             <div className="order-2 md:order-1 overflow-x-auto">
               <table className="table">
-                <thead className="bg-white text-primary">
-                  <tr>
+                <thead className="text-white  bg-[#000400] bg-opacity-70">
+                  <tr className="border-b border-white">
                     <th></th>
                     <th>DeFi Platform</th>
                     <th>Value</th>
@@ -207,7 +207,7 @@ const InvesmentFunds = () => {
                   </tr>
                   <tr className="text-white border-b border-white/20 bg-[#000400] bg-opacity-70">
                     <th>4</th>
-                    <td className="font-semibold">CaviarNine</td>
+                    <td className="font-semibold">STAB/xUSDC LP CaviarNine</td>
                     <td className="font-semibold">
                       {loading ? (
                         <Skeleton
