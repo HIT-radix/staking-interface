@@ -41,6 +41,15 @@ const NavbarLinks = () => {
         Node Staking
       </p>
       <p
+        className={
+          "cursor-pointer hover:underline hover:text-accent " +
+          (checkIfActive("/staking") ? "text-accent underline" : "text-secondary")
+        }
+        onClick={() => moveToPage("/fund")}
+      >
+        Funds
+      </p>
+      <p
         className={"cursor-pointer hover:underline hover:text-accent text-secondary"}
         onClick={() => window.open("https://nodemanager.addix.meme/")}
       >
