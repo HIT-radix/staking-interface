@@ -43,7 +43,7 @@ const NavbarLinks = () => {
       <p
         className={
           "cursor-pointer hover:underline hover:text-accent " +
-          (checkIfActive("/staking") ? "text-accent underline" : "text-secondary")
+          (checkIfActive("/fund") ? "text-accent underline" : "text-secondary")
         }
         onClick={() => moveToPage("/fund")}
       >
