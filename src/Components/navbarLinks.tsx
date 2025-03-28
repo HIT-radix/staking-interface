@@ -25,29 +25,31 @@ const NavbarLinks = () => {
       <p
         className={
           "cursor-pointer hover:underline hover:text-accent " +
-          (checkIfActive("/") ? "text-accent underline" : "text-secondary")
+          (checkIfActive("/fund") || checkIfActive("/")
+            ? "text-accent underline"
+            : "text-secondary")
         }
         onClick={() => moveToPage("/")}
+      >
+        FOMO $HIT Fund
+      </p>
+      <p
+        className={
+          "cursor-pointer hover:underline hover:text-accent " +
+          (checkIfActive("/hit-staking") ? "text-accent underline" : "text-secondary")
+        }
+        onClick={() => moveToPage("/hit-staking")}
       >
         Stake HIT
       </p>
       <p
         className={
           "cursor-pointer hover:underline hover:text-accent " +
-          (checkIfActive("/staking") ? "text-accent underline" : "text-secondary")
+          (checkIfActive("/node-staking") ? "text-accent underline" : "text-secondary")
         }
-        onClick={() => moveToPage("/staking")}
+        onClick={() => moveToPage("/node-staking")}
       >
         Node Staking
-      </p>
-      <p
-        className={
-          "cursor-pointer hover:underline hover:text-accent " +
-          (checkIfActive("/fund") ? "text-accent underline" : "text-secondary")
-        }
-        onClick={() => moveToPage("/fund")}
-      >
-        FOMO $HIT Fund
       </p>
       <p
         className={"cursor-pointer hover:underline hover:text-accent text-secondary"}
