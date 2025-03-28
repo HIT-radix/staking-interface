@@ -15,7 +15,7 @@ const Header = () => {
         </label>
         <LogoWebsite />
       </div>
-      <div className="flex-row items-center gap-8 text-xl hidden lg:flex">
+      <div className="flex-row items-center gap-8 text-lg hidden lg:flex">
         <NavbarLinks />
       </div>
       <div className="flex items-center justify-center gap-9">
