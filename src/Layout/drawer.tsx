@@ -48,7 +48,7 @@ const MobileDrawer = ({ children }: { children: ReactNode }) => {
             }
             onClick={() => moveToPage("/fund")}
           >
-            Funds
+            FOMO $HIT Fund
           </li>
           <li
             className={"menu-item text-xl ml-2 my-3 cursor-pointer text-secondary"}

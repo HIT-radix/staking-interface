@@ -47,7 +47,7 @@ const NavbarLinks = () => {
         }
         onClick={() => moveToPage("/fund")}
       >
-        Funds
+        FOMO $HIT Fund
       </p>
       <p
         className={"cursor-pointer hover:underline hover:text-accent text-secondary"}
