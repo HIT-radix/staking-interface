@@ -40,7 +40,7 @@ export default function Routes() {
       ),
     },
     {
-      path: "/investments",
+      path: "/fund",
       element: (
         <MainLayout>
           <InvestmentFunds />
