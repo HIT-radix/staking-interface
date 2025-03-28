@@ -49,7 +49,7 @@ const Dropdown: React.FC<DropDownProps> = ({ stakingType, setStakingType }) => {
               }`}
               onClick={() => setStakingType("Validator")}
             >
-              ADDIX FOMO Validator Staking
+              ADDIX FOMO Node Staking
             </div>
           </li>
           <li>

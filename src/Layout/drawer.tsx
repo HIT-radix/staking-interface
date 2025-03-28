@@ -39,7 +39,7 @@ const MobileDrawer = ({ children }: { children: ReactNode }) => {
             }
             onClick={() => moveToPage("/staking")}
           >
-            Validator Staking
+            Node Staking
           </li>
           <li
             className={"menu-item text-xl ml-2 my-3 cursor-pointer text-secondary"}

@@ -38,7 +38,7 @@ const NavbarLinks = () => {
         }
         onClick={() => moveToPage("/staking")}
       >
-        Validator Staking
+        Node Staking
       </p>
       <p
         className={"cursor-pointer hover:underline hover:text-accent text-secondary"}
