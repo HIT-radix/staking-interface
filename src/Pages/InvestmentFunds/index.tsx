@@ -81,8 +81,7 @@ const InvesmentFunds = () => {
                     <AnimatedNumbers
                       includeComma
                       transitions={(index) => ({
-                        type: "spring",
-                        duration: 5,
+                        duration: 3,
                       })}
                       animateToNumber={Number(totalFunds.toFixed(2))}
                       fontStyle={{
