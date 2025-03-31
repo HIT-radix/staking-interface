@@ -29,7 +29,7 @@ const Controls = () => {
   const [claimableRewards, setClaimableRewards] = useState({
     HIT: "0",
     FOMO: "0",
-    XUSDT: "0",
+    xUSDT: "0",
   });
 
   const claimableRewardsInUsd = useMemo(() => {
@@ -47,6 +47,7 @@ const Controls = () => {
       return {
         HIT: hitInUsd,
         FOMO: fomoInUsd,
+        xUSDT: formatDollarAmount(+claimableRewards.xUSDT),
       };
     }
     return {
@@ -54,7 +55,7 @@ const Controls = () => {
       FOMO: undefined,
       oldFOMO: undefined,
     };
-  }, [claimableRewards.HIT, claimableRewards.FOMO, hitPrice, fomoPrice]);
+  }, [claimableRewards.HIT, claimableRewards.FOMO, claimableRewards.xUSDT, hitPrice, fomoPrice]);
 
   useEffect(() => {
     (async () => {
@@ -165,13 +166,13 @@ const Controls = () => {
                     )}{" "}
                   </p>
                 </div>
-                {Number(claimableRewards.XUSDT) > 0 ? (
+                {Number(claimableRewards.xUSDT) > 0 ? (
                   <div className="flex items-center mt-2">
                     <img src={xUSDTLogo} alt="hit-logo" className="w-7 h-7 rounded-full" />
-                    <p className="text-2xl font-bold ml-1" title={claimableRewards.XUSDT}>
-                      $xUSDT : {formatTokenAmount(Number(claimableRewards.XUSDT))}{" "}
-                      {claimableRewards.XUSDT && (
-                        <span className="text-lg">({claimableRewards.XUSDT})</span>
+                    <p className="text-2xl font-bold ml-1" title={claimableRewards.xUSDT}>
+                      $xUSDT : {formatTokenAmount(Number(claimableRewards.xUSDT))}{" "}
+                      {claimableRewards.xUSDT && (
+                        <span className="text-lg">({claimableRewardsInUsd.xUSDT})</span>
                       )}{" "}
                     </p>
                   </div>
