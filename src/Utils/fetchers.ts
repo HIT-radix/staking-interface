@@ -332,7 +332,7 @@ export const fetchClaimableNodeStakingRewards = async (nftId: number) => {
   let claimableRewards = {
     HIT: "0",
     FOMO: "0",
-    XUSDT: "0",
+    xUSDT: "0",
     // oldFOMO: "0"
   };
 
