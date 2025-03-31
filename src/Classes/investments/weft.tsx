@@ -19,15 +19,6 @@ class WeftInvestment {
     const weftXUSDTamount = felixFungibles[WEFT_W2_xUSDT_RESOURCE_ADDRESS]?.amount ?? "0";
     const weftXUSDCamount = felixFungibles[WEFT_W2_xUSDC_RESOURCE_ADDRESS]?.amount ?? "0";
 
-    if (
-      weftXUSDTamount === "0" ||
-      weftXUSDCamount === "0" ||
-      !weftXUSDTamount ||
-      !weftXUSDCamount
-    ) {
-      return "0";
-    }
-
     const data = await CachedService.gatewayApi.state.innerClient.keyValueStoreData({
       stateKeyValueStoreDataRequest: {
         key_value_store_address: WEFT_KEY_VALUE_STORE_ADDRESS,
