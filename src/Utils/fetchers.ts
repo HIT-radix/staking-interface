@@ -70,19 +70,28 @@ export const fetchBalances = async (walletAddress: string) => {
     try {
       const allFungibleItems = await fetchAllFungibles(walletAddress);
       const allNonFungibleItems = await fetchAllNonFungibles(walletAddress);
-      allNonFungibleItems.some((nonfungItem) => {
+
+      // Collect all NFT ids from NODE_STAKING_USER_BADGE_ADDRESS
+      const nftCandidates: number[] = [];
+      allNonFungibleItems.forEach((nonfungItem) => {
         if (
           nonfungItem.aggregation_level === "Vault" &&
           nonfungItem.resource_address === NODE_STAKING_USER_BADGE_ADDRESS
         ) {
-          if (nonfungItem.vaults.items[0].items) {
-            const userNftid = Number(nonfungItem.vaults.items[0].items[0].replace(/#/g, ""));
-            nftId = Number.isNaN(userNftid) ? undefined : userNftid;
-            return true;
+          const items = nonfungItem.vaults.items[0].items;
+          if (items && items.length > 0) {
+            items.forEach((nft) => {
+              const parsed = Number(nft.replace(/#/g, ""));
+              if (!Number.isNaN(parsed)) {
+                nftCandidates.push(parsed);
+              }
+            });
           }
         }
-        return false;
       });
+      if (nftCandidates.length > 0) {
+        nftId = Math.min(...nftCandidates);
+      }
 
       const { balances, isOwner: isOwnerFound } = extractBalancesNew(
         allFungibleItems,
