@@ -9,6 +9,9 @@ import {
   NODE_VALIDATOR_ADDRESS,
   RUG_PROOF_STAKING_COMPONENT_ADDRESS,
   STHIT_RESOURCE_ADDRESS,
+  FOMO_COMPONENT_ADDRESS,
+  FOMO_RESOURCE_ADDRESS,
+  XUSDT_RESOURCE_ADDRESS,
 } from "Constants/address";
 import { RewardTokenDistribution } from "Types/token";
 import { formatRewardTokenDistribution } from "./format";
@@ -332,6 +335,60 @@ export const getFinishUnlockLSUProcessManifest = (walletAddress: string) => {
     CALL_METHOD 
       Address("${NODE_VALIDATOR_ADDRESS}") 
       "finish_unlock_owner_stake_units"
+    ;
+    CALL_METHOD
+      Address("${walletAddress}")
+      "deposit_batch"
+      Expression("ENTIRE_WORKTOP")
+    ;
+  `;
+};
+
+export const getAirdropRewardsToFomoDirectlyManifest = (
+  walletAddress: string,
+  userNftBadgeId: number
+) => {
+  return `
+    CALL_METHOD
+      Address("${walletAddress}")
+      "create_proof_of_non_fungibles"
+      Address("${NODE_STAKING_USER_BADGE_ADDRESS}")
+      Array<NonFungibleLocalId>(NonFungibleLocalId("#${userNftBadgeId}#"))
+    ;
+    POP_FROM_AUTH_ZONE
+      Proof("proof")
+    ;
+    CALL_METHOD
+      Address("${NODE_STAKING_COMPONENT_ADDRESS}")
+      "withdraw_rewards"
+      Proof("proof")
+    ;
+    TAKE_ALL_FROM_WORKTOP
+      Address("${HIT_RESOURCE_ADDRESS}")
+      Bucket("tokensa")
+    ;
+    CALL_METHOD
+      Address("${FOMO_COMPONENT_ADDRESS}")
+      "airdrop"
+      Bucket("tokensa")
+    ;
+    TAKE_ALL_FROM_WORKTOP
+      Address("${FOMO_RESOURCE_ADDRESS}")
+      Bucket("tokensb")
+    ;
+    CALL_METHOD
+      Address("${FOMO_COMPONENT_ADDRESS}")
+      "airdrop"
+      Bucket("tokensb")
+    ;
+    TAKE_ALL_FROM_WORKTOP
+      Address("${XUSDT_RESOURCE_ADDRESS}")
+      Bucket("tokensc")
+    ;
+    CALL_METHOD
+      Address("${FOMO_COMPONENT_ADDRESS}")
+      "airdrop"
+      Bucket("tokensc")
     ;
     CALL_METHOD
       Address("${walletAddress}")
