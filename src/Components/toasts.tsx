@@ -198,6 +198,16 @@ export const ClaimSuccessToast = ({ txId }: { txId: string }) => {
   );
 };
 
+export const AirdropToast = ({ txId }: { txId: string }) => {
+  return (
+    <BaseToast
+      heading="Airdrop Transaction Successful"
+      subHeading={`Rewards airdropped successfully`}
+      txId={txId}
+    />
+  );
+};
+
 export const ClaimAndStakeSuccessToast = ({ txId }: { txId: string }) => {
   return (
     <BaseToast
