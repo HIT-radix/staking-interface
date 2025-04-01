@@ -1,7 +1,11 @@
 import redirectIcon from "Assets/Images/share.png";
 import InfoTile from "Components/infoTile";
 import { useSelector } from "Store";
-import { withdrawNodeStakingRewards, withdrawNodeStakingRewardsAndStakeHIT } from "Utils/txSenders";
+import {
+  withdrawAndAirdropNodeStakingRewardsInFomo,
+  withdrawNodeStakingRewards,
+  withdrawNodeStakingRewardsAndStakeHIT,
+} from "Utils/txSenders";
 import hitLogo from "Assets/Images/hit-logo.png";
 import xUSDTLogo from "Assets/Images/xUSDT.png";
 import newfomoLogo from "Assets/Images/fomo-new.jpg";
@@ -13,6 +17,7 @@ import { InfoTooltip } from "Components/tooltip";
 
 const Controls = () => {
   const [shouldRestakeHIT, setShouldRestakeHIT] = useState(false);
+  const [shouldAirdropRewards, setShouldAirdropRewards] = useState(false);
 
   const hitPrice = useSelector((state) => state.app.hitPrice);
   const fomoPrice = useSelector((state) => state.app.fomoPrice);
@@ -31,6 +36,8 @@ const Controls = () => {
     FOMO: "0",
     xUSDT: "0",
   });
+
+  const showAirdropOption = useMemo(() => NodeStakeNFTid === 48, [NodeStakeNFTid]);
 
   const claimableRewardsInUsd = useMemo(() => {
     if (claimableRewards.HIT && claimableRewards.FOMO && hitPrice && fomoPrice) {
@@ -70,7 +77,9 @@ const Controls = () => {
   }, [claimableRewards]);
 
   const handleWithdrawRewards = (nftId: number, claimableRewards: ClaimableRewardsInfo) => {
-    if (shouldRestakeHIT) {
+    if (shouldAirdropRewards) {
+      withdrawAndAirdropNodeStakingRewardsInFomo(nftId);
+    } else if (shouldRestakeHIT) {
       withdrawNodeStakingRewardsAndStakeHIT(nftId, claimableRewards);
     } else {
       withdrawNodeStakingRewards(nftId);
@@ -202,6 +211,21 @@ const Controls = () => {
                   </span>{" "}
                 </p>
               </div>
+              {showAirdropOption && (
+                <div className="flex items-center justify-start mt-0.5">
+                  <input
+                    type="checkbox"
+                    className="checkbox checkbox-accent checkbox-sm"
+                    onChange={(e) => setShouldAirdropRewards(e.target.checked)}
+                  />
+                  <p className="ml-2 text-accent">
+                    Withdraw and airdrop rewards in the same transaction?{" "}
+                    <span>
+                      <InfoTooltip text="Upon withdraw, rewards will be airdropped directly to fomo stake component." />
+                    </span>{" "}
+                  </p>
+                </div>
+              )}
             </>
           )}
         </>
