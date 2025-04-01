@@ -23,10 +23,12 @@ import {
   ClaimAndStakeSuccessToast,
   ClaimLSUSuccessToast,
   UnlockLSUSuccessToast,
+  AirdropToast,
 } from "Components/toasts";
 import axios from "axios";
 import { HIT_SERVER_URL } from "Constants/endpoints";
 import {
+  getAirdropRewardsToFomoDirectlyManifest,
   getAssignNodeStakingRewardsManifest,
   getDepositNodeStakingRewardsManifest,
   getDistributeHitTxManifest,
@@ -259,6 +261,23 @@ export const withdrawNodeStakingRewards = async (userNftBadgeId: number) => {
       amount: "",
       txManifest: getWithdrawNodeStakingRewardsManifest(walletAddress, userNftBadgeId),
       ToastElement: ClaimSuccessToast,
+      tokenSymbol: StakingTokens.HIT,
+    });
+  } catch (error) {
+    console.log("Unable to withdraw node staking rewards");
+  }
+};
+
+export const withdrawAndAirdropNodeStakingRewardsInFomo = async (userNftBadgeId: number) => {
+  try {
+    const {
+      app: { walletAddress },
+    } = store.getState();
+
+    await baseTxSender({
+      amount: "",
+      txManifest: getAirdropRewardsToFomoDirectlyManifest(walletAddress, userNftBadgeId),
+      ToastElement: AirdropToast,
       tokenSymbol: StakingTokens.HIT,
     });
   } catch (error) {
