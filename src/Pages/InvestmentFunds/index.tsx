@@ -58,19 +58,29 @@ const InvesmentFunds = () => {
                 <p className="text-white text-center text-xl font-bold ">
                   FOMO $HIT Fund Market Value
                 </p>
-                {!loading && (
+                {loading ? (
+                  <Skeleton width={300} height={100} baseColor="#242d20" highlightColor="#A0D490" />
+                ) : (
                   <div
-                    className="flex items-center justify-center "
+                    className="flex items-center justify-center"
                     style={{
                       backgroundImage:
                         "radial-gradient(circle, rgba(255,215,0,0.5) 20%, transparent 80%)",
                       overflow: "visible",
                     }}
                   >
-                    <p style={{ fontSize: 80, color: "white", fontWeight: "bold" }}>$</p>
+                    <p
+                      style={{
+                        fontSize: 80,
+                        color: "white",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      $
+                    </p>
                     <AnimatedNumbers
                       includeComma
-                      transitions={(index) => ({
+                      transitions={() => ({
                         duration: 3,
                       })}
                       animateToNumber={Number(totalFunds.toFixed(2))}
@@ -117,21 +127,25 @@ const InvesmentFunds = () => {
               )}
             </div>
             <div className="order-2 md:order-1 overflow-x-auto">
-              <table className="table">
-                <thead className="text-white  bg-[#000400] bg-opacity-70">
-                  <tr className="border-b border-white">
-                    <th></th>
-                    <th className=" w-[50%]">DeFi Platform</th>
-                    <th>Value</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {investments.map((investment, index) => (
-                    <ExpandableRow {...investment} />
-                  ))}
-                </tbody>
-              </table>
+              {loading ? (
+                <Skeleton count={5} height={30} baseColor="#242d20" highlightColor="#A0D490" />
+              ) : (
+                <table className="table">
+                  <thead className="text-white bg-[#000400] bg-opacity-70">
+                    <tr className="border-b border-white">
+                      <th></th>
+                      <th className="w-[50%]">DeFi Platform</th>
+                      <th>Value</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {investments.map((investment, index) => (
+                      <ExpandableRow key={index} {...investment} />
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
           </div>
         </div>
