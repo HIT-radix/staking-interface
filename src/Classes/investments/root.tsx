@@ -2,10 +2,23 @@ import CachedService from "Classes/cachedService";
 import { ROOT_CDP_NFT_ADDRESS, ROOT_xUSDT_POOL_ADDRESS } from "Constants/address";
 import Decimal from "decimal.js";
 import { store } from "Store";
+import { InvestmentInfo } from "Types/misc";
 
 class RootInvestment {
-  public async getInvestment() {
-    return await this.fetchxUSDTPoolLiquidityValue();
+  public async getInvestment(): Promise<InvestmentInfo> {
+    const { xusdt } = await this.fetchAllLiquidityValues();
+    const total = new Decimal(xusdt).toString();
+    return {
+      platform: "STAB/xUSDC LP CaviarNine",
+      total,
+      breakdown: [{ asset: "xUSDT", value: xusdt }],
+      index: 2, // Update index as needed
+    };
+  }
+
+  private async fetchAllLiquidityValues() {
+    const xusdt = await this.fetchxUSDTPoolLiquidityValue();
+    return { xusdt };
   }
 
   private async fetchxUSDTPoolLiquidityValue() {
