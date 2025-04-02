@@ -9,7 +9,7 @@ class RootInvestment {
     const { xusdt } = await this.fetchAllLiquidityValues();
     const total = new Decimal(xusdt).toString();
     return {
-      platform: "STAB/xUSDC LP CaviarNine",
+      platform: "Root Finance",
       total,
       breakdown: [{ asset: "xUSDT", value: xusdt }],
       index: 2, // Update index as needed
