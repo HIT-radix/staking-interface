@@ -5,6 +5,7 @@ import { store } from "Store";
 import { TokenData } from "Types/token";
 import { simulateTx } from "Utils/txSenders";
 import Decimal from "decimal.js";
+import { InvestmentInfo } from "Types/misc";
 
 interface Receipt {
   status: string;
@@ -15,8 +16,14 @@ class C9Investment {
   private stab_xusdc_pool_address =
     "component_rdx1cpqcstnjnj5cpag7wc04y6t4azrfxjtr3g53jdpv4y72m0lpp8qkf4";
 
-  public async getInvestment() {
-    return await this.fetch_STAB_XUSDC_liquidity();
+  public async getInvestment(): Promise<InvestmentInfo> {
+    const totalValue = await this.fetch_STAB_XUSDC_liquidity();
+    return {
+      platform: "STAB/xUSDC LP CaviarNine",
+      total: totalValue,
+      breakdown: [],
+      index: 4, // Update index as needed
+    };
   }
 
   private async fetch_STAB_XUSDC_liquidity() {
