@@ -1,11 +1,18 @@
 import { SURGE_EXCHANGE_COMPONENT, SURGE_SLP_TOKEN } from "Constants/address";
 import Decimal from "decimal.js";
 import { store } from "Store";
+import { InvestmentInfo } from "Types/misc";
 import { simulateTx } from "Utils/txSenders";
 
 class SurgeInvestment {
-  public async getInvestment() {
-    return await this.fetchSurgeLiquidityValue();
+  public async getInvestment(): Promise<InvestmentInfo> {
+    const totalValue = await this.fetchSurgeLiquidityValue();
+    return {
+      platform: "Surge Finance",
+      total: totalValue,
+      breakdown: [],
+      index: 3, // Update index as needed
+    };
   }
 
   private async fetchSurgeLiquidityValue() {
