@@ -15,3 +15,10 @@ export type InfoTooltipProps = {
   text: string;
   infoColor?: "green" | "white";
 };
+
+export type InvestmentInfo = {
+  platform: string;
+  total: string;
+  breakdown: { asset: string; value: string }[];
+  index: number;
+};
