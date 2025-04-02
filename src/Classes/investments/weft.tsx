@@ -21,8 +21,8 @@ class WeftInvestment {
       platform: "Weft Finance",
       total: totalInvestment,
       breakdown: [
-        { asset: "USDT", value: weftUSDTInvestment },
-        { asset: "USDC", value: weftUSDCInvestment },
+        { asset: "xUSDT", value: weftUSDTInvestment },
+        { asset: "xUSDC", value: weftUSDCInvestment },
       ],
       index: 1, // Update index as needed
     };
