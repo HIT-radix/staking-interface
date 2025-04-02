@@ -22,8 +22,8 @@ const InvesmentFunds = () => {
         if (isFetched) {
           const allInvestments = await Promise.all([
             weftInvestor.getInvestment(),
-            surgeInvestor.getInvestment(),
             rootInvestor.getInvestment(),
+            surgeInvestor.getInvestment(),
             c9Investor.getInvestment(),
           ]);
           setInvestments(allInvestments);
