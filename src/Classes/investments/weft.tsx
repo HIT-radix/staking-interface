@@ -8,10 +8,24 @@ import {
 import CachedService from "../cachedService";
 import { store } from "Store";
 import Decimal from "decimal.js";
+import { InvestmentInfo } from "Types/misc";
 
 class WeftInvestment {
-  public async getInvestment() {
-    return await this.fetchInvestment();
+  public async getInvestment(): Promise<InvestmentInfo> {
+    const res = await this.fetchInvestment();
+    const weftUSDTInvestment = res.usdt;
+    const weftUSDCInvestment = res.usdc;
+
+    const totalInvestment = new Decimal(weftUSDTInvestment).add(weftUSDCInvestment).toString();
+    return {
+      platform: "Weft Finance",
+      total: totalInvestment,
+      breakdown: [
+        { asset: "USDT", value: weftUSDTInvestment },
+        { asset: "USDC", value: weftUSDCInvestment },
+      ],
+      index: 1, // Update index as needed
+    };
   }
 
   private async fetchInvestment() {
@@ -43,7 +57,7 @@ class WeftInvestment {
     });
     const weftUSDTInvestment = new Decimal(weftXUSDTamount).div(unitRatioXUSDT).toString();
     const weftUSDCInvestment = new Decimal(weftXUSDCamount).div(unitRatioXUSDC).toString();
-    return new Decimal(weftUSDTInvestment).add(weftUSDCInvestment).toString();
+    return { usdt: weftUSDTInvestment, usdc: weftUSDCInvestment };
   }
 }
 const weftInvestor = new WeftInvestment();
