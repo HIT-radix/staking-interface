@@ -19,6 +19,6 @@ export type InfoTooltipProps = {
 export type InvestmentInfo = {
   platform: string;
   total: string;
-  breakdown: { asset: string; value: string }[];
+  breakdown: { asset: string; value: string; logo: string }[];
   index: number;
 };
