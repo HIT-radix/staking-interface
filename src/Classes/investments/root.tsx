@@ -58,21 +58,22 @@ class RootInvestment {
     let assetsData: Record<string, string> = {};
 
     res.forEach((itemRes) => {
-      let tokenAddress = "";
-      let assetValue = "0";
       if (itemRes.data?.programmatic_json.kind === "Tuple") {
         const collateralData = itemRes.data?.programmatic_json.fields[6];
-        if (
-          collateralData.kind === "Map" &&
-          collateralData.entries[0].value.kind === "PreciseDecimal"
-        ) {
-          assetValue = collateralData.entries[0].value.value;
-        }
-        if (collateralData.kind === "Map" && collateralData.entries[0].key.kind === "Reference") {
-          tokenAddress = collateralData.entries[0].key.value;
+        if (collateralData.kind === "Map") {
+          collateralData.entries.forEach((entry) => {
+            let tokenAddress = "";
+            let assetValue = "0";
+            if (entry.value.kind === "PreciseDecimal") {
+              assetValue = entry.value.value;
+            }
+            if (entry.key.kind === "Reference") {
+              tokenAddress = entry.key.value;
+            }
+            assetsData[tokenAddress] = assetValue;
+          });
         }
       }
-      assetsData[tokenAddress] = assetValue;
     });
 
     return assetsData;
