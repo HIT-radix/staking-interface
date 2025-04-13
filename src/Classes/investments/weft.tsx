@@ -9,6 +9,8 @@ import CachedService from "../cachedService";
 import { store } from "Store";
 import Decimal from "decimal.js";
 import { InvestmentInfo } from "Types/misc";
+import xusdtLogo from "Assets/Images/xUSDT.png";
+import xusdcLogo from "Assets/Images/xUSDC.png";
 
 class WeftInvestment {
   public async getInvestment(): Promise<InvestmentInfo> {
@@ -21,8 +23,8 @@ class WeftInvestment {
       platform: "Weft Finance",
       total: totalInvestment,
       breakdown: [
-        { asset: "xUSDT", value: weftUSDTInvestment },
-        { asset: "xUSDC", value: weftUSDCInvestment },
+        { asset: "xUSDT", value: weftUSDTInvestment, logo: xusdtLogo },
+        { asset: "xUSDC", value: weftUSDCInvestment, logo: xusdcLogo },
       ],
       index: 1, // Update index as needed
     };
