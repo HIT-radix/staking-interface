@@ -9,6 +9,8 @@ import {
 import Decimal from "decimal.js";
 import { store } from "Store";
 import { InvestmentInfo } from "Types/misc";
+import xusdtLogo from "Assets/Images/xUSDT.png";
+import xusdcLogo from "Assets/Images/xUSDC.png";
 
 class RootInvestment {
   public async getInvestment(): Promise<InvestmentInfo> {
@@ -18,8 +20,8 @@ class RootInvestment {
       platform: "Root Finance",
       total,
       breakdown: [
-        { asset: "xUSDT", value: xusdt },
-        { asset: "xUSDC", value: xusdc },
+        { asset: "xUSDT", value: xusdt, logo: xusdtLogo },
+        { asset: "xUSDC", value: xusdc, logo: xusdcLogo },
       ],
       index: 2, // Update index as needed
     };
