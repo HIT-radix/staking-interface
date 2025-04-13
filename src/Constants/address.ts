@@ -124,6 +124,9 @@ export const SURGE_SLP_TOKEN =
 export const ROOT_xUSDT_POOL_ADDRESS =
   "component_rdx1cqz0f5znwhyy2d4q2rhncetm5tfpvu2c73kvfertktkw33drxcawk8";
 
+export const ROOT_xUSDC_POOL_ADDRESS =
+  "component_rdx1cqlfmwmhdmp0ln4gaera4skn3yz30p4k5ssv7lqflgh0rjeakwzs9f";
+
 export const ROOT_CDP_NFT_ADDRESS =
   "resource_rdx1ngekvyag42r0xkhy2ds08fcl7f2ncgc0g74yg6wpeeyc4vtj03sa9f";
 
