@@ -7,10 +7,14 @@ const ExpandableRow = ({ index, platform, total, breakdown }: InvestmentInfo) =>
   const [isExpanded, setIsExpanded] = useState(false);
 
   const renderRows = useCallback(() => {
-    return breakdown.map(({ asset, value }, index) => (
+    return breakdown.map(({ asset, value, logo }, index) => (
       <tr className="text-white border-b border-white/20 bg-[#000400] bg-opacity-70" key={index}>
         <th>{index + 1}</th>
-        <td className="font-semibold">{asset}</td>
+        <td className="font-semibold">
+          <div className="flex items-center justify-start gap-2">
+            <img src={logo} alt="logo" className="w-7 h-7 rounded-full" /> {asset}
+          </div>
+        </td>
         <td className="font-semibold">{formatDollarAmount(+value)}</td>
         <td></td>
       </tr>
