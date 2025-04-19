@@ -381,15 +381,6 @@ export const getAirdropRewardsToFomoDirectlyManifest = (
       "airdrop"
       Bucket("tokensb")
     ;
-    TAKE_ALL_FROM_WORKTOP
-      Address("${XUSDT_RESOURCE_ADDRESS}")
-      Bucket("tokensc")
-    ;
-    CALL_METHOD
-      Address("${FOMO_COMPONENT_ADDRESS}")
-      "airdrop"
-      Bucket("tokensc")
-    ;
     CALL_METHOD
       Address("${walletAddress}")
       "deposit_batch"
