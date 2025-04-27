@@ -56,7 +56,10 @@ const InvesmentFunds = () => {
             <div className="flex items-center justify-center">
               <div>
                 <p className="text-white text-center text-xl font-bold ">
-                  FOMO $HIT Fund Market Value
+                  FOMO $HIT Fund Market Value{" "}
+                  <span className="hidden" id="total-market-value">
+                    {totalFunds}
+                  </span>
                 </p>
                 {loading ? (
                   <Skeleton width={300} height={100} baseColor="#242d20" highlightColor="#A0D490" />
