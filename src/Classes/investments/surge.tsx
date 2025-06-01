@@ -8,7 +8,7 @@ class SurgeInvestment {
   public async getInvestment(): Promise<InvestmentInfo> {
     const totalValue = await this.fetchSurgeLiquidityValue();
     return {
-      platform: "Surge Finance",
+      platform: "surge.trade",
       total: totalValue,
       breakdown: [],
       index: 3, // Update index as needed
