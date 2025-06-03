@@ -14,6 +14,7 @@ import { InvestmentInfo } from "Types/misc";
 const InvesmentFunds = () => {
   const [loading, setLoading] = useState(true);
   const [investments, setInvestments] = useState<InvestmentInfo[]>([]);
+  const [fontSize, setFontSize] = useState(150);
 
   useEffect(() => {
     const fetchInvestments = async () => {
@@ -42,6 +43,31 @@ const InvesmentFunds = () => {
       return total + parseFloat(investment.total);
     }, 0);
   }, [investments]);
+
+  // Handle responsive font size
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width < 480) {
+        setFontSize(80);
+      } else if (width < 768) {
+        setFontSize(100);
+      } else if (width < 1024) {
+        setFontSize(130);
+      } else {
+        setFontSize(150);
+      }
+    };
+
+    // Set initial font size
+    handleResize();
+
+    // Add event listener
+    window.addEventListener("resize", handleResize);
+
+    // Clean up
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <>
@@ -74,7 +100,7 @@ const InvesmentFunds = () => {
                   >
                     <p
                       style={{
-                        fontSize: 80,
+                        fontSize: fontSize > 100 ? 80 : fontSize > 80 ? 60 : 40,
                         color: "white",
                         fontWeight: "bold",
                       }}
@@ -86,9 +112,9 @@ const InvesmentFunds = () => {
                       transitions={() => ({
                         duration: 3,
                       })}
-                      animateToNumber={Number(totalFunds.toFixed(2))}
+                      animateToNumber={Number(Number(694.213).toFixed(2))}
                       fontStyle={{
-                        fontSize: 80,
+                        fontSize: fontSize,
                         color: "white",
                         fontWeight: "bold",
                       }}
