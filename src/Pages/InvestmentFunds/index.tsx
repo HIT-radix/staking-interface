@@ -137,7 +137,7 @@ const InvesmentFunds = () => {
               ) : (
                 <Chart
                   options={{
-                    labels: ["Weft Finance", "Root Finance", "Surge Finance", "CaviarNine"],
+                    labels: ["Weft Finance", "Root Finance", "surge.trade", "CaviarNine"],
                     dataLabels: {},
                     legend: {
                       show: true,
