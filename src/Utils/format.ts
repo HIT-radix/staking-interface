@@ -1,7 +1,7 @@
 import {
   RUG_PROOF_STAKING_OWNER_BADGE_ADDRESS,
   NODE_STAKING_OWNER_BADGE_ADDRESS,
-  XUSDT_RESOURCE_ADDRESS,
+  XUSDC_RESOURCE_ADDRESS,
 } from "Constants/address";
 import { radixDashboardBaseUrl } from "Constants/misc";
 import { ResourceDetails } from "Types/api";
@@ -248,8 +248,8 @@ export const calculateAvgShareOfSnapshots = (amount: string) => {
     setRewardsModalData({
       amount,
       RewardTokenDistributions: avgShares,
-      tokenSymbol: StakingTokens.XUSDT,
-      tokenAddress: XUSDT_RESOURCE_ADDRESS,
+      tokenSymbol: StakingTokens.XUSDC,
+      tokenAddress: XUSDC_RESOURCE_ADDRESS,
       snapshot: 0,
       timestamp: 0,
     })
