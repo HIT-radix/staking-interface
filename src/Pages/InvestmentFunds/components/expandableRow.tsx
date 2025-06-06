@@ -1,10 +1,9 @@
-import { ChevronDown } from "lucide-react";
 import { useCallback, useState } from "react";
 import { InvestmentInfo } from "Types/misc";
 import { formatDollarAmount } from "Utils/format";
 
 const ExpandableRow = ({ index, platform, total, breakdown }: InvestmentInfo) => {
-  const [isExpanded, setIsExpanded] = useState(breakdown.length > 0 ? true : false);
+  const [isExpanded] = useState(breakdown.length > 0 ? true : false);
 
   const renderRows = useCallback(() => {
     return breakdown.map(({ asset, value, logo }, index) => (
