@@ -6,6 +6,7 @@ import { TokenData } from "Types/token";
 import { simulateTx } from "Utils/txSenders";
 import Decimal from "decimal.js";
 import { InvestmentInfo } from "Types/misc";
+import fUSDLogo from "Assets/Images/fUSD.png";
 
 interface Receipt {
   status: string;
@@ -17,11 +18,11 @@ class FluxInvestment {
     "component_rdx1cqmx9aqpr36anp960xes8f4wp7skc6pya6k9ra2jtlmlv24qslmwxf";
 
   public async getInvestment(): Promise<InvestmentInfo> {
-    const totalValue = await this.fetch_fUSD_XUSDC_liquidity();
+    const fusd_xusdc = await this.fetch_fUSD_XUSDC_liquidity();
     return {
-      platform: "fUSD/xUSDC LP CaviarNine",
-      total: totalValue,
-      breakdown: [],
+      platform: "Flux",
+      total: fusd_xusdc,
+      breakdown: [{ asset: "fUSD/xUSDC LP CaviarNine", value: fusd_xusdc, logo: fUSDLogo }],
       index: 4, // Update index as needed
     };
   }
