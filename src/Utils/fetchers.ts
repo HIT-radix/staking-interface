@@ -7,7 +7,7 @@ import {
   setFelixWallet,
   setFomoBalance,
   setHitBalance,
-  setxusdtBalance,
+  setxusdcBalance,
   updateHitFomoData,
 } from "Store/Reducers/session";
 import {
@@ -39,6 +39,7 @@ import {
   XUSDT_RESOURCE_ADDRESS,
   NODE_STAKING_XUSDT_KEY_VALUE_STORE_ADDRESS,
   FELIX_WALLET_ADDRESS,
+  XUSDC_RESOURCE_ADDRESS,
   // OLD_FOMO_RESOURCE_ADDRESS,
   // OLD_NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS,
 } from "Constants/address";
@@ -62,7 +63,8 @@ export const fetchBalances = async (walletAddress: string) => {
   let HITbalance = "0";
   let stHITbalance = "0";
   let fomobalance = "0";
-  let xUSDTbalance = "0";
+  let xUSDCbalance = "0";
+  // let xUSDTbalance = "0";
   let isOwner = false;
   let nftId: number | undefined = undefined;
 
@@ -99,14 +101,16 @@ export const fetchBalances = async (walletAddress: string) => {
           { symbol: StakingTokens.HIT, address: HIT_RESOURCE_ADDRESS },
           { symbol: StakingTokens.StHIT, address: STHIT_RESOURCE_ADDRESS },
           { symbol: StakingTokens.FOMO, address: FOMO_RESOURCE_ADDRESS },
-          { symbol: StakingTokens.XUSDT, address: XUSDT_RESOURCE_ADDRESS },
+          { symbol: StakingTokens.XUSDC, address: XUSDC_RESOURCE_ADDRESS },
+          // { symbol: StakingTokens.XUSDT, address: XUSDT_RESOURCE_ADDRESS },
         ],
         true
       );
       HITbalance = balances[StakingTokens.HIT];
       stHITbalance = balances[StakingTokens.StHIT];
       fomobalance = balances[StakingTokens.FOMO];
-      xUSDTbalance = balances[StakingTokens.XUSDT];
+      xUSDCbalance = balances[StakingTokens.XUSDC];
+      // xUSDTbalance = balances[StakingTokens.XUSDT];
       isOwner = isOwnerFound;
     } catch (error) {
       console.log("error in fetchBalances", error);
@@ -116,7 +120,8 @@ export const fetchBalances = async (walletAddress: string) => {
   store.dispatch(setHitBalance(HITbalance));
   store.dispatch(setStHitBalance(stHITbalance));
   store.dispatch(setFomoBalance(fomobalance));
-  store.dispatch(setxusdtBalance(xUSDTbalance));
+  // store.dispatch(setxusdtBalance(xUSDTbalance));
+  store.dispatch(setxusdcBalance(xUSDCbalance));
   store.dispatch(setIsOwner(isOwner));
 };
 
