@@ -15,9 +15,8 @@ import {
   setLockedHITRewards,
   setLockedNodeStakingFomos,
   setLockedNodeStakingHits,
-  setLockedNodeStakingxUSDTs,
+  setLockedNodeStakingxUSDCs,
   setNodeStakeNFTid,
-  // setOldLockedNodeStakingFomos,
   setStHitBalance,
   setStHitTotalSupply,
   setStakedHIT,
@@ -36,12 +35,9 @@ import {
   HIT_RESOURCE_ADDRESS,
   FOMO_RESOURCE_ADDRESS,
   NODE_STAKING_COMPONENT_ADDRESS,
-  XUSDT_RESOURCE_ADDRESS,
-  NODE_STAKING_XUSDT_KEY_VALUE_STORE_ADDRESS,
   FELIX_WALLET_ADDRESS,
   XUSDC_RESOURCE_ADDRESS,
-  // OLD_FOMO_RESOURCE_ADDRESS,
-  // OLD_NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS,
+  NODE_STAKING_XUSDC_KEY_VALUE_STORE_ADDRESS,
 } from "Constants/address";
 import {
   setRugProofComponentDataLoading,
@@ -290,11 +286,13 @@ export const fetchRugProofComponentDetails = async () => {
 export const fetchNodeStakingComponentDetails = async () => {
   let totalHITs = "0";
   let totalFOMOs = "0";
-  let totalXUSDTs = "0";
+  let totalXUSDCs = "0";
+  // let totalXUSDTs = "0";
 
   let assignedHITS = "0";
   let assignedFOMOs = "0";
-  let assignedXUSDTs = "0";
+  let assignedXUSDCs = "0";
+  // let assignedXUSDTs = "0";
   try {
     store.dispatch(setNodeStakingComponentDataLoading(true));
     const response = await axios.post<any, AxiosResponse<EntityDetails>>(
@@ -308,11 +306,13 @@ export const fetchNodeStakingComponentDetails = async () => {
       const { balances } = extractBalances(response.data.items[0].fungible_resources.items, [
         { symbol: StakingTokens.HIT, address: HIT_RESOURCE_ADDRESS },
         { symbol: StakingTokens.FOMO, address: FOMO_RESOURCE_ADDRESS },
-        { symbol: StakingTokens.XUSDT, address: XUSDT_RESOURCE_ADDRESS },
+        { symbol: StakingTokens.XUSDC, address: XUSDC_RESOURCE_ADDRESS },
+        // { symbol: StakingTokens.XUSDT, address: XUSDT_RESOURCE_ADDRESS },
       ]);
       totalHITs = balances[StakingTokens.HIT];
       totalFOMOs = balances[StakingTokens.FOMO];
-      totalXUSDTs = balances[StakingTokens.XUSDT];
+      totalXUSDCs = balances[StakingTokens.XUSDC];
+      // totalXUSDTs = balances[StakingTokens.XUSDT];
       response.data.items[0].details.state.fields[2].entries.forEach((entry: any) => {
         switch (entry.key.value) {
           case HIT_RESOURCE_ADDRESS:
@@ -321,9 +321,11 @@ export const fetchNodeStakingComponentDetails = async () => {
           case FOMO_RESOURCE_ADDRESS:
             assignedFOMOs = entry.value.fields[1].value;
             break;
-          case XUSDT_RESOURCE_ADDRESS:
-            assignedXUSDTs = entry.value.fields[1].value;
+          case XUSDC_RESOURCE_ADDRESS:
+            assignedXUSDCs = entry.value.fields[1].value;
             break;
+          // case XUSDT_RESOURCE_ADDRESS:
+          //   assignedXUSDTs = entry.value.fields[1].value;
         }
       });
     }
@@ -332,21 +334,23 @@ export const fetchNodeStakingComponentDetails = async () => {
   }
   store.dispatch(setLockedNodeStakingHits(BN(totalHITs).minus(assignedHITS).toString()));
   store.dispatch(setLockedNodeStakingFomos(BN(totalFOMOs).minus(assignedFOMOs).toString()));
-  store.dispatch(setLockedNodeStakingxUSDTs(BN(totalXUSDTs).minus(assignedXUSDTs).toString()));
+  store.dispatch(setLockedNodeStakingxUSDCs(BN(totalXUSDCs).minus(assignedXUSDCs).toString()));
   store.dispatch(setNodeStakingComponentDataLoading(false));
+  // store.dispatch(setLockedNodeStakingxUSDTs(BN(totalXUSDTs).minus(assignedXUSDTs).toString()));
 };
 
 export const fetchClaimableNodeStakingRewards = async (nftId: number) => {
   const keyValueAddressesWithTheirTokens = [
     { address: NODE_STAKING_HIT_KEY_VALUE_STORE_ADDRESS, token: StakingTokens.HIT },
     { address: NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS, token: StakingTokens.FOMO },
-    { address: NODE_STAKING_XUSDT_KEY_VALUE_STORE_ADDRESS, token: StakingTokens.XUSDT },
+    { address: NODE_STAKING_XUSDC_KEY_VALUE_STORE_ADDRESS, token: StakingTokens.XUSDC },
   ];
 
   let claimableRewards = {
     HIT: "0",
     FOMO: "0",
-    xUSDT: "0",
+    xUSDC: "0",
+    // xUSDT: "0",
     // oldFOMO: "0"
   };
 
