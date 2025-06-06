@@ -136,5 +136,8 @@ export const ROOT_CDP_NFT_ADDRESS =
 export const STAB_RESOURCE_ADDRESS =
   "resource_rdx1t40lchq8k38eu4ztgve5svdpt0uxqmkvpy4a2ghnjcxjtdxttj9uam";
 
+export const FUSD_RESOURCE_ADDRESS =
+  "resource_rdx1t49wa75gve8ehvejr760g3pgvkawsgsgq0u3kh7vevzk0g0cnsmscq";
+
 export const FOMO_COMPONENT_ADDRESS =
   "component_rdx1cr6lel0w3ktv0hww999uqpce5r2uzy24l5083dpg57n8xg66cerkcx";
