@@ -75,6 +75,9 @@ export const NODE_STAKING_HIT_KEY_VALUE_STORE_ADDRESS =
 export const NODE_STAKING_XUSDT_KEY_VALUE_STORE_ADDRESS =
   "internal_keyvaluestore_rdx1kp9qyednfzecfxnpz2f8pmlllhehzsytexwc3p8z5xdg966afewhye";
 
+export const NODE_STAKING_XUSDC_KEY_VALUE_STORE_ADDRESS =
+  "internal_keyvaluestore_rdx1kpgllfccyumfjs4l6k97seux56csehvt8u7geqnqtm3f7g6kuzn7aj";
+
 export const NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS =
   process.env.REACT_APP_ENVIRONMENT === Environment.dev
     ? "internal_keyvaluestore_tdx_2_1kzlxcs94slutg6raf9gc9kde7xyv7zd2dkqfkx0p2n80uhl88esah5"
