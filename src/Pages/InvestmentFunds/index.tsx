@@ -166,7 +166,6 @@ const InvesmentFunds = () => {
                     +originalInvestmentOrder[3].total,
                   ]}
                   type="donut"
-                  s
                   width="380"
                 />
               )}
