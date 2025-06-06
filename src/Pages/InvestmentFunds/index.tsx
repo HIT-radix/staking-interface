@@ -5,7 +5,7 @@ import surgeInvestor from "Classes/investments/surge";
 import weftInvestor from "Classes/investments/weft";
 import Skeleton from "react-loading-skeleton";
 import { fetchFelixWalletBalance } from "Utils/fetchers";
-import c9Investor from "Classes/investments/stab";
+import fluxInvestor from "Classes/investments/flux";
 import investBg from "Assets/Images/investment-bg.jpeg";
 import AnimatedNumbers from "react-animated-numbers";
 import ExpandableRow from "./components/expandableRow";
@@ -27,7 +27,7 @@ const InvesmentFunds = () => {
             weftInvestor.getInvestment(),
             rootInvestor.getInvestment(),
             surgeInvestor.getInvestment(),
-            c9Investor.getInvestment(),
+            fluxInvestor.getInvestment(),
           ]);
 
           // Store original order for chart data
@@ -148,7 +148,7 @@ const InvesmentFunds = () => {
               ) : (
                 <Chart
                   options={{
-                    labels: ["Weft Finance", "Root Finance", "surge.trade", "CaviarNine"],
+                    labels: ["Weft Finance", "Root Finance", "surge.trade", "Flux"],
                     dataLabels: {
                       formatter: function (val, opts) {
                         return Number(val).toFixed(2) + "%";
@@ -166,6 +166,7 @@ const InvesmentFunds = () => {
                     +originalInvestmentOrder[3].total,
                   ]}
                   type="donut"
+                  s
                   width="380"
                 />
               )}
