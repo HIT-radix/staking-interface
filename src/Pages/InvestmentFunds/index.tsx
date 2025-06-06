@@ -186,7 +186,7 @@ const InvesmentFunds = () => {
                   </thead>
                   <tbody>
                     {investments.map((investment, index) => (
-                      <ExpandableRow key={index} {...investment} />
+                      <ExpandableRow key={index} {...investment} index={index + 1} />
                     ))}
                   </tbody>
                 </table>
