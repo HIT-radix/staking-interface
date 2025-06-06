@@ -64,7 +64,8 @@ export type SessionReducer = {
     timestamp: number;
   };
   selectedSnapshots: SnapshotDB[];
-  xusdtBalance: string;
+  // xusdtBalance: string;
+  xusdcBalance: string;
   felixWallet: {
     fungible: FungibleBalances;
     nonFungible: NonFungibleBalances;
