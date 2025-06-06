@@ -8,7 +8,8 @@ const initialState: SessionReducer = {
   tokenData: undefined,
   hitBalance: "0",
   fomoBalance: "0",
-  xusdtBalance: "0",
+  // xusdtBalance: "0",
+  xusdcBalance: "0",
   fomoTokenData: undefined,
   rewardsModalData: undefined,
   selectedSnapshots: [],
@@ -31,8 +32,11 @@ const session = createSlice({
     setFomoBalance(state, action: PayloadAction<string>) {
       state.fomoBalance = action.payload;
     },
-    setxusdtBalance(state, action: PayloadAction<string>) {
-      state.xusdtBalance = action.payload;
+    // setxusdtBalance(state, action: PayloadAction<string>) {
+    //   state.xusdtBalance = action.payload;
+    // },
+    setxusdcBalance(state, action: PayloadAction<string>) {
+      state.xusdcBalance = action.payload;
     },
     updateHitFomoData(state, action: PayloadAction<{ hit?: TokenData; fomo?: TokenData }>) {
       if (action.payload.hit) {
@@ -64,6 +68,7 @@ export const {
   updateHitFomoData,
   setRewardsModalData,
   setSelectedSnapshots,
-  setxusdtBalance,
+  // setxusdtBalance,
   setFelixWallet,
+  setxusdcBalance,
 } = session.actions;
