@@ -5,7 +5,7 @@ import { SnapshotDB } from "Types/api";
 import { dispatch, useSelector } from "Store";
 import { setSelectedSnapshots, setRewardsModalData } from "Store/Reducers/session";
 import { StakingTokens } from "Types/reducers";
-import { XUSDT_RESOURCE_ADDRESS } from "Constants/address";
+import { XUSDC_RESOURCE_ADDRESS } from "Constants/address";
 
 const SnapshotsTable = () => {
   const [snapshots, setSnapshots] = useState<SnapshotDB[]>([]);
@@ -48,8 +48,8 @@ const SnapshotsTable = () => {
       setRewardsModalData({
         amount: "1",
         RewardTokenDistributions: snapshot.data,
-        tokenSymbol: StakingTokens.XUSDT,
-        tokenAddress: XUSDT_RESOURCE_ADDRESS,
+        tokenSymbol: StakingTokens.XUSDC,
+        tokenAddress: XUSDC_RESOURCE_ADDRESS,
         snapshot: snapshot.snapshot,
         timestamp: snapshot.timestamp,
       })
