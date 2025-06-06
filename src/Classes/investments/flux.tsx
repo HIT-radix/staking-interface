@@ -1,12 +1,17 @@
 import axios, { AxiosResponse } from "axios";
-import { FUSD_XUSDC_LIQUIDITY_RECEIPT_C9, FUSD_RESOURCE_ADDRESS } from "Constants/address";
-import { Ociswap_baseurl } from "Constants/endpoints";
+import {
+  FUSD_XUSDC_LIQUIDITY_RECEIPT_C9,
+  FUSD_RESOURCE_ADDRESS,
+  XRD_RESOURCE_ADDRESS,
+} from "Constants/address";
+import { networkRPC, Ociswap_baseurl } from "Constants/endpoints";
 import { store } from "Store";
 import { TokenData } from "Types/token";
 import { simulateTx } from "Utils/txSenders";
 import Decimal from "decimal.js";
 import { InvestmentInfo } from "Types/misc";
 import fUSDLogo from "Assets/Images/fUSD.png";
+import { PoolUnitEntityDetailsApiResponse } from "Types/api";
 
 interface Receipt {
   status: string;
@@ -17,12 +22,19 @@ class FluxInvestment {
   private fusd_xusdc_pool_address =
     "component_rdx1cqmx9aqpr36anp960xes8f4wp7skc6pya6k9ra2jtlmlv24qslmwxf";
 
+  private fusd_xrd_pool_unit =
+    "resource_rdx1tkc32nfsvwnt7ysq2sdgyq6w2g4s69w86yzk8zwegf7pcvya905ctv";
+
   public async getInvestment(): Promise<InvestmentInfo> {
     const fusd_xusdc = await this.fetch_fUSD_XUSDC_liquidity();
+    const fusd_xrd = await this.fetch_fUSD_XRD_liquidity();
     return {
       platform: "Flux",
       total: fusd_xusdc,
-      breakdown: [{ asset: "fUSD/xUSDC CaviarNine", value: fusd_xusdc, logo: fUSDLogo }],
+      breakdown: [
+        { asset: "fUSD/xUSDC CaviarNine", value: fusd_xusdc, logo: fUSDLogo },
+        { asset: "fUSD/XRD OciSwap", value: fusd_xrd, logo: fUSDLogo },
+      ],
       index: 4, // Update index as needed
     };
   }
@@ -76,9 +88,70 @@ class FluxInvestment {
     }
   }
 
+  private async fetch_fUSD_XRD_liquidity() {
+    try {
+      const felixFungibles = store.getState().session.felixWallet.fungible;
+      const felixLPBalance = felixFungibles[this.fusd_xrd_pool_unit]?.amount ?? "0";
+      let computedFUSDValue = "0";
+      let computedXRDValue = "0";
+
+      const response = await axios.post<any, AxiosResponse<PoolUnitEntityDetailsApiResponse>>(
+        `${networkRPC}/state/entity/details`,
+        {
+          addresses: [this.fusd_xrd_pool_unit],
+          aggregation_level: "Vault",
+          opt_ins: {
+            ancestor_identities: true,
+            component_royalty_config: true,
+            component_royalty_vault_balance: true,
+            package_royalty_vault_balance: true,
+            non_fungible_include_nfids: true,
+            dapp_two_way_links: true,
+            native_resource_details: true,
+            explicit_metadata: ["name", "description"],
+          },
+        }
+      );
+      console.log("xxxx-response:", response);
+
+      if (response.status === 200) {
+        const poolUnitDetails = response.data.items[0].details;
+
+        poolUnitDetails.native_resource_details.unit_redemption_value.forEach((redemptionValue) => {
+          if (redemptionValue.resource_address === FUSD_RESOURCE_ADDRESS) {
+            computedFUSDValue = new Decimal(redemptionValue.amount).mul(felixLPBalance).toString();
+          }
+          if (redemptionValue.resource_address === XRD_RESOURCE_ADDRESS) {
+            computedXRDValue = new Decimal(redemptionValue.amount).mul(felixLPBalance).toString();
+          }
+        });
+      }
+
+      const xrdPrice = await this.fetchXRDPrice();
+      const xrdInUSDC = new Decimal(computedXRDValue).mul(xrdPrice);
+      console.log("xrdInUSDC:", xrdInUSDC);
+      return new Decimal(computedFUSDValue).plus(xrdInUSDC).toString();
+    } catch (error) {
+      console.log("error in fetch_fUSD_XRD_liquidity", error);
+      return "0";
+    }
+  }
+
   private async fetchFUSDPrice() {
     const res = await axios.get<any, AxiosResponse<TokenData>>(
       `${Ociswap_baseurl}/tokens/${FUSD_RESOURCE_ADDRESS}`
+    );
+
+    if (res.status === 200) {
+      return +res.data.price.usd.now;
+    }
+
+    return 0;
+  }
+
+  private async fetchXRDPrice() {
+    const res = await axios.get<any, AxiosResponse<TokenData>>(
+      `${Ociswap_baseurl}/tokens/${XRD_RESOURCE_ADDRESS}`
     );
 
     if (res.status === 200) {
