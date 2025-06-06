@@ -118,6 +118,9 @@ export const WEFT_KEY_VALUE_STORE_ADDRESS =
 export const STAB_XUSDC_LIQUIDITY_RECEIPT =
   "resource_rdx1ngt09n8lg292hnzwvz5j6hl0aexja9ggh84qyam3xk3vcala72c2um";
 
+export const FUSD_XUSDC_LIQUIDITY_RECEIPT_C9 =
+  "resource_rdx1ng2m9cn34czt73x0zjjxhzrpddt5kr6juyfyxrk4uc4gudhy2nkyxy";
+
 export const SURGE_EXCHANGE_COMPONENT =
   "component_rdx1cqrfmpkp96hvlykahmhmu2w48kk2w7w35396vkrze9jwufxtvdzlkk";
 
