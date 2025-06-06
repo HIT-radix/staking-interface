@@ -9,7 +9,7 @@ import { getRdt } from "subs";
 import { SnapshotApiResponse } from "Types/api";
 import { HIT_SERVER_URL } from "Constants/endpoints";
 import { incrementSuccessTxCount, setRewardsModalData } from "Store/Reducers/session";
-import { XUSDT_RESOURCE_ADDRESS } from "Constants/address";
+import { XUSDC_RESOURCE_ADDRESS } from "Constants/address";
 import { dispatch, useSelector } from "Store";
 import SnapshotsTable from "./snapshotsTable";
 import { depositNodeStakingRewards } from "Utils/txSenders";
@@ -18,12 +18,12 @@ import InfoTile from "Components/infoTile";
 
 const InvestmentFunds = () => {
   const selectedRows = useSelector((state) => state.session.selectedSnapshots);
-  const xusdtBalance = useSelector((state) => state.session.xusdtBalance);
+  const xusdcBalance = useSelector((state) => state.session.xusdcBalance);
   const balanceLoading = useSelector((state) => state.loadings.balanceLoading);
   const nodeStakingComponentDataLoading = useSelector(
     (state) => state.loadings.nodeStakingComponentDataLoading
   );
-  const lockedNodeStakingxUSDTs = useSelector((state) => state.staking.lockedNodeStakingxUSDTs);
+  const lockedNodeStakingxUSDCs = useSelector((state) => state.staking.lockedNodeStakingxUSDCs);
 
   const takeSnapshot = async () => {
     const rdtInstance = getRdt();
@@ -43,8 +43,8 @@ const InvestmentFunds = () => {
           setRewardsModalData({
             amount: "1",
             RewardTokenDistributions: rewardsList,
-            tokenSymbol: StakingTokens.XUSDT,
-            tokenAddress: XUSDT_RESOURCE_ADDRESS,
+            tokenSymbol: StakingTokens.XUSDC,
+            tokenAddress: XUSDC_RESOURCE_ADDRESS,
             snapshot: snapshot_state_version,
             timestamp: Date.now(),
           })
@@ -70,18 +70,18 @@ const InvestmentFunds = () => {
         <div className="flex items-center justify-center gap-3 mb-4">
           <div className="min-w-[300px]">
             <InfoTile
-              title="Your xUSDT Balance"
-              value={formatTokenAmount(+xusdtBalance)}
+              title="Your xUSDC Balance"
+              value={formatTokenAmount(+xusdcBalance)}
               isLoading={balanceLoading}
-              tooltip={xusdtBalance}
+              tooltip={xusdcBalance}
             />
           </div>
           <div className="min-w-[300px]">
             <InfoTile
-              title="Total Locked xUSDTs"
-              value={formatTokenAmount(+lockedNodeStakingxUSDTs)}
+              title="Total Locked xUSDCs"
+              value={formatTokenAmount(+lockedNodeStakingxUSDCs)}
               isLoading={nodeStakingComponentDataLoading}
-              tooltip={lockedNodeStakingxUSDTs}
+              tooltip={lockedNodeStakingxUSDCs}
             />
           </div>
         </div>
@@ -91,30 +91,30 @@ const InvestmentFunds = () => {
         Take & Save Snapshot <Camera /> <ArrowRight /> <Save />
       </div>
       <GeneralOwnerInterface
-        heading="Lock xUSDT for Future Rewards"
-        placeholder="Enter xUSDT amount to lock"
-        balance={xusdtBalance}
+        heading="Lock xUSDC for Future Rewards"
+        placeholder="Enter xUSDC amount to lock"
+        balance={xusdcBalance}
         onButtonClick={async (amount) =>
-          await depositNodeStakingRewards(amount, StakingTokens.XUSDT, XUSDT_RESOURCE_ADDRESS)
+          await depositNodeStakingRewards(amount, StakingTokens.XUSDC, XUSDC_RESOURCE_ADDRESS)
         }
-        btnText="Lock xUSDT tokens"
-        tokenSymbol={StakingTokens.XUSDT}
+        btnText="Lock xUSDC tokens"
+        tokenSymbol={StakingTokens.XUSDC}
       />
       <div
         onClick={() => {
           if (!enableDistribution) {
-            alert("Please select a snapshot to distribute xUSDT");
+            alert("Please select a snapshot to distribute xUSDC");
           }
         }}
       >
         <div className={enableDistribution ? "" : "opacity-40 pointer-events-none "}>
           <GeneralOwnerInterface
-            heading="Distribute locked xUSDT"
-            placeholder="Enter xUSDT amount to distribute"
+            heading="Distribute locked xUSDC"
+            placeholder="Enter xUSDC amount to distribute"
             balance={"9999999"}
             onButtonClick={async (amount) => await calculateAvgShareOfSnapshots(amount)}
-            btnText="Distribute xUSDT"
-            tokenSymbol={StakingTokens.XUSDT}
+            btnText="Distribute xUSDC"
+            tokenSymbol={StakingTokens.XUSDC}
           />
         </div>
       </div>
