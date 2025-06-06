@@ -7,7 +7,7 @@ import {
   withdrawNodeStakingRewardsAndStakeHIT,
 } from "Utils/txSenders";
 import hitLogo from "Assets/Images/hit-logo.png";
-import xUSDTLogo from "Assets/Images/xUSDT.png";
+import xUSDCLogo from "Assets/Images/xUSDC.png";
 import newfomoLogo from "Assets/Images/fomo-new.jpg";
 import { useEffect, useMemo, useState } from "react";
 import { fetchClaimableNodeStakingRewards } from "Utils/fetchers";
@@ -34,7 +34,7 @@ const Controls = () => {
   const [claimableRewards, setClaimableRewards] = useState({
     HIT: "0",
     FOMO: "0",
-    xUSDT: "0",
+    xUSDC: "0",
   });
 
   const showAirdropOption = useMemo(() => NodeStakeNFTid === 48, [NodeStakeNFTid]);
@@ -54,15 +54,16 @@ const Controls = () => {
       return {
         HIT: hitInUsd,
         FOMO: fomoInUsd,
-        xUSDT: formatDollarAmount(+claimableRewards.xUSDT),
+        xUSDC: formatDollarAmount(+claimableRewards.xUSDC),
       };
     }
     return {
       HIT: undefined,
       FOMO: undefined,
       oldFOMO: undefined,
+      xUSDC: undefined,
     };
-  }, [claimableRewards.HIT, claimableRewards.FOMO, claimableRewards.xUSDT, hitPrice, fomoPrice]);
+  }, [claimableRewards.HIT, claimableRewards.FOMO, claimableRewards.xUSDC, hitPrice, fomoPrice]);
 
   useEffect(() => {
     (async () => {
@@ -175,13 +176,13 @@ const Controls = () => {
                     )}{" "}
                   </p>
                 </div>
-                {Number(claimableRewards.xUSDT) > 0 ? (
+                {Number(claimableRewards.xUSDC) > 0 ? (
                   <div className="flex items-center mt-2">
-                    <img src={xUSDTLogo} alt="hit-logo" className="w-7 h-7 rounded-full" />
-                    <p className="text-2xl font-bold ml-1" title={claimableRewards.xUSDT}>
-                      $xUSDT : {formatTokenAmount(Number(claimableRewards.xUSDT))}{" "}
-                      {claimableRewards.xUSDT && (
-                        <span className="text-lg">({claimableRewardsInUsd.xUSDT})</span>
+                    <img src={xUSDCLogo} alt="hit-logo" className="w-7 h-7 rounded-full" />
+                    <p className="text-2xl font-bold ml-1" title={claimableRewards.xUSDC}>
+                      $xUSDC : {formatTokenAmount(Number(claimableRewards.xUSDC))}{" "}
+                      {claimableRewards.xUSDC && (
+                        <span className="text-lg">({claimableRewardsInUsd.xUSDC})</span>
                       )}{" "}
                     </p>
                   </div>
