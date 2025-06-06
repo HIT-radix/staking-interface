@@ -15,6 +15,8 @@ const InvesmentFunds = () => {
   const [loading, setLoading] = useState(true);
   const [investments, setInvestments] = useState<InvestmentInfo[]>([]);
   const [fontSize, setFontSize] = useState(150);
+  // Store original order of investments for the chart to maintain consistency with the labels
+  const [originalInvestmentOrder, setOriginalInvestmentOrder] = useState<InvestmentInfo[]>([]);
 
   useEffect(() => {
     const fetchInvestments = async () => {
@@ -27,7 +29,16 @@ const InvesmentFunds = () => {
             surgeInvestor.getInvestment(),
             c9Investor.getInvestment(),
           ]);
-          setInvestments(allInvestments);
+
+          // Store original order for chart data
+          setOriginalInvestmentOrder(allInvestments);
+
+          // Sort investments by total value in descending order
+          const sortedInvestments = [...allInvestments].sort(
+            (a, b) => parseFloat(b.total) - parseFloat(a.total)
+          );
+
+          setInvestments(sortedInvestments);
         }
       } catch (err) {
         console.error("Error fetching investments", err);
@@ -149,10 +160,10 @@ const InvesmentFunds = () => {
                     },
                   }}
                   series={[
-                    +investments[0].total,
-                    +investments[1].total,
-                    +investments[2].total,
-                    +investments[3].total,
+                    +originalInvestmentOrder[0].total,
+                    +originalInvestmentOrder[1].total,
+                    +originalInvestmentOrder[2].total,
+                    +originalInvestmentOrder[3].total,
                   ]}
                   type="donut"
                   width="380"
