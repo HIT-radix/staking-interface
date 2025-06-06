@@ -30,7 +30,7 @@ class FluxInvestment {
     const fusd_xrd = await this.fetch_fUSD_XRD_liquidity();
     return {
       platform: "Flux",
-      total: fusd_xusdc,
+      total: new Decimal(fusd_xusdc).add(fusd_xrd).toString(),
       breakdown: [
         { asset: "fUSD/xUSDC CaviarNine", value: fusd_xusdc, logo: fUSDLogo },
         { asset: "fUSD/XRD OciSwap", value: fusd_xrd, logo: fUSDLogo },
