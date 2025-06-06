@@ -101,3 +101,52 @@ export type SnapshotDB = {
   timestamp: number;
   data: RewardTokenDistribution[];
 };
+
+export interface LedgerState {
+  network: string;
+  state_version: number;
+  proposer_round_timestamp: string;
+  epoch: number;
+  round: number;
+}
+
+export interface PoolUnitRedemptionValue {
+  resource_address: string;
+  amount: string;
+}
+
+export interface PoolUnitNativeResourceDetails {
+  pool_address: string;
+  redemption_resource_count: number;
+  unit_redemption_value: PoolUnitRedemptionValue[];
+  kind: string;
+}
+
+export interface ExplicitMetadata {
+  total_count: number;
+  items: MetadataItem[];
+}
+
+export interface PoolUnitNativeDetails {
+  role_assignments: Details["role_assignments"];
+  divisibility: number;
+  total_supply: string;
+  total_minted: string;
+  total_burned: string;
+  native_resource_details: PoolUnitNativeResourceDetails;
+  type: string;
+}
+
+export interface PoolUnitEntityDetailsApiItem {
+  address: string;
+  fungible_resources: Item["fungible_resources"];
+  non_fungible_resources: Item["non_fungible_resources"];
+  metadata: Item["metadata"];
+  explicit_metadata: ExplicitMetadata;
+  details: PoolUnitNativeDetails;
+}
+
+export interface PoolUnitEntityDetailsApiResponse {
+  ledger_state: LedgerState;
+  items: PoolUnitEntityDetailsApiItem[];
+}
