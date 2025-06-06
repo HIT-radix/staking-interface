@@ -28,14 +28,14 @@ const ExpandableRow = ({ index, platform, total, breakdown }: InvestmentInfo) =>
         <td className="font-semibold">{platform}</td>
         <td className="font-semibold">{formatDollarAmount(+total)}</td>
         <td>
-          {breakdown.length > 0 && (
+          {/* {breakdown.length > 0 && (
             <ChevronDown
               className={`text-accent transform transition-transform cursor-pointer ${
                 isExpanded ? "rotate-180" : "rotate-0"
               }`}
               onClick={() => setIsExpanded(!isExpanded)}
             />
-          )}
+          )} */}
         </td>
       </tr>
       <tr className="text-white border-b border-white/20 bg-[#000400] bg-opacity-70">
