@@ -11,7 +11,6 @@ import {
   STHIT_RESOURCE_ADDRESS,
   FOMO_COMPONENT_ADDRESS,
   FOMO_RESOURCE_ADDRESS,
-  XUSDT_RESOURCE_ADDRESS,
 } from "Constants/address";
 import { RewardTokenDistribution } from "Types/token";
 import { formatRewardTokenDistribution } from "./format";
