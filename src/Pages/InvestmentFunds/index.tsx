@@ -138,7 +138,11 @@ const InvesmentFunds = () => {
                 <Chart
                   options={{
                     labels: ["Weft Finance", "Root Finance", "surge.trade", "CaviarNine"],
-                    dataLabels: {},
+                    dataLabels: {
+                      formatter: function (val, opts) {
+                        return Number(val).toFixed(2) + "%";
+                      },
+                    },
                     legend: {
                       show: true,
                       labels: { colors: "#fff" },
