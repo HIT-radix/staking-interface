@@ -22,7 +22,7 @@ class FluxInvestment {
     return {
       platform: "Flux",
       total: fusd_xusdc,
-      breakdown: [{ asset: "fUSD/xUSDC LP CaviarNine", value: fusd_xusdc, logo: fUSDLogo }],
+      breakdown: [{ asset: "fUSD/xUSDC CaviarNine", value: fusd_xusdc, logo: fUSDLogo }],
       index: 4, // Update index as needed
     };
   }
