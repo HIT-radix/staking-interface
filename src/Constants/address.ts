@@ -142,5 +142,8 @@ export const STAB_RESOURCE_ADDRESS =
 export const FUSD_RESOURCE_ADDRESS =
   "resource_rdx1t49wa75gve8ehvejr760g3pgvkawsgsgq0u3kh7vevzk0g0cnsmscq";
 
+export const XRD_RESOURCE_ADDRESS =
+  "resource_rdx1tknxxxxxxxxxradxrdxxxxxxxxx009923554798xxxxxxxxxradxrd";
+
 export const FOMO_COMPONENT_ADDRESS =
   "component_rdx1cr6lel0w3ktv0hww999uqpce5r2uzy24l5083dpg57n8xg66cerkcx";
