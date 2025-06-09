@@ -148,7 +148,15 @@ const InvesmentFunds = () => {
               ) : (
                 <Chart
                   options={{
-                    labels: ["Weft Finance", "Root Finance", "surge.trade", "Flux"],
+                    labels: [
+                      "xUSDT lend - Weft",
+                      "xUSDC lend - Weft",
+                      "xUSDT lend - Root",
+                      "xUSDC lend - Root",
+                      "xUSDC LP - Surge",
+                      "fUSD/xUSDC - CaviarNine",
+                      "fUSD/XRD - Ociswap",
+                    ],
                     dataLabels: {
                       formatter: function (val, opts) {
                         return Number(val).toFixed(2) + "%";
