@@ -39,6 +39,7 @@ export type StakingReducer = {
   lockedNodeStakingFomos: string;
   // lockedNodeStakingxUSDTs: string;
   lockedNodeStakingxUSDCs: string;
+  lockedNodeStakingREDDICKS: string;
 };
 
 export enum StakingTokens {
@@ -49,6 +50,7 @@ export enum StakingTokens {
   LSU = "LSU",
   // XUSDT = "xUSDT",
   XUSDC = "xUSDC",
+  REDDICKS = "REDDICKS",
 }
 
 export type SessionReducer = {
@@ -68,6 +70,7 @@ export type SessionReducer = {
   selectedSnapshots: SnapshotDB[];
   // xusdtBalance: string;
   xusdcBalance: string;
+  reddicksBalance: string;
   felixWallet: {
     fungible: FungibleBalances;
     nonFungible: NonFungibleBalances;
