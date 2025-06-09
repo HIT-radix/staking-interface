@@ -3,7 +3,11 @@ import axios from "axios";
 
 import GeneralOwnerInterface from "Components/generalOwnerInterface";
 import InfoTile from "Components/infoTile";
-import { FOMO_RESOURCE_ADDRESS, HIT_RESOURCE_ADDRESS } from "Constants/address";
+import {
+  FOMO_RESOURCE_ADDRESS,
+  HIT_RESOURCE_ADDRESS,
+  REDDICKS_RESOURCE_ADDRESS,
+} from "Constants/address";
 import { HIT_SERVER_URL } from "Constants/endpoints";
 import { dispatch, useSelector } from "Store";
 import { setRewardsModalData } from "Store/Reducers/session";
@@ -16,9 +20,11 @@ import { depositNodeStakingRewards } from "Utils/txSenders";
 const ValidatorStaking = () => {
   const hitBalance = useSelector((state) => state.session.hitBalance);
   const fomoBalance = useSelector((state) => state.session.fomoBalance);
+  const reddicksBalance = useSelector((state) => state.session.reddicksBalance);
   const balanceLoading = useSelector((state) => state.loadings.balanceLoading);
   const lockedNodeStakingHits = useSelector((state) => state.staking.lockedNodeStakingHits);
   const lockedNodeStakingFomos = useSelector((state) => state.staking.lockedNodeStakingFomos);
+  const lockedNodeStakingREDDICKS = useSelector((state) => state.staking.lockedNodeStakingREDDICKS);
   const nodeStakingComponentDataLoading = useSelector(
     (state) => state.loadings.nodeStakingComponentDataLoading
   );
@@ -79,6 +85,14 @@ const ValidatorStaking = () => {
             tooltip={fomoBalance}
           />
         </div>
+        <div className="min-w-[300px]">
+          <InfoTile
+            title="Your REDDICKS Balance"
+            value={formatTokenAmount(+reddicksBalance)}
+            isLoading={balanceLoading}
+            tooltip={reddicksBalance}
+          />
+        </div>
       </div>
       <div className="flex items-center justify-center gap-3 mb-4">
         <div className="min-w-[300px]">
@@ -95,6 +109,14 @@ const ValidatorStaking = () => {
             value={formatTokenAmount(+lockedNodeStakingFomos)}
             isLoading={nodeStakingComponentDataLoading}
             tooltip={lockedNodeStakingFomos}
+          />
+        </div>
+        <div className="min-w-[300px]">
+          <InfoTile
+            title="Total Locked REDDICKS"
+            value={formatTokenAmount(+lockedNodeStakingREDDICKS)}
+            isLoading={nodeStakingComponentDataLoading}
+            tooltip={lockedNodeStakingREDDICKS}
           />
         </div>
       </div>
@@ -118,6 +140,16 @@ const ValidatorStaking = () => {
         tokenSymbol={StakingTokens.FOMO}
       />
       <GeneralOwnerInterface
+        heading="Lock REDDICKS for Future Rewards"
+        placeholder="Enter REDDICKS amount to lock"
+        balance={reddicksBalance}
+        onButtonClick={async (amount) =>
+          await depositNodeStakingRewards(amount, StakingTokens.REDDICKS, REDDICKS_RESOURCE_ADDRESS)
+        }
+        btnText="Lock REDDICKS tokens"
+        tokenSymbol={StakingTokens.REDDICKS}
+      />
+      <GeneralOwnerInterface
         heading="Take Snapshot and Distribute locked HIT"
         placeholder="Enter HIT amount to distribute"
         balance={lockedNodeStakingHits}
@@ -135,6 +167,16 @@ const ValidatorStaking = () => {
         }
         btnText="Distribute FOMO tokens"
         tokenSymbol={StakingTokens.FOMO}
+      />
+      <GeneralOwnerInterface
+        heading="Take Snapshot and Distribute locked REDDICKS"
+        placeholder="Enter REDDICKS amount to distribute"
+        balance={lockedNodeStakingREDDICKS}
+        onButtonClick={async (amount) =>
+          await verifyAndDistribute(amount, StakingTokens.REDDICKS, REDDICKS_RESOURCE_ADDRESS)
+        }
+        btnText="Distribute REDDICKS tokens"
+        tokenSymbol={StakingTokens.REDDICKS}
       />
     </div>
   );
