@@ -164,7 +164,34 @@ const InvesmentFunds = () => {
                     },
                     legend: {
                       show: true,
-                      labels: { colors: "#fff" },
+                      labels: { colors: "#FFF" },
+                    },
+                    colors: [
+                      "#FFD700", // gold
+                      "#00BFFF", // deep sky blue
+                      "#32CD32", // lime green
+                      "#FF69B4", // hot pink
+                      "#FF7F50", // coral (more distinct from gold)
+                      "#8A2BE2", // blue violet
+                      "#FF4500", // orange red
+                    ],
+                    tooltip: {
+                      enabled: true,
+                      y: {
+                        formatter: function (value, { series, seriesIndex, dataPointIndex, w }) {
+                          // Show value with 2 decimals and a $ sign
+                          return `$${Number(value).toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}`;
+                        },
+                        title: {
+                          formatter: function (seriesName, opts) {
+                            // Show the label as title
+                            return seriesName;
+                          },
+                        },
+                      },
                     },
                   }}
                   series={[
