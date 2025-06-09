@@ -177,7 +177,7 @@ const InvesmentFunds = () => {
                     +originalInvestmentOrder[3].breakdown[1].value, // flux - fUSD/XRD
                   ]}
                   type="donut"
-                  width="380"
+                  width="500px"
                 />
               )}
             </div>
