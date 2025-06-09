@@ -106,6 +106,9 @@ export const FELIX_WALLET_ADDRESS =
 export const XUSDC_RESOURCE_ADDRESS =
   "resource_rdx1t4upr78guuapv5ept7d7ptekk9mqhy605zgms33mcszen8l9fac8vf";
 
+export const REDDICKS_RESOURCE_ADDRESS =
+  "resource_rdx1t42hpqvsk4t42l6aw09hwphd2axvetp6gvas9ztue0p30f4hzdwxrp";
+
 export const WEFT_W2_xUSDT_RESOURCE_ADDRESS =
   "resource_rdx1t5ljp8amkf76mrn5txmmemkrmjwt5r0ajjnljvyunh27gm0n295dfn";
 
