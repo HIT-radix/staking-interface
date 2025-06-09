@@ -160,10 +160,13 @@ const InvesmentFunds = () => {
                     },
                   }}
                   series={[
-                    +originalInvestmentOrder[0].total,
-                    +originalInvestmentOrder[1].total,
-                    +originalInvestmentOrder[2].total,
-                    +originalInvestmentOrder[3].total,
+                    +originalInvestmentOrder[0].breakdown[0].value, // weft - xUSDT
+                    +originalInvestmentOrder[0].breakdown[1].value, // weft - xUSDC
+                    +originalInvestmentOrder[1].breakdown[0].value, // root - xUSDT
+                    +originalInvestmentOrder[1].breakdown[1].value, // root - xUSDC
+                    +originalInvestmentOrder[2].total, // surge - total
+                    +originalInvestmentOrder[3].breakdown[0].value, // flux - fUSD/xUSDC
+                    +originalInvestmentOrder[3].breakdown[1].value, // flux - fUSD/XRD
                   ]}
                   type="donut"
                   width="380"
