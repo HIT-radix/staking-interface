@@ -7,6 +7,7 @@ import {
   setFelixWallet,
   setFomoBalance,
   setHitBalance,
+  setReddicksBalance,
   setxusdcBalance,
   updateHitFomoData,
 } from "Store/Reducers/session";
@@ -15,6 +16,7 @@ import {
   setLockedHITRewards,
   setLockedNodeStakingFomos,
   setLockedNodeStakingHits,
+  setLockedNodeStakingREDDICKS,
   setLockedNodeStakingxUSDCs,
   setNodeStakeNFTid,
   setStHitBalance,
@@ -38,6 +40,7 @@ import {
   FELIX_WALLET_ADDRESS,
   XUSDC_RESOURCE_ADDRESS,
   NODE_STAKING_XUSDC_KEY_VALUE_STORE_ADDRESS,
+  REDDICKS_RESOURCE_ADDRESS,
 } from "Constants/address";
 import {
   setRugProofComponentDataLoading,
@@ -59,6 +62,7 @@ export const fetchBalances = async (walletAddress: string) => {
   let HITbalance = "0";
   let stHITbalance = "0";
   let fomobalance = "0";
+  let reddicksBalance = "0";
   let xUSDCbalance = "0";
   // let xUSDTbalance = "0";
   let isOwner = false;
@@ -98,6 +102,7 @@ export const fetchBalances = async (walletAddress: string) => {
           { symbol: StakingTokens.StHIT, address: STHIT_RESOURCE_ADDRESS },
           { symbol: StakingTokens.FOMO, address: FOMO_RESOURCE_ADDRESS },
           { symbol: StakingTokens.XUSDC, address: XUSDC_RESOURCE_ADDRESS },
+          { symbol: StakingTokens.REDDICKS, address: REDDICKS_RESOURCE_ADDRESS },
           // { symbol: StakingTokens.XUSDT, address: XUSDT_RESOURCE_ADDRESS },
         ],
         true
@@ -106,6 +111,7 @@ export const fetchBalances = async (walletAddress: string) => {
       stHITbalance = balances[StakingTokens.StHIT];
       fomobalance = balances[StakingTokens.FOMO];
       xUSDCbalance = balances[StakingTokens.XUSDC];
+      reddicksBalance = balances[StakingTokens.REDDICKS];
       // xUSDTbalance = balances[StakingTokens.XUSDT];
       isOwner = isOwnerFound;
     } catch (error) {
@@ -116,6 +122,7 @@ export const fetchBalances = async (walletAddress: string) => {
   store.dispatch(setHitBalance(HITbalance));
   store.dispatch(setStHitBalance(stHITbalance));
   store.dispatch(setFomoBalance(fomobalance));
+  store.dispatch(setReddicksBalance(reddicksBalance));
   // store.dispatch(setxusdtBalance(xUSDTbalance));
   store.dispatch(setxusdcBalance(xUSDCbalance));
   store.dispatch(setIsOwner(isOwner));
@@ -287,11 +294,13 @@ export const fetchNodeStakingComponentDetails = async () => {
   let totalHITs = "0";
   let totalFOMOs = "0";
   let totalXUSDCs = "0";
+  let totalREDDICKS = "0";
   // let totalXUSDTs = "0";
 
   let assignedHITS = "0";
   let assignedFOMOs = "0";
   let assignedXUSDCs = "0";
+  let assignedREDDICKs = "0";
   // let assignedXUSDTs = "0";
   try {
     store.dispatch(setNodeStakingComponentDataLoading(true));
@@ -307,11 +316,13 @@ export const fetchNodeStakingComponentDetails = async () => {
         { symbol: StakingTokens.HIT, address: HIT_RESOURCE_ADDRESS },
         { symbol: StakingTokens.FOMO, address: FOMO_RESOURCE_ADDRESS },
         { symbol: StakingTokens.XUSDC, address: XUSDC_RESOURCE_ADDRESS },
+        { symbol: StakingTokens.REDDICKS, address: REDDICKS_RESOURCE_ADDRESS },
         // { symbol: StakingTokens.XUSDT, address: XUSDT_RESOURCE_ADDRESS },
       ]);
       totalHITs = balances[StakingTokens.HIT];
       totalFOMOs = balances[StakingTokens.FOMO];
       totalXUSDCs = balances[StakingTokens.XUSDC];
+      totalREDDICKS = balances[StakingTokens.REDDICKS];
       // totalXUSDTs = balances[StakingTokens.XUSDT];
       response.data.items[0].details.state.fields[2].entries.forEach((entry: any) => {
         switch (entry.key.value) {
@@ -324,6 +335,9 @@ export const fetchNodeStakingComponentDetails = async () => {
           case XUSDC_RESOURCE_ADDRESS:
             assignedXUSDCs = entry.value.fields[1].value;
             break;
+          case REDDICKS_RESOURCE_ADDRESS:
+            assignedREDDICKs = entry.value.fields[1].value;
+            break;
           // case XUSDT_RESOURCE_ADDRESS:
           //   assignedXUSDTs = entry.value.fields[1].value;
         }
@@ -335,6 +349,9 @@ export const fetchNodeStakingComponentDetails = async () => {
   store.dispatch(setLockedNodeStakingHits(BN(totalHITs).minus(assignedHITS).toString()));
   store.dispatch(setLockedNodeStakingFomos(BN(totalFOMOs).minus(assignedFOMOs).toString()));
   store.dispatch(setLockedNodeStakingxUSDCs(BN(totalXUSDCs).minus(assignedXUSDCs).toString()));
+  store.dispatch(
+    setLockedNodeStakingREDDICKS(BN(totalREDDICKS).minus(assignedREDDICKs).toString())
+  );
   store.dispatch(setNodeStakingComponentDataLoading(false));
   // store.dispatch(setLockedNodeStakingxUSDTs(BN(totalXUSDTs).minus(assignedXUSDTs).toString()));
 };
