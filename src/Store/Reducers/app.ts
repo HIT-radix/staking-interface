@@ -7,6 +7,7 @@ const initialState: AppReducer = {
   hitPrice: 0,
   walletAddress: "",
   fomoPrice: 0,
+  reddicksPrice: 0,
 };
 
 const app = createSlice({
@@ -22,15 +23,18 @@ const app = createSlice({
         state.walletAddress = "";
       }
     },
-    setHitPrice(state, action: PayloadAction<number>) {
-      state.hitPrice = action.payload;
-    },
-    setHitFomoPrices(state, action: PayloadAction<{ hit?: number; fomo?: number }>) {
+    setStakingTokensPrices(
+      state,
+      action: PayloadAction<{ hit?: number; fomo?: number; reddicks?: number }>
+    ) {
       if (action.payload.hit) {
         state.hitPrice = action.payload.hit;
       }
       if (action.payload.fomo) {
         state.fomoPrice = action.payload.fomo;
+      }
+      if (action.payload.reddicks) {
+        state.reddicksPrice = action.payload.reddicks;
       }
     },
   },
@@ -38,4 +42,4 @@ const app = createSlice({
 
 export default app.reducer;
 
-export const { setWalletData, setHitPrice, setHitFomoPrices } = app.actions;
+export const { setWalletData, setStakingTokensPrices } = app.actions;
