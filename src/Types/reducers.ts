@@ -7,6 +7,7 @@ export type AppReducer = {
   hitPrice: number;
   walletAddress: string;
   fomoPrice: number;
+  reddicksPrice: number;
 };
 
 export enum Percentage {
@@ -57,6 +58,7 @@ export type SessionReducer = {
   successTxCount: number;
   tokenData?: TokenData;
   fomoTokenData?: TokenData;
+  reddicksTokenData?: TokenData;
   hitBalance: string;
   fomoBalance: string;
   rewardsModalData?: {
