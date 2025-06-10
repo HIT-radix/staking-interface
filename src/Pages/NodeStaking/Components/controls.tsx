@@ -9,6 +9,7 @@ import {
 import hitLogo from "Assets/Images/hit-logo.png";
 import xUSDCLogo from "Assets/Images/xUSDC.png";
 import newfomoLogo from "Assets/Images/fomo-new.jpg";
+import reddicksLogo from "Assets/Images/reddicks.png";
 import { useEffect, useMemo, useState } from "react";
 import { fetchClaimableNodeStakingRewards } from "Utils/fetchers";
 import { ClaimableRewardsInfo } from "Types/token";
@@ -21,6 +22,7 @@ const Controls = () => {
 
   const hitPrice = useSelector((state) => state.app.hitPrice);
   const fomoPrice = useSelector((state) => state.app.fomoPrice);
+  const reddicksPrice = useSelector((state) => state.app.reddicksPrice);
   const NodeStakeNFTid = useSelector((state) => state.staking.NodeStakeNFTid);
   const nodeStakingRewardsLoading = useSelector((state) => state.loadings.nodeStakingRewards);
   const tokenDataLoading = useSelector((state) => state.loadings.tokenDataLoading);
@@ -35,35 +37,47 @@ const Controls = () => {
     HIT: "0",
     FOMO: "0",
     xUSDC: "0",
+    REDDICKS: "0",
   });
 
   const showAirdropOption = useMemo(() => NodeStakeNFTid === 48, [NodeStakeNFTid]);
 
+  const hitRewardInUsd = useMemo(() => {
+    if (!claimableRewards.HIT || !hitPrice) return undefined;
+    return Number(claimableRewards.HIT) === 0
+      ? undefined
+      : formatDollarAmount(new BN(claimableRewards.HIT).multipliedBy(hitPrice).toNumber());
+  }, [claimableRewards.HIT, hitPrice]);
+
+  const fomoRewardInUsd = useMemo(() => {
+    if (!claimableRewards.FOMO || !fomoPrice) return undefined;
+    return Number(claimableRewards.FOMO) === 0
+      ? undefined
+      : formatDollarAmount(new BN(claimableRewards.FOMO).multipliedBy(fomoPrice).toNumber());
+  }, [claimableRewards.FOMO, fomoPrice]);
+
+  const xUsdcRewardInUsd = useMemo(() => {
+    return formatDollarAmount(+claimableRewards.xUSDC);
+  }, [claimableRewards.xUSDC]);
+
+  const reddicksRewardInUsd = useMemo(() => {
+    if (!claimableRewards.REDDICKS || !reddicksPrice) return undefined;
+    return Number(claimableRewards.REDDICKS) === 0
+      ? undefined
+      : formatDollarAmount(
+          new BN(claimableRewards.REDDICKS).multipliedBy(reddicksPrice).toNumber()
+        );
+  }, [claimableRewards.REDDICKS, reddicksPrice]);
+
   const claimableRewardsInUsd = useMemo(() => {
-    if (claimableRewards.HIT && claimableRewards.FOMO && hitPrice && fomoPrice) {
-      let hitInUsd =
-        Number(claimableRewards.HIT) === 0
-          ? undefined
-          : formatDollarAmount(new BN(claimableRewards.HIT).multipliedBy(hitPrice).toNumber());
-
-      let fomoInUsd =
-        Number(claimableRewards.FOMO) === 0
-          ? undefined
-          : formatDollarAmount(new BN(claimableRewards.FOMO).multipliedBy(fomoPrice).toNumber());
-
-      return {
-        HIT: hitInUsd,
-        FOMO: fomoInUsd,
-        xUSDC: formatDollarAmount(+claimableRewards.xUSDC),
-      };
-    }
     return {
-      HIT: undefined,
-      FOMO: undefined,
+      HIT: hitRewardInUsd,
+      FOMO: fomoRewardInUsd,
       oldFOMO: undefined,
-      xUSDC: undefined,
+      xUSDC: xUsdcRewardInUsd,
+      REDDICKS: reddicksRewardInUsd,
     };
-  }, [claimableRewards.HIT, claimableRewards.FOMO, claimableRewards.xUSDC, hitPrice, fomoPrice]);
+  }, [hitRewardInUsd, fomoRewardInUsd, xUsdcRewardInUsd, reddicksRewardInUsd]);
 
   useEffect(() => {
     (async () => {
@@ -173,6 +187,15 @@ const Controls = () => {
                     $FOMO : {formatTokenAmount(Number(claimableRewards.FOMO))}{" "}
                     {claimableRewardsInUsd.FOMO && (
                       <span className="text-lg">({claimableRewardsInUsd.FOMO})</span>
+                    )}{" "}
+                  </p>
+                </div>
+                <div className="flex items-center mt-2">
+                  <img src={reddicksLogo} alt="hit-logo" className="w-7 h-7 rounded-full" />
+                  <p className="text-2xl font-bold ml-1" title={claimableRewards.REDDICKS}>
+                    $REDDICKS : {formatTokenAmount(Number(claimableRewards.REDDICKS))}{" "}
+                    {claimableRewardsInUsd.REDDICKS && (
+                      <span className="text-lg">({claimableRewardsInUsd.REDDICKS})</span>
                     )}{" "}
                   </p>
                 </div>
