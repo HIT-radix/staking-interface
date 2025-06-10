@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 
 import { Ociswap_baseurl, networkRPC } from "Constants/endpoints";
 import { dispatch, store } from "Store";
-import { setHitFomoPrices } from "Store/Reducers/app";
+import { setStakingTokensPrices } from "Store/Reducers/app";
 import {
   setFelixWallet,
   setFomoBalance,
@@ -41,6 +41,7 @@ import {
   XUSDC_RESOURCE_ADDRESS,
   NODE_STAKING_XUSDC_KEY_VALUE_STORE_ADDRESS,
   REDDICKS_RESOURCE_ADDRESS,
+  NODE_STAKING_REDDICKS_KEY_VALUE_STORE_ADDRESS,
 } from "Constants/address";
 import {
   setRugProofComponentDataLoading,
@@ -184,16 +185,21 @@ export const getSelectedBalance = () => {
 export const fetchHitFomoData = async () => {
   let hitPrice: number | undefined = undefined;
   let fomoPrice: number | undefined = undefined;
+  let reddicksPrice: number | undefined = undefined;
   let hitData: TokenData | undefined = undefined;
   let fomoData: TokenData | undefined = undefined;
+  let reddicksData: TokenData | undefined = undefined;
   try {
     store.dispatch(setTokenDataLoading(true));
 
     // Use Promise.all to fetch both tokens data simultaneously
-    const [hitDataResponse, fomoDataResponse] = await Promise.all([
+    const [hitDataResponse, fomoDataResponse, reddicksDataResponse] = await Promise.all([
       axios.get<any, AxiosResponse<TokenData>>(`${Ociswap_baseurl}/tokens/${HIT_RESOURCE_ADDRESS}`),
       axios.get<any, AxiosResponse<TokenData>>(
         `${Ociswap_baseurl}/tokens/${FOMO_RESOURCE_ADDRESS}`
+      ),
+      axios.get<any, AxiosResponse<TokenData>>(
+        `${Ociswap_baseurl}/tokens/${REDDICKS_RESOURCE_ADDRESS}`
       ),
     ]);
 
@@ -212,11 +218,20 @@ export const fetchHitFomoData = async () => {
     } else {
       console.error("Failed to fetch FOMO token data", fomoDataResponse.status);
     }
+    // Handle REDDICKS token response
+    if (reddicksDataResponse.status === 200) {
+      reddicksPrice = +reddicksDataResponse.data.price.usd.now;
+      reddicksData = reddicksDataResponse.data;
+    } else {
+      console.error("Failed to fetch REDDICKS token data", reddicksDataResponse.status);
+    }
   } catch (error) {
     console.error("Error fetching token data", error);
   } finally {
-    store.dispatch(setHitFomoPrices({ hit: hitPrice, fomo: fomoPrice }));
-    store.dispatch(updateHitFomoData({ hit: hitData, fomo: fomoData }));
+    store.dispatch(
+      setStakingTokensPrices({ hit: hitPrice, fomo: fomoPrice, reddicks: reddicksPrice })
+    );
+    store.dispatch(updateHitFomoData({ hit: hitData, fomo: fomoData, reddicks: reddicksData }));
     store.dispatch(setTokenDataLoading(false));
   }
 };
@@ -361,12 +376,14 @@ export const fetchClaimableNodeStakingRewards = async (nftId: number) => {
     { address: NODE_STAKING_HIT_KEY_VALUE_STORE_ADDRESS, token: StakingTokens.HIT },
     { address: NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS, token: StakingTokens.FOMO },
     { address: NODE_STAKING_XUSDC_KEY_VALUE_STORE_ADDRESS, token: StakingTokens.XUSDC },
+    { address: NODE_STAKING_REDDICKS_KEY_VALUE_STORE_ADDRESS, token: StakingTokens.REDDICKS },
   ];
 
   let claimableRewards = {
     HIT: "0",
     FOMO: "0",
     xUSDC: "0",
+    REDDICKS: "0",
     // xUSDT: "0",
     // oldFOMO: "0"
   };
