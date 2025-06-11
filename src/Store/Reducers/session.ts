@@ -35,7 +35,7 @@ const session = createSlice({
       state.fomoBalance = action.payload;
     },
     setReddicksBalance(state, action: PayloadAction<string>) {
-      state.fomoBalance = action.payload;
+      state.reddicksBalance = action.payload;
     },
     // setxusdtBalance(state, action: PayloadAction<string>) {
     //   state.xusdtBalance = action.payload;
