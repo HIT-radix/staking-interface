@@ -123,7 +123,7 @@ const InvesmentFunds = () => {
                       transitions={() => ({
                         duration: 3,
                       })}
-                      animateToNumber={Number(Number(694.213).toFixed(2))}
+                      animateToNumber={Number(Number(totalFunds).toFixed(2))}
                       fontStyle={{
                         fontSize: fontSize,
                         color: "white",
