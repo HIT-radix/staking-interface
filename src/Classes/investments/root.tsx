@@ -20,8 +20,20 @@ class RootInvestment {
       platform: "Root Finance",
       total,
       breakdown: [
-        { asset: "xUSDT", value: xusdt, logo: xusdtLogo, platform: "Root Finance" },
-        { asset: "xUSDC", value: xusdc, logo: xusdcLogo, platform: "Root Finance" },
+        {
+          asset: "xUSDT",
+          value: xusdt,
+          logo: xusdtLogo,
+          platform: "Root Finance",
+          position: "xUSDT lend",
+        },
+        {
+          asset: "xUSDC",
+          value: xusdc,
+          logo: xusdcLogo,
+          platform: "Root Finance",
+          position: "xUSDC lend",
+        },
       ],
       index: 2, // Update index as needed
     };
