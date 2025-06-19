@@ -23,8 +23,20 @@ class WeftInvestment {
       platform: "Weft Finance",
       total: totalInvestment,
       breakdown: [
-        { asset: "xUSDT", value: weftUSDTInvestment, logo: xusdtLogo, platform: "Weft Finance" },
-        { asset: "xUSDC", value: weftUSDCInvestment, logo: xusdcLogo, platform: "Weft Finance" },
+        {
+          asset: "xUSDT",
+          value: weftUSDTInvestment,
+          logo: xusdtLogo,
+          platform: "Weft Finance",
+          position: "xUSDT lend",
+        },
+        {
+          asset: "xUSDC",
+          value: weftUSDCInvestment,
+          logo: xusdcLogo,
+          platform: "Weft Finance",
+          position: "xUSDC lend",
+        },
       ],
       index: 1, // Update index as needed
     };
