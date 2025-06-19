@@ -33,8 +33,20 @@ class FluxInvestment {
       platform: "Flux",
       total: new Decimal(fusd_xusdc).add(fusd_xrd).toString(),
       breakdown: [
-        { asset: "fUSD/xUSDC CaviarNine", value: fusd_xusdc, logo: fUSDLogo, platform: "Flux" },
-        { asset: "fUSD/XRD OciSwap", value: fusd_xrd, logo: fUSDLogo, platform: "Flux" },
+        {
+          asset: "fUSD/xUSDC CaviarNine",
+          value: fusd_xusdc,
+          logo: fUSDLogo,
+          platform: "Flux",
+          position: "fUSD/xUSDC LP",
+        },
+        {
+          asset: "fUSD/XRD OciSwap",
+          value: fusd_xrd,
+          logo: fUSDLogo,
+          platform: "Flux",
+          position: "fUSD/XRD LP",
+        },
       ],
       index: 4, // Update index as needed
     };
