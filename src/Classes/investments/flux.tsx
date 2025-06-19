@@ -12,6 +12,7 @@ import Decimal from "decimal.js";
 import { InvestmentInfo } from "Types/misc";
 import fUSDLogo from "Assets/Images/fUSD.png";
 import { PoolUnitEntityDetailsApiResponse } from "Types/api";
+import { platform } from "os";
 
 interface Receipt {
   status: string;
@@ -32,8 +33,8 @@ class FluxInvestment {
       platform: "Flux",
       total: new Decimal(fusd_xusdc).add(fusd_xrd).toString(),
       breakdown: [
-        { asset: "fUSD/xUSDC CaviarNine", value: fusd_xusdc, logo: fUSDLogo },
-        { asset: "fUSD/XRD OciSwap", value: fusd_xrd, logo: fUSDLogo },
+        { asset: "fUSD/xUSDC CaviarNine", value: fusd_xusdc, logo: fUSDLogo, platform: "Flux" },
+        { asset: "fUSD/XRD OciSwap", value: fusd_xrd, logo: fUSDLogo, platform: "Flux" },
       ],
       index: 4, // Update index as needed
     };
