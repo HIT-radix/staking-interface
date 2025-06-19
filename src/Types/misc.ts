@@ -16,9 +16,9 @@ export type InfoTooltipProps = {
   infoColor?: "green" | "white";
 };
 
-export type InvestmentInfo = {
+export interface InvestmentInfo {
   platform: string;
   total: string;
   breakdown: { asset: string; value: string; logo: string; platform: string; position: string }[];
   index: number;
-};
+}
