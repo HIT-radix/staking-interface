@@ -156,52 +156,54 @@ const InvesmentFunds = () => {
                   style={{ opacity: 0.5 }}
                 />
               ) : (
-                <Chart
-                  options={{
-                    labels: originalInvestments.map(
-                      (item) => `${item.platform} - ${item.position}`
-                    ),
-                    dataLabels: {
-                      formatter: function (val, opts) {
-                        return Number(val).toFixed(2) + "%";
-                      },
-                    },
-                    legend: {
-                      show: true,
-                      labels: { colors: "#FFF" },
-                    },
-                    colors: [
-                      "#1f3648",
-                      "#8af8c7",
-                      "#9f83bc",
-                      "#571eaf",
-                      "#66ddfb",
-                      "#DD8A00",
-                      "#f8e96d",
-                    ],
-                    tooltip: {
-                      enabled: true,
-                      y: {
-                        formatter: function (value, { series, seriesIndex, dataPointIndex, w }) {
-                          // Show value with 2 decimals and a $ sign
-                          return `$${Number(value).toLocaleString(undefined, {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })}`;
+                <div className="w-full max-w-[500px]">
+                  <Chart
+                    options={{
+                      labels: originalInvestments.map(
+                        (item) => `${item.platform} - ${item.position}`
+                      ),
+                      dataLabels: {
+                        formatter: function (val, opts) {
+                          return Number(val).toFixed(2) + "%";
                         },
-                        title: {
-                          formatter: function (seriesName, opts) {
-                            // Show the label as title
-                            return seriesName;
+                      },
+                      legend: {
+                        show: true,
+                        labels: { colors: "#FFF" },
+                      },
+                      colors: [
+                        "#1f3648",
+                        "#8af8c7",
+                        "#9f83bc",
+                        "#571eaf",
+                        "#66ddfb",
+                        "#DD8A00",
+                        "#f8e96d",
+                      ],
+                      tooltip: {
+                        enabled: true,
+                        y: {
+                          formatter: function (value, { series, seriesIndex, dataPointIndex, w }) {
+                            // Show value with 2 decimals and a $ sign
+                            return `$${Number(value).toLocaleString(undefined, {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}`;
+                          },
+                          title: {
+                            formatter: function (seriesName, opts) {
+                              // Show the label as title
+                              return seriesName;
+                            },
                           },
                         },
                       },
-                    },
-                  }}
-                  series={originalInvestments.map((item) => +item.value)}
-                  type="donut"
-                  width="500px"
-                />
+                    }}
+                    series={originalInvestments.map((item) => +item.value)}
+                    type="donut"
+                    width="100%"
+                  />
+                </div>
               )}
             </div>
             <div className="order-2 md:order-1 overflow-x-auto">
