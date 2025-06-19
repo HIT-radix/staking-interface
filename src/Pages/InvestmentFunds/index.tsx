@@ -169,10 +169,10 @@ const InvesmentFunds = () => {
                     colors: [
                       "#1f3648",
                       "#8af8c7",
-                      "#764E9F",
+                      "#9f83bc",
                       "#571eaf",
                       "#66ddfb",
-                      "#4796ed",
+                      "#DD8A00",
                       "#f8e96d",
                     ],
                     tooltip: {
