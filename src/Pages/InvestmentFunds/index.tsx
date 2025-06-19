@@ -8,15 +8,22 @@ import { fetchFelixWalletBalance } from "Utils/fetchers";
 import fluxInvestor from "Classes/investments/flux";
 import investBg from "Assets/Images/investment-bg.jpeg";
 import AnimatedNumbers from "react-animated-numbers";
-import ExpandableRow from "./components/expandableRow";
-import { InvestmentInfo } from "Types/misc";
+import { formatDollarAmount } from "Utils/format";
+
+type InvestmentBreakdown = {
+  asset: string;
+  value: string;
+  logo: string;
+  platform: string;
+  position: string;
+};
 
 const InvesmentFunds = () => {
   const [loading, setLoading] = useState(true);
-  const [investments, setInvestments] = useState<InvestmentInfo[]>([]);
+  const [investments, setInvestments] = useState<InvestmentBreakdown[]>([]);
   const [fontSize, setFontSize] = useState(150);
   // Store original order of investments for the chart to maintain consistency with the labels
-  const [originalInvestmentOrder, setOriginalInvestmentOrder] = useState<InvestmentInfo[]>([]);
+  const [originalInvestments, setOriginalInvestments] = useState<InvestmentBreakdown[]>([]);
 
   useEffect(() => {
     const fetchInvestments = async () => {
@@ -30,12 +37,15 @@ const InvesmentFunds = () => {
             fluxInvestor.getInvestment(),
           ]);
 
-          // Store original order for chart data
-          setOriginalInvestmentOrder(allInvestments);
+          // Flatten all investment breakdowns into a single array
+          const flattenedInvestments = allInvestments.flatMap((inv) => inv.breakdown);
 
-          // Sort investments by total value in descending order
-          const sortedInvestments = [...allInvestments].sort(
-            (a, b) => parseFloat(b.total) - parseFloat(a.total)
+          // Store original order for chart data
+          setOriginalInvestments(flattenedInvestments);
+
+          // Sort investments by value in descending order
+          const sortedInvestments = [...flattenedInvestments].sort(
+            (a, b) => parseFloat(b.value) - parseFloat(a.value)
           );
 
           setInvestments(sortedInvestments);
@@ -51,7 +61,7 @@ const InvesmentFunds = () => {
 
   const totalFunds = useMemo(() => {
     return investments.reduce((total, investment) => {
-      return total + parseFloat(investment.total);
+      return total + parseFloat(investment.value);
     }, 0);
   }, [investments]);
 
@@ -148,15 +158,9 @@ const InvesmentFunds = () => {
               ) : (
                 <Chart
                   options={{
-                    labels: [
-                      "Weft - xUSDT lend",
-                      "Weft - xUSDC lend",
-                      "Root - xUSDT lend",
-                      "Root - xUSDC lend",
-                      "Surge - xUSDC LP",
-                      "Flux - fUSD/xUSDC LP CaviarNine",
-                      "Flux - fUSD/XRD LP Ociswap",
-                    ],
+                    labels: originalInvestments.map(
+                      (item) => `${item.platform} - ${item.position}`
+                    ),
                     dataLabels: {
                       formatter: function (val, opts) {
                         return Number(val).toFixed(2) + "%";
@@ -194,15 +198,7 @@ const InvesmentFunds = () => {
                       },
                     },
                   }}
-                  series={[
-                    +originalInvestmentOrder[0].breakdown[0].value, // weft - xUSDT
-                    +originalInvestmentOrder[0].breakdown[1].value, // weft - xUSDC
-                    +originalInvestmentOrder[1].breakdown[0].value, // root - xUSDT
-                    +originalInvestmentOrder[1].breakdown[1].value, // root - xUSDC
-                    +originalInvestmentOrder[2].total, // surge - total
-                    +originalInvestmentOrder[3].breakdown[0].value, // flux - fUSD/xUSDC
-                    +originalInvestmentOrder[3].breakdown[1].value, // flux - fUSD/XRD
-                  ]}
+                  series={originalInvestments.map((item) => +item.value)}
                   type="donut"
                   width="500px"
                 />
@@ -216,14 +212,31 @@ const InvesmentFunds = () => {
                   <thead className="text-white bg-[#000400] bg-opacity-70">
                     <tr className="border-b border-white">
                       <th></th>
-                      <th className="w-[50%]">DeFi Platform</th>
+                      <th>Platform</th>
+                      <th>Position</th>
                       <th>Value</th>
-                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
                     {investments.map((investment, index) => (
-                      <ExpandableRow key={index} {...investment} index={index + 1} />
+                      <tr
+                        key={index}
+                        className="text-white border-b border-white/20 bg-[#000400] bg-opacity-70"
+                      >
+                        <th>{index + 1}</th>
+                        <td className="font-semibold">{investment.platform}</td>
+                        <td className="font-semibold">
+                          <div className="flex items-center justify-start gap-2">
+                            <img
+                              src={investment.logo}
+                              alt="logo"
+                              className="w-4 h-4 rounded-full"
+                            />
+                            {investment.position}
+                          </div>
+                        </td>
+                        <td className="font-semibold">{formatDollarAmount(+investment.value)}</td>
+                      </tr>
                     ))}
                   </tbody>
                 </table>
