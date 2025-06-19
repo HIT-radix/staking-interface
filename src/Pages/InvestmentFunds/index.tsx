@@ -149,13 +149,13 @@ const InvesmentFunds = () => {
                 <Chart
                   options={{
                     labels: [
-                      "xUSDT lend - Weft",
-                      "xUSDC lend - Weft",
-                      "xUSDT lend - Root",
-                      "xUSDC lend - Root",
-                      "xUSDC LP - Surge",
-                      "fUSD/xUSDC - CaviarNine",
-                      "fUSD/XRD - Ociswap",
+                      "Weft - xUSDT lend",
+                      "Weft - xUSDC lend",
+                      "Root - xUSDT lend",
+                      "Root - xUSDC lend",
+                      "Surge - xUSDC LP",
+                      "Flux - fUSD/xUSDC LP CaviarNine",
+                      "Flux - fUSD/XRD LP Ociswap",
                     ],
                     dataLabels: {
                       formatter: function (val, opts) {
@@ -167,13 +167,13 @@ const InvesmentFunds = () => {
                       labels: { colors: "#FFF" },
                     },
                     colors: [
-                      "#FFD700", // gold
-                      "#00BFFF", // deep sky blue
-                      "#32CD32", // lime green
-                      "#FF69B4", // hot pink
-                      "#FF7F50", // coral (more distinct from gold)
-                      "#8A2BE2", // blue violet
-                      "#FF4500", // orange red
+                      "#1f3648",
+                      "#8af8c7",
+                      "#764E9F",
+                      "#571eaf",
+                      "#66ddfb",
+                      "#4796ed",
+                      "#f8e96d",
                     ],
                     tooltip: {
                       enabled: true,
