@@ -3,6 +3,7 @@ import Decimal from "decimal.js";
 import { store } from "Store";
 import { InvestmentInfo } from "Types/misc";
 import { simulateTx } from "Utils/txSenders";
+import xusdcLogo from "Assets/Images/xUSDC.png";
 
 class SurgeInvestment {
   public async getInvestment(): Promise<InvestmentInfo> {
@@ -10,7 +11,15 @@ class SurgeInvestment {
     return {
       platform: "surge.trade",
       total: totalValue,
-      breakdown: [],
+      breakdown: [
+        {
+          asset: "xUSDC LP",
+          value: totalValue,
+          logo: xusdcLogo,
+          platform: "surge.trade",
+          position: "xUSDC LP",
+        },
+      ],
       index: 3, // Update index as needed
     };
   }
