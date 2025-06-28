@@ -12,7 +12,6 @@ import { simulateTx } from "Utils/txSenders";
 import Decimal from "decimal.js";
 import { InvestmentInfo } from "Types/misc";
 import fUSDLogo from "Assets/Images/fUSD.png";
-import lsulpLogo from "Assets/Images/lsu_lp.png";
 import { PoolUnitEntityDetailsApiResponse } from "Types/api";
 
 interface Receipt {
@@ -68,7 +67,7 @@ class FluxInvestment {
         {
           asset: "LSULP Reservoir",
           value: fusd_lsulp_reservoir,
-          logo: lsulpLogo,
+          logo: fUSDLogo,
           platform: "Flux",
           position: "LSULP Reservoir",
         },
