@@ -148,6 +148,9 @@ export const STAB_RESOURCE_ADDRESS =
 export const FUSD_RESOURCE_ADDRESS =
   "resource_rdx1t49wa75gve8ehvejr760g3pgvkawsgsgq0u3kh7vevzk0g0cnsmscq";
 
+export const LSULP_RESOURCE_ADDRESS =
+  "resource_rdx1thksg5ng70g9mmy9ne7wz0sc7auzrrwy7fmgcxzel2gvp8pj0xxfmf";
+
 export const XRD_RESOURCE_ADDRESS =
   "resource_rdx1tknxxxxxxxxxradxrdxxxxxxxxx009923554798xxxxxxxxxradxrd";
 
