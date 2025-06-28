@@ -180,6 +180,7 @@ const InvesmentFunds = () => {
                         "#DD8A00",
                         "#f8e96d",
                         "#F4B400",
+                        "#A86A2C",
                       ],
                       tooltip: {
                         enabled: true,
