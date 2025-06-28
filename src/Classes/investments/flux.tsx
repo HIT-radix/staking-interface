@@ -12,7 +12,6 @@ import Decimal from "decimal.js";
 import { InvestmentInfo } from "Types/misc";
 import fUSDLogo from "Assets/Images/fUSD.png";
 import { PoolUnitEntityDetailsApiResponse } from "Types/api";
-import { platform } from "os";
 
 interface Receipt {
   status: string;
@@ -26,9 +25,15 @@ class FluxInvestment {
   private fusd_xrd_pool_unit =
     "resource_rdx1tkc32nfsvwnt7ysq2sdgyq6w2g4s69w86yzk8zwegf7pcvya905ctv";
 
+  private fusd_xrd_reservoir_pool_unit =
+    "resource_rdx1tk6gnvp5tmxqdr5zppuu50p2q9uvv89q2gyz432ukrh5md7ft4xesr";
+
   public async getInvestment(): Promise<InvestmentInfo> {
-    const fusd_xusdc = await this.fetch_fUSD_XUSDC_liquidity();
-    const fusd_xrd = await this.fetch_fUSD_XRD_liquidity();
+    const [fusd_xusdc, fusd_xrd, fusd_xrd_reservoir] = await Promise.all([
+      this.fetch_fUSD_XUSDC_liquidity(),
+      this.fetch_fUSD_XRD_liquidity(),
+      this.fetch_XRD_fUSD_reservoir_liquidity(),
+    ]);
     return {
       platform: "Flux",
       total: new Decimal(fusd_xusdc).add(fusd_xrd).toString(),
@@ -46,6 +51,13 @@ class FluxInvestment {
           logo: fUSDLogo,
           platform: "Flux",
           position: "fUSD/XRD LP",
+        },
+        {
+          asset: "Flux - XRD Reservoir",
+          value: fusd_xrd_reservoir,
+          logo: fUSDLogo,
+          platform: "Flux",
+          position: "Flux - XRD Reservoir",
         },
       ],
       index: 4, // Update index as needed
@@ -125,7 +137,6 @@ class FluxInvestment {
           },
         }
       );
-      console.log("xxxx-response:", response);
 
       if (response.status === 200) {
         const poolUnitDetails = response.data.items[0].details;
@@ -142,7 +153,53 @@ class FluxInvestment {
 
       const xrdPrice = await this.fetchXRDPrice();
       const xrdInUSDC = new Decimal(computedXRDValue).mul(xrdPrice);
-      console.log("xrdInUSDC:", xrdInUSDC);
+      return new Decimal(computedFUSDValue).plus(xrdInUSDC).toString();
+    } catch (error) {
+      console.log("error in fetch_fUSD_XRD_liquidity", error);
+      return "0";
+    }
+  }
+
+  private async fetch_XRD_fUSD_reservoir_liquidity() {
+    try {
+      const felixFungibles = store.getState().session.felixWallet.fungible;
+      const felixLPBalance = felixFungibles[this.fusd_xrd_reservoir_pool_unit]?.amount ?? "0";
+      let computedFUSDValue = "0";
+      let computedXRDValue = "0";
+
+      const response = await axios.post<any, AxiosResponse<PoolUnitEntityDetailsApiResponse>>(
+        `${networkRPC}/state/entity/details`,
+        {
+          addresses: [this.fusd_xrd_reservoir_pool_unit],
+          aggregation_level: "Vault",
+          opt_ins: {
+            ancestor_identities: true,
+            component_royalty_config: true,
+            component_royalty_vault_balance: true,
+            package_royalty_vault_balance: true,
+            non_fungible_include_nfids: true,
+            dapp_two_way_links: true,
+            native_resource_details: true,
+            explicit_metadata: ["name", "description"],
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        const poolUnitDetails = response.data.items[0].details;
+
+        poolUnitDetails.native_resource_details.unit_redemption_value.forEach((redemptionValue) => {
+          if (redemptionValue.resource_address === FUSD_RESOURCE_ADDRESS) {
+            computedFUSDValue = new Decimal(redemptionValue.amount).mul(felixLPBalance).toString();
+          }
+          if (redemptionValue.resource_address === XRD_RESOURCE_ADDRESS) {
+            computedXRDValue = new Decimal(redemptionValue.amount).mul(felixLPBalance).toString();
+          }
+        });
+      }
+
+      const xrdPrice = await this.fetchXRDPrice();
+      const xrdInUSDC = new Decimal(computedXRDValue).mul(xrdPrice);
       return new Decimal(computedFUSDValue).plus(xrdInUSDC).toString();
     } catch (error) {
       console.log("error in fetch_fUSD_XRD_liquidity", error);
