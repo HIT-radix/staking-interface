@@ -3,6 +3,7 @@ import {
   FUSD_XUSDC_LIQUIDITY_RECEIPT_C9,
   FUSD_RESOURCE_ADDRESS,
   XRD_RESOURCE_ADDRESS,
+  LSULP_RESOURCE_ADDRESS,
 } from "Constants/address";
 import { networkRPC, Ociswap_baseurl } from "Constants/endpoints";
 import { store } from "Store";
@@ -11,6 +12,7 @@ import { simulateTx } from "Utils/txSenders";
 import Decimal from "decimal.js";
 import { InvestmentInfo } from "Types/misc";
 import fUSDLogo from "Assets/Images/fUSD.png";
+import lsulpLogo from "Assets/Images/lsu_lp.png";
 import { PoolUnitEntityDetailsApiResponse } from "Types/api";
 
 interface Receipt {
@@ -28,11 +30,15 @@ class FluxInvestment {
   private fusd_xrd_reservoir_pool_unit =
     "resource_rdx1tk6gnvp5tmxqdr5zppuu50p2q9uvv89q2gyz432ukrh5md7ft4xesr";
 
+  private fusd_lsulp_reservoir_pool_unit =
+    "resource_rdx1tksgc3j8ylrjjqgtny3l4dsfnpepch32hndyk20uptplqk8zuezk0z";
+
   public async getInvestment(): Promise<InvestmentInfo> {
-    const [fusd_xusdc, fusd_xrd, fusd_xrd_reservoir] = await Promise.all([
+    const [fusd_xusdc, fusd_xrd, fusd_xrd_reservoir, fusd_lsulp_reservoir] = await Promise.all([
       this.fetch_fUSD_XUSDC_liquidity(),
       this.fetch_fUSD_XRD_liquidity(),
       this.fetch_XRD_fUSD_reservoir_liquidity(),
+      this.fetch_LSULP_fUSD_reservoir_liquidity(),
     ]);
     return {
       platform: "Flux",
@@ -53,11 +59,18 @@ class FluxInvestment {
           position: "fUSD/XRD LP",
         },
         {
-          asset: "Flux - XRD Reservoir",
+          asset: "XRD Reservoir",
           value: fusd_xrd_reservoir,
           logo: fUSDLogo,
           platform: "Flux",
-          position: "Flux - XRD Reservoir",
+          position: "XRD Reservoir",
+        },
+        {
+          asset: "LSULP Reservoir",
+          value: fusd_lsulp_reservoir,
+          logo: lsulpLogo,
+          platform: "Flux",
+          position: "LSULP Reservoir",
         },
       ],
       index: 4, // Update index as needed
@@ -207,9 +220,68 @@ class FluxInvestment {
     }
   }
 
+  private async fetch_LSULP_fUSD_reservoir_liquidity() {
+    try {
+      const felixFungibles = store.getState().session.felixWallet.fungible;
+      const felixLPBalance = felixFungibles[this.fusd_lsulp_reservoir_pool_unit]?.amount ?? "0";
+      let computedFUSDValue = "0";
+      let computedLSULPValue = "0";
+
+      const response = await axios.post<any, AxiosResponse<PoolUnitEntityDetailsApiResponse>>(
+        `${networkRPC}/state/entity/details`,
+        {
+          addresses: [this.fusd_lsulp_reservoir_pool_unit],
+          aggregation_level: "Vault",
+          opt_ins: {
+            ancestor_identities: true,
+            component_royalty_config: true,
+            component_royalty_vault_balance: true,
+            package_royalty_vault_balance: true,
+            non_fungible_include_nfids: true,
+            dapp_two_way_links: true,
+            native_resource_details: true,
+            explicit_metadata: ["name", "description"],
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        const poolUnitDetails = response.data.items[0].details;
+
+        poolUnitDetails.native_resource_details.unit_redemption_value.forEach((redemptionValue) => {
+          if (redemptionValue.resource_address === FUSD_RESOURCE_ADDRESS) {
+            computedFUSDValue = new Decimal(redemptionValue.amount).mul(felixLPBalance).toString();
+          }
+          if (redemptionValue.resource_address === LSULP_RESOURCE_ADDRESS) {
+            computedLSULPValue = new Decimal(redemptionValue.amount).mul(felixLPBalance).toString();
+          }
+        });
+      }
+
+      const lsulpPrice = await this.fetchLSULPPrice();
+      const lsulpInUSDC = new Decimal(computedLSULPValue).mul(lsulpPrice);
+      return new Decimal(computedFUSDValue).plus(lsulpInUSDC).toString();
+    } catch (error) {
+      console.log("error in fetch_fUSD_XRD_liquidity", error);
+      return "0";
+    }
+  }
+
   private async fetchFUSDPrice() {
     const res = await axios.get<any, AxiosResponse<TokenData>>(
       `${Ociswap_baseurl}/tokens/${FUSD_RESOURCE_ADDRESS}`
+    );
+
+    if (res.status === 200) {
+      return +res.data.price.usd.now;
+    }
+
+    return 0;
+  }
+
+  private async fetchLSULPPrice() {
+    const res = await axios.get<any, AxiosResponse<TokenData>>(
+      `${Ociswap_baseurl}/tokens/${LSULP_RESOURCE_ADDRESS}`
     );
 
     if (res.status === 200) {
