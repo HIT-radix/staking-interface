@@ -18,6 +18,7 @@ class SurgeInvestment {
           logo: xusdcLogo,
           platform: "surge.trade",
           position: "xUSDC LP",
+          apyId: "xUSDC_Surge_Trade_Liquidity_Provision",
         },
       ],
       index: 3, // Update index as needed
