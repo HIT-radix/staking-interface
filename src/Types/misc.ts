@@ -16,9 +16,18 @@ export type InfoTooltipProps = {
   infoColor?: "green" | "white";
 };
 
+export type InvestmentBreakdown = {
+  asset: string;
+  value: string;
+  logo: string;
+  platform: string;
+  position: string;
+  apyId: string;
+};
+
 export interface InvestmentInfo {
   platform: string;
   total: string;
-  breakdown: { asset: string; value: string; logo: string; platform: string; position: string }[];
+  breakdown: InvestmentBreakdown[];
   index: number;
 }
