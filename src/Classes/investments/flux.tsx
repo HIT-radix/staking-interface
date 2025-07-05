@@ -12,7 +12,7 @@ import { simulateTx } from "Utils/txSenders";
 import Decimal from "decimal.js";
 import { InvestmentInfo } from "Types/misc";
 import fUSDLogo from "Assets/Images/fUSD.png";
-import { AttosStrategyId, PoolUnitEntityDetailsApiResponse } from "Types/api";
+import { StrategyId, PoolUnitEntityDetailsApiResponse } from "Types/api";
 
 interface Receipt {
   status: string;
@@ -65,7 +65,7 @@ class FluxInvestment {
           logo: fUSDLogo,
           platform: "Flux",
           position: "XRD Reservoir",
-          apyId: AttosStrategyId.XRD_Flux_Liquidation,
+          apyId: StrategyId.XRD_Flux_Liquidation,
         },
         {
           asset: "LSULP Reservoir",
@@ -73,7 +73,7 @@ class FluxInvestment {
           logo: fUSDLogo,
           platform: "Flux",
           position: "LSULP Reservoir",
-          apyId: AttosStrategyId.LSULP_Flux_Liquidation,
+          apyId: StrategyId.LSULP_Flux_Liquidation,
         },
       ],
       index: 4, // Update index as needed
