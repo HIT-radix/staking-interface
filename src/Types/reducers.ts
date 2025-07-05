@@ -8,6 +8,7 @@ export type AppReducer = {
   walletAddress: string;
   fomoPrice: number;
   reddicksPrice: number;
+  lastAPYsUpdated: number;
 };
 
 export enum Percentage {
@@ -88,4 +89,5 @@ export type LoadingReducer = {
   stHitDataLoading: boolean;
   nodeStakingRewards: boolean;
   nodeStakingComponentDataLoading: boolean;
+  apyFetching: boolean;
 };
