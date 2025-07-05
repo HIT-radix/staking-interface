@@ -150,3 +150,31 @@ export interface PoolUnitEntityDetailsApiResponse {
   ledger_state: LedgerState;
   items: PoolUnitEntityDetailsApiItem[];
 }
+
+export interface AttosStrategyData {
+  name: string;
+  symbol: string;
+  icon_url: string;
+  info_url: string;
+  resource_address: string;
+  bonus_type: string;
+  strategy_type: string;
+  provider: string;
+  bonus_value: number;
+  deposited: number;
+  loaned: number;
+  requiredAssets: {
+    resource_address: string;
+    symbol: string;
+  }[];
+  rewardTokens: string[];
+}
+
+export enum AttosStrategyId {
+  XRD_Flux_Liquidation = "XRD_Flux_Liquidation",
+  LSULP_Flux_Liquidation = "LSULP_Flux_Liquidation",
+  xUSDT_Weft_Finance_Lending = "xUSDT_Weft Finance_Lending",
+  xUSDC_Weft_Finance_Lending = "xUSDC_Weft Finance_Lending",
+  xUSDT_Root_Finance_Lending = "xUSDT_Root Finance_Lending",
+  xUSDC_Root_Finance_Lending = "xUSDC_Root Finance_Lending",
+}
