@@ -170,7 +170,7 @@ export interface AttosStrategyData {
   rewardTokens: string[];
 }
 
-export enum AttosStrategyId {
+export enum StrategyId {
   XRD_Flux_Liquidation = "XRD_Flux_Liquidation",
   LSULP_Flux_Liquidation = "LSULP_Flux_Liquidation",
   xUSDT_Weft_Finance_Lending = "xUSDT_Weft Finance_Lending",
