@@ -19,3 +19,5 @@ export const networkId =
 
 export const applicationName =
   process.env.REACT_APP_ENVIRONMENT === Environment.dev ? "HIT Test Staking" : "HIT Staking";
+
+export const APY_EXPIRE_PERIOD = 0.5 * 60 * 60 * 1000; // 30 minutes
