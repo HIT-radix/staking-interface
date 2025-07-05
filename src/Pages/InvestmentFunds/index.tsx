@@ -70,13 +70,13 @@ const InvesmentFunds = () => {
     const handleResize = () => {
       const width = window.innerWidth;
       if (width < 480) {
-        setFontSize(80);
-      } else if (width < 768) {
         setFontSize(100);
+      } else if (width < 768) {
+        setFontSize(120);
       } else if (width < 1024) {
-        setFontSize(130);
-      } else {
         setFontSize(150);
+      } else {
+        setFontSize(180);
       }
     };
 
@@ -121,7 +121,7 @@ const InvesmentFunds = () => {
                   >
                     <p
                       style={{
-                        fontSize: fontSize > 100 ? 80 : fontSize > 80 ? 60 : 40,
+                        fontSize: fontSize > 100 ? 100 : fontSize > 80 ? 80 : 60,
                         color: "white",
                         fontWeight: "bold",
                       }}
