@@ -11,6 +11,7 @@ import {
   STHIT_RESOURCE_ADDRESS,
   FOMO_COMPONENT_ADDRESS,
   FOMO_RESOURCE_ADDRESS,
+  REDDICKS_RESOURCE_ADDRESS,
 } from "Constants/address";
 import { RewardTokenDistribution } from "Types/token";
 import { formatRewardTokenDistribution } from "./format";
@@ -379,6 +380,15 @@ export const getAirdropRewardsToFomoDirectlyManifest = (
       Address("${FOMO_COMPONENT_ADDRESS}")
       "airdrop"
       Bucket("tokensb")
+    ;
+    TAKE_ALL_FROM_WORKTOP
+      Address("${REDDICKS_RESOURCE_ADDRESS}")
+      Bucket("tokensc")
+    ;
+    CALL_METHOD
+      Address("${FOMO_COMPONENT_ADDRESS}")
+      "airdrop"
+      Bucket("tokensc")
     ;
     CALL_METHOD
       Address("${walletAddress}")
