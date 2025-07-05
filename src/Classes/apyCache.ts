@@ -1,7 +1,7 @@
 import localforage from "localforage";
 
 import { store } from "../Store";
-import { AttosStrategyData, AttosStrategyId, SurgeStatsResponse } from "Types/api";
+import { AttosStrategyData, StrategyId, SurgeStatsResponse } from "Types/api";
 import axios from "axios";
 import { setApyFetching } from "Store/Reducers/loadings";
 import { ATTO_BASE_URL, SURGE_BASE_URL } from "Constants/endpoints";
@@ -53,10 +53,9 @@ class APYCache {
 
   extractAPYsFromStrategies = (strategies: AttosStrategyData[]) => {
     const apyObj: Record<string, number> = {};
-    const validKeys = new Set(Object.values(AttosStrategyId));
+    const validKeys = new Set(Object.values(StrategyId));
     strategies.forEach((strategy) => {
-      const key =
-        `${strategy.symbol}_${strategy.provider}_${strategy.strategy_type}` as AttosStrategyId;
+      const key = `${strategy.symbol}_${strategy.provider}_${strategy.strategy_type}` as StrategyId;
       if (validKeys.has(key)) {
         apyObj[key] = +strategy.bonus_value;
       }
@@ -82,7 +81,7 @@ class APYCache {
       }
       const res = response.data;
       const apy = (res.apy.value * 100).toFixed(2);
-      return { [AttosStrategyId.xUSDC_Surge_Trade_Liquidation]: +apy };
+      return { [StrategyId.xUSDC_Surge_Trade_Liquidation]: +apy };
     } catch (error) {
       console.error("Failed to fetch surge apy:", error);
       return {};
