@@ -4,6 +4,7 @@ import { store } from "Store";
 import { InvestmentInfo } from "Types/misc";
 import { simulateTx } from "Utils/txSenders";
 import xusdcLogo from "Assets/Images/xUSDC.png";
+import { AttosStrategyId } from "Types/api";
 
 class SurgeInvestment {
   public async getInvestment(): Promise<InvestmentInfo> {
@@ -18,7 +19,7 @@ class SurgeInvestment {
           logo: xusdcLogo,
           platform: "surge.trade",
           position: "xUSDC LP",
-          apyId: "xUSDC_Surge_Trade_Liquidity_Provision",
+          apyId: AttosStrategyId.xUSDC_Surge_Trade_Liquidation,
         },
       ],
       index: 3, // Update index as needed
