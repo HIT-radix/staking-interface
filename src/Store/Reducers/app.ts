@@ -8,6 +8,7 @@ const initialState: AppReducer = {
   walletAddress: "",
   fomoPrice: 0,
   reddicksPrice: 0,
+  lastAPYsUpdated: 0,
 };
 
 const app = createSlice({
@@ -37,9 +38,12 @@ const app = createSlice({
         state.reddicksPrice = action.payload.reddicks;
       }
     },
+    setLastAPYsUpdated(state, action: PayloadAction<number>) {
+      state.lastAPYsUpdated = action.payload;
+    },
   },
 });
 
 export default app.reducer;
 
-export const { setWalletData, setStakingTokensPrices } = app.actions;
+export const { setWalletData, setStakingTokensPrices, setLastAPYsUpdated } = app.actions;
