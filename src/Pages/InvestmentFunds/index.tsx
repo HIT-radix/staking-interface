@@ -9,14 +9,9 @@ import fluxInvestor from "Classes/investments/flux";
 import investBg from "Assets/Images/investment-bg.jpeg";
 import AnimatedNumbers from "react-animated-numbers";
 import { formatDollarAmount } from "Utils/format";
-
-type InvestmentBreakdown = {
-  asset: string;
-  value: string;
-  logo: string;
-  platform: string;
-  position: string;
-};
+import ApyCacheService from "Classes/apyCache";
+import { InvestmentBreakdown } from "Types/misc";
+import { useSelector } from "Store";
 
 const InvesmentFunds = () => {
   const [loading, setLoading] = useState(true);
@@ -24,6 +19,8 @@ const InvesmentFunds = () => {
   const [fontSize, setFontSize] = useState(150);
   // Store original order of investments for the chart to maintain consistency with the labels
   const [originalInvestments, setOriginalInvestments] = useState<InvestmentBreakdown[]>([]);
+
+  const apyFetching = useSelector((state) => state.loadings.apyFetching);
 
   useEffect(() => {
     const fetchInvestments = async () => {
@@ -209,7 +206,7 @@ const InvesmentFunds = () => {
               )}
             </div>
             <div className="order-2 md:order-1 overflow-x-auto">
-              {loading ? (
+              {loading || apyFetching ? (
                 <Skeleton count={5} height={30} baseColor="#242d20" highlightColor="#A0D490" />
               ) : (
                 <table className="table">
@@ -218,6 +215,7 @@ const InvesmentFunds = () => {
                       <th></th>
                       <th>Platform</th>
                       <th>Position</th>
+                      <th>APY</th>
                       <th>Value</th>
                     </tr>
                   </thead>
@@ -238,6 +236,14 @@ const InvesmentFunds = () => {
                             />
                             {investment.position}
                           </div>
+                        </td>
+                        <td className="font-semibold">
+                          {(() => {
+                            const apy = ApyCacheService?.allAPYs?.[investment.apyId];
+                            return typeof apy === "number" && !isNaN(apy)
+                              ? `${apy.toFixed(2)}%`
+                              : "-";
+                          })()}
                         </td>
                         <td className="font-semibold">{formatDollarAmount(+investment.value)}</td>
                       </tr>
