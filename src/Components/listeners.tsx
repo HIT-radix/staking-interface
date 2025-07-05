@@ -1,3 +1,4 @@
+import ApyCacheService from "Classes/apyCache";
 import { dispatch, useSelector } from "Store";
 import { setBalanceLoading } from "Store/Reducers/loadings";
 import { setIsInsufficientBalance } from "Store/Reducers/staking";
@@ -10,6 +11,7 @@ import {
   fetchHitFomoData,
 } from "Utils/fetchers";
 import { BN } from "Utils/format";
+import { shouldFetchAPYs } from "Utils/judgers";
 import { useEffect } from "react";
 import { initializeSubscriptions, unsubscribeAll } from "subs";
 
@@ -20,6 +22,7 @@ const Listeners = () => {
   const currentTab = useSelector((state) => state.staking.currentTab);
   const hitBalance = useSelector((state) => state.session.hitBalance);
   const stHitBalance = useSelector((state) => state.staking.stHitBalance);
+  const lastAPYsUpdated = useSelector((state) => state.app.lastAPYsUpdated);
 
   useEffect(() => {
     initializeSubscriptions();
@@ -31,6 +34,16 @@ const Listeners = () => {
   useEffect(() => {
     fetchHitFomoData();
     fetchRugProofComponentDetails();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      await ApyCacheService.loadAPYs();
+      if (await shouldFetchAPYs(lastAPYsUpdated)) {
+        await ApyCacheService.fetchAllAPYs();
+        await ApyCacheService.loadAPYs();
+      }
+    })();
   }, []);
 
   useEffect(() => {
