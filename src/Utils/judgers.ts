@@ -1,4 +1,6 @@
+import { APY_EXPIRE_PERIOD } from "Constants/misc";
 import { BN } from "./format";
+import ApyCacheService from "Classes/apyCache";
 
 export const calculateInputWidth = (str: string) => {
   // Check if the string contains a dot
@@ -32,4 +34,19 @@ export const calculateStHitWorthInHIT = (
   stHIT_totalSupply: string
 ) => {
   return BN(amount).dividedBy(stHIT_totalSupply).multipliedBy(stakedHIT);
+};
+
+export function isObjectEmpty(obj: Object) {
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      return false; // Object is not empty
+    }
+  }
+  return true; // Object is empty
+}
+
+export const shouldFetchAPYs = async (lastApyUpdated: number) => {
+  const currentTime = Date.now();
+  const apyListIsEmpty = isObjectEmpty(ApyCacheService.allAPYs);
+  return currentTime - lastApyUpdated >= APY_EXPIRE_PERIOD || apyListIsEmpty;
 };
