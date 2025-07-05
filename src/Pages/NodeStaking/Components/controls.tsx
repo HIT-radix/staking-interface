@@ -88,7 +88,7 @@ const Controls = () => {
   }, [NodeStakeNFTid, successTxCount]);
 
   const allowWithdraw = useMemo(() => {
-    return Number(claimableRewards.HIT) > 0 || Number(claimableRewards.FOMO) > 0;
+    return Number(claimableRewards.HIT) > 0 || Number(claimableRewards.FOMO) > 0 || Number(claimableRewards.REDDICKS) > 0 || Number(claimableRewards.xUSDC) > 0;
   }, [claimableRewards]);
 
   const handleWithdrawRewards = (nftId: number, claimableRewards: ClaimableRewardsInfo) => {
