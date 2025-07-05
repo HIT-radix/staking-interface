@@ -1,10 +1,10 @@
 import localforage from "localforage";
 
 import { store } from "../Store";
-import { AttosStrategyData, AttosStrategyId } from "Types/api";
+import { AttosStrategyData, AttosStrategyId, SurgeStatsResponse } from "Types/api";
 import axios from "axios";
 import { setApyFetching } from "Store/Reducers/loadings";
-import { ATTO_BASE_URL } from "Constants/endpoints";
+import { ATTO_BASE_URL, SURGE_BASE_URL } from "Constants/endpoints";
 import { setLastAPYsUpdated } from "Store/Reducers/app";
 
 class APYCache {
@@ -40,10 +40,14 @@ class APYCache {
 
   fetchAllAPYs = async () => {
     store.dispatch(setApyFetching(true));
-    const strategies = await this.fetchAttosStrategies(ATTO_BASE_URL + "/strategies");
-    const apyObj = this.extractAPYsFromStrategies(strategies);
-    await this.setAPYs(apyObj);
-    this.allAPYs = apyObj;
+    const [attosStrategies, surgeApy] = await Promise.all([
+      this.fetchAttosStrategies(),
+      this.fetchSurgeApy(),
+    ]);
+    const attosApys = this.extractAPYsFromStrategies(attosStrategies);
+    const allAPYs = { ...attosApys, ...surgeApy };
+    await this.setAPYs(allAPYs);
+    this.allAPYs = allAPYs;
     store.dispatch(setApyFetching(false));
   };
 
@@ -60,13 +64,28 @@ class APYCache {
     return apyObj;
   };
 
-  async fetchAttosStrategies(endpoint: string): Promise<AttosStrategyData[]> {
+  async fetchAttosStrategies(): Promise<AttosStrategyData[]> {
     try {
-      const response = await axios.get<AttosStrategyData[]>(endpoint);
+      const response = await axios.get<AttosStrategyData[]>(ATTO_BASE_URL + "/strategies");
       return response.data;
     } catch (error) {
       console.error("Failed to fetch Attos strategies:", error);
       return [];
+    }
+  }
+
+  async fetchSurgeApy(): Promise<Record<string, number>> {
+    try {
+      const response = await axios.get<SurgeStatsResponse>(SURGE_BASE_URL + "/stats");
+      if (response.status !== 200) {
+        return {};
+      }
+      const res = response.data;
+      const apy = (res.apy.value * 100).toFixed(2);
+      return { [AttosStrategyId.xUSDC_Surge_Trade_Liquidation]: +apy };
+    } catch (error) {
+      console.error("Failed to fetch surge apy:", error);
+      return {};
     }
   }
 }
