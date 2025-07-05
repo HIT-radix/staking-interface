@@ -1,7 +1,7 @@
 import { RadixNetwork } from "@radixdlt/radix-dapp-toolkit";
 import { Environment } from "Types/misc";
 
-export const TELEGRAM_LINK = "https://t.me/addixanonymous";
+export const TELEGRAM_LINK = "https://t.me/FOMO_HIT";
 export const X_HANDLE = "https://twitter.com/addix_xrd";
 export const HIT_WEBSITE = "https://addix-xrd.gitbook.io/usdhit-on-radix/";
 
