@@ -10,6 +10,7 @@ const initialState: LoadingReducer = {
   stHitDataLoading: false,
   nodeStakingRewards: false,
   nodeStakingComponentDataLoading: false,
+  apyFetching: false,
 };
 
 const loadings = createSlice({
@@ -40,6 +41,9 @@ const loadings = createSlice({
     setNodeStakingComponentDataLoading(state, action: PayloadAction<boolean>) {
       state.nodeStakingComponentDataLoading = action.payload;
     },
+    setApyFetching(state, action: PayloadAction<boolean>) {
+      state.apyFetching = action.payload;
+    },
   },
 });
 
@@ -54,4 +58,5 @@ export const {
   setRugProofComponentDataLoading,
   setNodeStakingRewardsLoading,
   setNodeStakingComponentDataLoading,
+  setApyFetching,
 } = loadings.actions;
