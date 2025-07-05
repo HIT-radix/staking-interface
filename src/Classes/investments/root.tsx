@@ -11,6 +11,7 @@ import { store } from "Store";
 import { InvestmentInfo } from "Types/misc";
 import xusdtLogo from "Assets/Images/xUSDT.png";
 import xusdcLogo from "Assets/Images/xUSDC.png";
+import { AttosStrategyId } from "Types/api";
 
 class RootInvestment {
   public async getInvestment(): Promise<InvestmentInfo> {
@@ -26,6 +27,7 @@ class RootInvestment {
           logo: xusdtLogo,
           platform: "Root Finance",
           position: "xUSDT lend",
+          apyId: AttosStrategyId.xUSDT_Root_Finance_Lending,
         },
         {
           asset: "xUSDC",
@@ -33,6 +35,7 @@ class RootInvestment {
           logo: xusdcLogo,
           platform: "Root Finance",
           position: "xUSDC lend",
+          apyId: AttosStrategyId.xUSDC_Root_Finance_Lending,
         },
       ],
       index: 2, // Update index as needed
