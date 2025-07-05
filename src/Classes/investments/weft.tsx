@@ -11,7 +11,7 @@ import Decimal from "decimal.js";
 import { InvestmentInfo } from "Types/misc";
 import xusdtLogo from "Assets/Images/xUSDT.png";
 import xusdcLogo from "Assets/Images/xUSDC.png";
-import { AttosStrategyId } from "Types/api";
+import { StrategyId } from "Types/api";
 
 class WeftInvestment {
   public async getInvestment(): Promise<InvestmentInfo> {
@@ -30,7 +30,7 @@ class WeftInvestment {
           logo: xusdtLogo,
           platform: "Weft Finance",
           position: "xUSDT lend",
-          apyId: AttosStrategyId.xUSDT_Weft_Finance_Lending,
+          apyId: StrategyId.xUSDT_Weft_Finance_Lending,
         },
         {
           asset: "xUSDC",
@@ -38,7 +38,7 @@ class WeftInvestment {
           logo: xusdcLogo,
           platform: "Weft Finance",
           position: "xUSDC lend",
-          apyId: AttosStrategyId.xUSDC_Weft_Finance_Lending,
+          apyId: StrategyId.xUSDC_Weft_Finance_Lending,
         },
       ],
       index: 1, // Update index as needed
