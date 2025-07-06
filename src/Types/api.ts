@@ -178,6 +178,7 @@ export enum StrategyId {
   xUSDT_Root_Finance_Lending = "xUSDT_Root Finance_Lending",
   xUSDC_Root_Finance_Lending = "xUSDC_Root Finance_Lending",
   xUSDC_Surge_Trade_Liquidation = "xUSDC_Surge_Trade_Liquidation",
+  fUSD_XRD_ociswap_pool = "fUSD_XRD_ociswap_pool",
 }
 
 export interface SurgeStatsResponse {
