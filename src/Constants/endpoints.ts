@@ -14,5 +14,5 @@ export const networkRPC =
 
 export const HIT_SERVER_URL = "https://server.addix.meme";
 
-export const ATTO_BASE_URL = "https://earn-api.attos.world/v2";
+export const ATTO_BASE_URL = "https://earn-api.attos.world";
 export const SURGE_BASE_URL = "https://api.surge.trade";
