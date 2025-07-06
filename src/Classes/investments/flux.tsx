@@ -57,7 +57,7 @@ class FluxInvestment {
           logo: fUSDLogo,
           platform: "Flux",
           position: "fUSD/XRD LP",
-          apyId: "fUSD_xUSDC_OciSwap_Liquidity_Provision",
+          apyId: StrategyId.fUSD_XRD_ociswap_pool,
         },
         {
           asset: "XRD Reservoir",
