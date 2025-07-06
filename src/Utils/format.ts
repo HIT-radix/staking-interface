@@ -256,3 +256,13 @@ export const calculateAvgShareOfSnapshots = (amount: string) => {
   );
   (document.getElementById("DistributionModal") as HTMLDialogElement).showModal();
 };
+
+export function calculateYearlyAPY(apr7d: number): number {
+  const periodsPerYear = 365 / 7;
+  const aprDecimal = apr7d / 100;
+
+  const apyDecimal = Math.pow(1 + aprDecimal, periodsPerYear) - 1;
+  const apyPercentage = apyDecimal * 100;
+
+  return apyPercentage;
+}
