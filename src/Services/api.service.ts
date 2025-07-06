@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
-import { ATTO_BASE_URL, SURGE_BASE_URL } from "Constants/endpoints";
-import { AttosPoolData, AttosStrategyData, SurgeStatsResponse } from "Types/api";
+import { ATTO_BASE_URL, SURGE_BASE_URL, C9_BASE_URL } from "Constants/endpoints";
+import { AttosPoolData, AttosStrategyData, SurgeStatsResponse, C9PoolData } from "Types/api";
 
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000;
@@ -51,6 +51,27 @@ class APIService {
       return response.data;
     } catch (error) {
       console.error("Failed to fetch Attos pools:", error);
+      return [];
+    }
+  }
+
+  async fetchC9pools(componentAddresses: string[]): Promise<C9PoolData[]> {
+    try {
+      const requests = componentAddresses.map((address) =>
+        this.retryableRequest(() =>
+          axios.get<C9PoolData>(`${C9_BASE_URL}/shapeliquidity/${address}`)
+        )
+          .then((response) => response.data)
+          .catch((error) => {
+            console.error(`Failed to fetch C9 pool details for component ${address}:`, error);
+            return null;
+          })
+      );
+      const results = await Promise.all(requests);
+      // Filter out any null results due to failed requests
+      return results.filter((data): data is C9PoolData => data !== null);
+    } catch (error) {
+      console.error("Failed to fetch C9 pools details:", error);
       return [];
     }
   }
