@@ -179,6 +179,7 @@ export enum StrategyId {
   xUSDC_Root_Finance_Lending = "xUSDC_Root Finance_Lending",
   xUSDC_Surge_Trade_Liquidation = "xUSDC_Surge_Trade_Liquidation",
   fUSD_XRD_ociswap_pool = "fUSD_XRD_ociswap_pool",
+  fUSD_xUSDC_caviarnine_pool = "fUSD_xUSDC_caviarnine_pool",
 }
 
 export interface SurgeStatsResponse {
@@ -254,4 +255,74 @@ export interface AttosPoolData {
   deposit_link: string;
   boosted: boolean;
   tags: string[];
+}
+
+export interface C9PoolData {
+  last_updated: string;
+  component_address: string;
+  liquidity_receipt_address: string;
+  token_x_address: string;
+  token_y_address: string;
+  token_x_name: string;
+  token_x_symbol: string;
+  token_y_name: string;
+  token_y_symbol: string;
+  bin_size: number;
+  status: string;
+  amounts: {
+    token_x: string;
+    token_x_in_xrd_attos: number;
+    token_y: string;
+    token_y_in_xrd_attos: number;
+    tvl_in_xrd_attos: number;
+  };
+  price: string;
+  price_token_x_to_xrd: string;
+  price_token_y_to_xrd: string;
+  decimals: {
+    token_x: number;
+    token_y: number;
+    price: number;
+  };
+  volume: {
+    all_in_xrd_attos: number;
+    "24h_in_xrd_attos": number;
+    "7d_in_xrd_attos": number;
+  };
+  bin_width_perc: string;
+  active_tick: string;
+  active_tick_xy_ratio: string;
+  fees_perc: string;
+  apy_perc: string;
+  bin_amounts_in_xrd_attos: Record<string, number>;
+  chart_data: {
+    time: {
+      time_interval: string[];
+      unix_time_interval: number[];
+    };
+    tvl_in_xrd_attos: {
+      high: string[];
+      low: string[];
+      open: string[];
+      close: string[];
+    };
+    price: {
+      high: string[];
+      low: string[];
+      open: string[];
+      close: string[];
+    };
+    apy: {
+      high: string[];
+      low: string[];
+      open: string[];
+      close: string[];
+    };
+    volume_in_xrd_attos: {
+      high: string[];
+      low: string[];
+      open: string[];
+      close: string[];
+    };
+  };
 }
