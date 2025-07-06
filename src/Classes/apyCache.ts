@@ -1,6 +1,12 @@
 import localforage from "localforage";
 import { store } from "../Store";
-import { AttosPoolData, AttosStrategyData, StrategyId, SurgeStatsResponse } from "Types/api";
+import {
+  AttosPoolData,
+  AttosStrategyData,
+  C9PoolData,
+  StrategyId,
+  SurgeStatsResponse,
+} from "Types/api";
 import { setApyFetching } from "Store/Reducers/loadings";
 import { setLastAPYsUpdated } from "Store/Reducers/app";
 import { calculateYearlyAPY } from "Utils/format";
@@ -72,15 +78,32 @@ class APYCache {
     return { [StrategyId.xUSDC_Surge_Trade_Liquidation]: +apy };
   };
 
+  private extractAPYsFromC9Pools = (pools: C9PoolData[]): Record<string, number> => {
+    const apyObj: Record<string, number> = {};
+    const validKeys = new Set(Object.values(StrategyId));
+
+    pools.forEach((pool) => {
+      const key = `${pool.token_x_symbol}_${pool.token_y_symbol}_caviarnine_pool` as StrategyId;
+      if (validKeys.has(key)) {
+        apyObj[key] = Number((+pool.apy_perc * 100).toFixed(2));
+      }
+    });
+
+    return apyObj;
+  };
+
   fetchAllAPYs = async () => {
     try {
       store.dispatch(setApyFetching(true));
 
       // Fetch all data in parallel
-      const [attosStrategies, surgeStats, attosPools] = await Promise.all([
+      const [attosStrategies, surgeStats, attosPools, c9Pools] = await Promise.all([
         apiService.getAttosStrategies(),
         apiService.getSurgeStats(),
         apiService.getAttosPools(),
+        apiService.fetchC9pools([
+          "component_rdx1cqmx9aqpr36anp960xes8f4wp7skc6pya6k9ra2jtlmlv24qslmwxf", // fUSD/xUSDC pool component
+        ]),
       ]);
 
       // Process all data
@@ -88,6 +111,7 @@ class APYCache {
         ...this.extractAPYsFromStrategies(attosStrategies),
         ...this.extractSurgeApy(surgeStats),
         ...this.extractAPYsFromAttosPools(attosPools),
+        ...this.extractAPYsFromC9Pools(c9Pools),
       };
 
       // Update cache and state
