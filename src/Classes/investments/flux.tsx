@@ -49,7 +49,7 @@ class FluxInvestment {
           logo: fUSDLogo,
           platform: "Flux",
           position: "fUSD/xUSDC LP",
-          apyId: "fUSD_xUSDC_CaviarNine_Liquidity_Provision",
+          apyId: StrategyId.fUSD_xUSDC_caviarnine_pool,
         },
         {
           asset: "fUSD/XRD OciSwap",
