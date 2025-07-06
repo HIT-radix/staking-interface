@@ -224,3 +224,33 @@ export interface SurgeStatsResponse {
     all_time: string;
   };
 }
+
+export interface AttosPoolData {
+  type: string;
+  pool_type: string;
+  current_price: string;
+  sub_type: string;
+  xRatio: string;
+  yRatio: string;
+  component: string;
+  tvl: number;
+  bonus_24h: number | null;
+  bonus_7d: number;
+  base: string;
+  quote: string;
+  volume_7d: number;
+  volume_24h: number;
+  bonus_name: string;
+  left_alt: string;
+  right_alt: string;
+  left_icon: string;
+  right_icon: string;
+  left_token: string;
+  right_token: string;
+  name: string;
+  left_name: string;
+  right_name: string;
+  deposit_link: string;
+  boosted: boolean;
+  tags: string[];
+}
