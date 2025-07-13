@@ -9,7 +9,6 @@ import {
 } from "Types/api";
 import { setApyFetching } from "Store/Reducers/loadings";
 import { setLastAPYsUpdated } from "Store/Reducers/app";
-import { calculateYearlyAPY } from "Utils/format";
 import { apiService } from "Services/api.service";
 
 class APYCache {
@@ -64,7 +63,7 @@ class APYCache {
     pools.forEach((pool) => {
       const key = `${pool.left_alt}_${pool.right_alt}_${pool.type}_pool` as StrategyId;
       if (validKeys.has(key)) {
-        apyObj[key] = calculateYearlyAPY(pool.bonus_7d);
+        apyObj[key] = +pool.bonus_7d;
       }
     });
 
