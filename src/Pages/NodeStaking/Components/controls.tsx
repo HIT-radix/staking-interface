@@ -120,94 +120,92 @@ const Controls = () => {
           <img src={redirectIcon} alt="redirectIcon" className="w-4" />
         </span>
       </div>
-      {NodeStakeNFTid && (
-        <>
-          <InfoTile
-            title="Your Claimable Rewards:"
-            value={
-              <div>
-                <div className="flex items-center">
-                  <img src={hitLogo} alt="hit-logo" className="w-7 h-7 rounded-full" />
-                  <p className="text-2xl font-bold ml-1" title={claimableRewards.HIT}>
-                    $HIT : {formatTokenAmount(Number(claimableRewards.HIT))}{" "}
-                    {claimableRewardsInUsd.HIT && (
-                      <span className="text-lg">({claimableRewardsInUsd.HIT})</span>
-                    )}
-                  </p>
-                </div>
+      <>
+        <InfoTile
+          title="Your Claimable Rewards:"
+          value={
+            <div>
+              <div className="flex items-center">
+                <img src={hitLogo} alt="hit-logo" className="w-7 h-7 rounded-full" />
+                <p className="text-2xl font-bold ml-1" title={claimableRewards.HIT}>
+                  $HIT : {formatTokenAmount(Number(claimableRewards.HIT))}{" "}
+                  {claimableRewardsInUsd.HIT && (
+                    <span className="text-lg">({claimableRewardsInUsd.HIT})</span>
+                  )}
+                </p>
+              </div>
+              <div className="flex items-center mt-2">
+                <img src={newfomoLogo} alt="hit-logo" className="w-7 h-7 rounded-full" />
+                <p className="text-2xl font-bold ml-1" title={claimableRewards.FOMO}>
+                  $FOMO : {formatTokenAmount(Number(claimableRewards.FOMO))}{" "}
+                  {claimableRewardsInUsd.FOMO && (
+                    <span className="text-lg">({claimableRewardsInUsd.FOMO})</span>
+                  )}{" "}
+                </p>
+              </div>
+              <div className="flex items-center mt-2">
+                <img src={reddicksLogo} alt="hit-logo" className="w-7 h-7 rounded-full" />
+                <p className="text-2xl font-bold ml-1" title={claimableRewards.REDDICKS}>
+                  $REDDICKS : {formatTokenAmount(Number(claimableRewards.REDDICKS))}{" "}
+                  {claimableRewardsInUsd.REDDICKS && (
+                    <span className="text-lg">({claimableRewardsInUsd.REDDICKS})</span>
+                  )}{" "}
+                </p>
+              </div>
+              {Number(claimableRewards.xUSDC) > 0 ? (
                 <div className="flex items-center mt-2">
-                  <img src={newfomoLogo} alt="hit-logo" className="w-7 h-7 rounded-full" />
-                  <p className="text-2xl font-bold ml-1" title={claimableRewards.FOMO}>
-                    $FOMO : {formatTokenAmount(Number(claimableRewards.FOMO))}{" "}
-                    {claimableRewardsInUsd.FOMO && (
-                      <span className="text-lg">({claimableRewardsInUsd.FOMO})</span>
+                  <img src={xUSDCLogo} alt="hit-logo" className="w-7 h-7 rounded-full" />
+                  <p className="text-2xl font-bold ml-1" title={claimableRewards.xUSDC}>
+                    $xUSDC : {formatTokenAmount(Number(claimableRewards.xUSDC))}{" "}
+                    {claimableRewardsInUsd.xUSDC && (
+                      <span className="text-lg">({claimableRewardsInUsd.xUSDC})</span>
                     )}{" "}
                   </p>
                 </div>
-                <div className="flex items-center mt-2">
-                  <img src={reddicksLogo} alt="hit-logo" className="w-7 h-7 rounded-full" />
-                  <p className="text-2xl font-bold ml-1" title={claimableRewards.REDDICKS}>
-                    $REDDICKS : {formatTokenAmount(Number(claimableRewards.REDDICKS))}{" "}
-                    {claimableRewardsInUsd.REDDICKS && (
-                      <span className="text-lg">({claimableRewardsInUsd.REDDICKS})</span>
-                    )}{" "}
-                  </p>
-                </div>
-                {Number(claimableRewards.xUSDC) > 0 ? (
-                  <div className="flex items-center mt-2">
-                    <img src={xUSDCLogo} alt="hit-logo" className="w-7 h-7 rounded-full" />
-                    <p className="text-2xl font-bold ml-1" title={claimableRewards.xUSDC}>
-                      $xUSDC : {formatTokenAmount(Number(claimableRewards.xUSDC))}{" "}
-                      {claimableRewards.xUSDC && (
-                        <span className="text-lg">({claimableRewardsInUsd.xUSDC})</span>
-                      )}{" "}
-                    </p>
-                  </div>
-                ) : null}
-              </div>
-            }
-            isLoading={nodeStakingRewardsLoading || tokenDataLoading}
-          />
-          {allowWithdraw && (
-            <>
-              <div
-                className="btn bg-accent w-full hover:bg-accent mt-1"
-                onClick={() => handleWithdrawRewards(NodeStakeNFTid, claimableRewards)}
-              >
-                Withdraw Rewards 🎉
-              </div>
+              ) : null}
+            </div>
+          }
+          isLoading={nodeStakingRewardsLoading || tokenDataLoading}
+        />
+        {allowWithdraw && (
+          <>
+            <div
+              className="btn bg-accent w-full hover:bg-accent mt-1"
+              onClick={() => handleWithdrawRewards(NodeStakeNFTid ?? 0, claimableRewards)}
+            >
+              Withdraw Rewards 🎉
+            </div>
+            <div className="flex items-center justify-start mt-0.5">
+              <input
+                type="checkbox"
+                className="checkbox checkbox-accent checkbox-sm"
+                onChange={(e) => setShouldRestakeHIT(e.target.checked)}
+              />
+              <p className="ml-2 text-accent">
+                Withdraw and stake HIT in the same transaction?{" "}
+                <span>
+                  <InfoTooltip text="Upon withdraw, HITs will be staked so you get stHIT and FOMO in your wallet" />
+                </span>{" "}
+              </p>
+            </div>
+            {showAirdropOption && (
               <div className="flex items-center justify-start mt-0.5">
                 <input
                   type="checkbox"
                   className="checkbox checkbox-accent checkbox-sm"
-                  onChange={(e) => setShouldRestakeHIT(e.target.checked)}
+                  onChange={(e) => setShouldAirdropRewards(e.target.checked)}
                 />
                 <p className="ml-2 text-accent">
-                  Withdraw and stake HIT in the same transaction?{" "}
+                  Withdraw and airdrop rewards in the same transaction?{" "}
                   <span>
-                    <InfoTooltip text="Upon withdraw, HITs will be staked so you get stHIT and FOMO in your wallet" />
+                    <InfoTooltip text="Upon withdraw, rewards will be airdropped directly to fomo stake component." />
                   </span>{" "}
                 </p>
               </div>
-              {showAirdropOption && (
-                <div className="flex items-center justify-start mt-0.5">
-                  <input
-                    type="checkbox"
-                    className="checkbox checkbox-accent checkbox-sm"
-                    onChange={(e) => setShouldAirdropRewards(e.target.checked)}
-                  />
-                  <p className="ml-2 text-accent">
-                    Withdraw and airdrop rewards in the same transaction?{" "}
-                    <span>
-                      <InfoTooltip text="Upon withdraw, rewards will be airdropped directly to fomo stake component." />
-                    </span>{" "}
-                  </p>
-                </div>
-              )}
-            </>
-          )}
-        </>
-      )}
+            )}
+          </>
+        )}
+      </>
     </div>
   );
 };
