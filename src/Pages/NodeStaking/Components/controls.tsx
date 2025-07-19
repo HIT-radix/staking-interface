@@ -52,7 +52,10 @@ const Controls = () => {
   }, [claimableRewards.FOMO, fomoPrice]);
 
   const xUsdcRewardInUsd = useMemo(() => {
-    return formatDollarAmount(+claimableRewards.xUSDC);
+    if (!claimableRewards.xUSDC) return undefined;
+    return Number(claimableRewards.xUSDC) === 0
+      ? undefined
+      : formatDollarAmount(+claimableRewards.xUSDC);
   }, [claimableRewards.xUSDC]);
 
   const reddicksRewardInUsd = useMemo(() => {
