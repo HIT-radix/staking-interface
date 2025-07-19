@@ -51,12 +51,6 @@ const NavbarLinks = () => {
       >
         Node Staking
       </p>
-      <p
-        className={"cursor-pointer hover:underline hover:text-accent text-secondary"}
-        onClick={() => window.open("https://nodemanager.addix.meme/")}
-      >
-        Node Manager
-      </p>
     </>
   );
 };

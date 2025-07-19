@@ -52,12 +52,6 @@ const MobileDrawer = ({ children }: { children: ReactNode }) => {
           >
             Node Staking
           </li>
-          <li
-            className={"menu-item text-xl ml-2 my-3 cursor-pointer text-secondary"}
-            onClick={() => window.open("https://nodemanager.addix.meme")}
-          >
-            Node Manager
-          </li>
         </ul>
       </div>
     </div>
