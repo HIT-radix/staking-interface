@@ -2,6 +2,7 @@ import ImageAudioPlayer from "Components/audioplayer";
 import { HIT_WEBSITE } from "Constants/misc";
 import NavbarLinks from "Components/navbarLinks";
 import { Menu } from "lucide-react";
+import CachedService from "Classes/cachedService";
 
 const Header = () => {
   return (
@@ -33,7 +34,10 @@ const Header = () => {
 
 export const LogoWebsite = ({ twContainerClass = "" }: { twContainerClass?: string }) => {
   return (
-    <div className={"flex flex-row items-center " + twContainerClass}>
+    <div
+      className={"flex flex-row items-center cursor-pointer" + twContainerClass}
+      onClick={() => CachedService.navigation("/")}
+    >
       <ImageAudioPlayer />
       {/* <img src={HitLogo} alt="mesh-logo" className="w-10" /> */}
       <p className="hidden sm:block text-accent text-2xl font-bold pl-2">ADDIX HIT</p>
