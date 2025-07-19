@@ -100,7 +100,7 @@ const InvesmentFunds = () => {
             <div className="flex items-center justify-center">
               <div>
                 <p className="text-white text-center text-xl font-bold ">
-                  FOMO $HIT Fund Market Value{" "}
+                  FOMO $HIT Fund Total*{" "}
                   <span className="hidden" id="total-market-value">
                     {totalFunds}
                   </span>
@@ -252,6 +252,9 @@ const InvesmentFunds = () => {
                 </table>
               )}
             </div>
+          </div>
+          <div className="text-white/100 text-center mt-5 mb-3 font-bold text-sm">
+            *The pot from which XRD stakers redeem their xUSDC
           </div>
         </div>
       </div>
