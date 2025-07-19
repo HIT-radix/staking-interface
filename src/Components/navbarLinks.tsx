@@ -31,7 +31,16 @@ const NavbarLinks = () => {
         }
         onClick={() => moveToPage("/")}
       >
-        FOMO $HIT Fund
+        The Fund
+      </p>
+      <p
+        className={
+          "cursor-pointer hover:underline hover:text-accent " +
+          (checkIfActive("/node-staking") ? "text-accent underline" : "text-secondary")
+        }
+        onClick={() => moveToPage("/node-staking")}
+      >
+        Stake XRD
       </p>
       <p
         className={
@@ -41,15 +50,6 @@ const NavbarLinks = () => {
         onClick={() => moveToPage("/hit-staking")}
       >
         Stake HIT
-      </p>
-      <p
-        className={
-          "cursor-pointer hover:underline hover:text-accent " +
-          (checkIfActive("/node-staking") ? "text-accent underline" : "text-secondary")
-        }
-        onClick={() => moveToPage("/node-staking")}
-      >
-        Node Staking
       </p>
     </>
   );
