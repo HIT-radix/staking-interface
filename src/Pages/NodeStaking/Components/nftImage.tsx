@@ -16,7 +16,7 @@ const NftImage = () => {
       </div>
       {!NodeStakeNFTid && (
         <div className="btn bg-accent absolute" onClick={mintNodeStakingRewardsNFTbadge}>
-          {txInProgress ? "Processing..." : "Mint NFT For Rewards"}
+          {txInProgress ? "Processing..." : "First, Mint your free NFT"}
         </div>
       )}
     </div>
