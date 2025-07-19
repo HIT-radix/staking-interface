@@ -112,7 +112,7 @@ const Controls = () => {
           )
         }
       >
-        Stake to 💚ADDIX+FOMO🐸 Node{" "}
+        Stake XRD to earn xUSDC, HIT, FOMO & DCKS
         <span>
           <img src={redirectIcon} alt="redirectIcon" className="w-4" />
         </span>
