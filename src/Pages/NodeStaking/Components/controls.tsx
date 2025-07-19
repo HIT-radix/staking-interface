@@ -27,11 +27,6 @@ const Controls = () => {
   const nodeStakingRewardsLoading = useSelector((state) => state.loadings.nodeStakingRewards);
   const tokenDataLoading = useSelector((state) => state.loadings.tokenDataLoading);
   const successTxCount = useSelector((state) => state.session.successTxCount);
-  const lockedNodeStakingHits = useSelector((state) => state.staking.lockedNodeStakingHits);
-  const lockedNodeStakingFomos = useSelector((state) => state.staking.lockedNodeStakingFomos);
-  const nodeStakingComponentDataLoading = useSelector(
-    (state) => state.loadings.nodeStakingComponentDataLoading
-  );
 
   const [claimableRewards, setClaimableRewards] = useState({
     HIT: "0",
@@ -88,7 +83,12 @@ const Controls = () => {
   }, [NodeStakeNFTid, successTxCount]);
 
   const allowWithdraw = useMemo(() => {
-    return Number(claimableRewards.HIT) > 0 || Number(claimableRewards.FOMO) > 0 || Number(claimableRewards.REDDICKS) > 0 || Number(claimableRewards.xUSDC) > 0;
+    return (
+      Number(claimableRewards.HIT) > 0 ||
+      Number(claimableRewards.FOMO) > 0 ||
+      Number(claimableRewards.REDDICKS) > 0 ||
+      Number(claimableRewards.xUSDC) > 0
+    );
   }, [claimableRewards]);
 
   const handleWithdrawRewards = (nftId: number, claimableRewards: ClaimableRewardsInfo) => {
@@ -100,22 +100,6 @@ const Controls = () => {
       withdrawNodeStakingRewards(nftId);
     }
   };
-
-  const lockedRewards = useMemo(() => {
-    const HITinUSD = new BN(lockedNodeStakingHits).multipliedBy(hitPrice).toNumber();
-    const FOMOinUSD = new BN(lockedNodeStakingFomos).multipliedBy(fomoPrice).toNumber();
-    // const oldFOMOinUSD = new BN(oldLockedNodeStakingFomos).multipliedBy(fomoPrice).toNumber();
-    return {
-      HIT: {
-        amount: lockedNodeStakingHits,
-        inUSD: HITinUSD === 0 ? undefined : HITinUSD.toFixed(2),
-      },
-      FOMO: {
-        amount: lockedNodeStakingFomos,
-        inUSD: FOMOinUSD === 0 ? undefined : FOMOinUSD.toFixed(2),
-      },
-    };
-  }, [hitPrice, lockedNodeStakingFomos, lockedNodeStakingHits, fomoPrice]);
 
   return (
     <div className="w-full mt-3">
@@ -133,39 +117,6 @@ const Controls = () => {
           <img src={redirectIcon} alt="redirectIcon" className="w-4" />
         </span>
       </div>
-      <div className="mb-1">
-        <InfoTile
-          title="Total Locked Rewards in component🔒"
-          value={
-            <div>
-              <div className="flex items-center">
-                <img src={hitLogo} alt="hit-logo" className="w-5 h-5 rounded-full" />
-                <p className="text-lg font-semibold ml-1" title={lockedRewards.HIT.amount}>
-                  $HIT : {formatTokenAmount(+lockedRewards.HIT.amount)}{" "}
-                  {lockedRewards.HIT.inUSD && (
-                    <span className="text-[16px]">(${lockedRewards.HIT.inUSD})</span>
-                  )}
-                </p>
-              </div>
-              <div className="flex items-center mt-2">
-                <img src={newfomoLogo} alt="hit-logo" className="w-5 h-5 rounded-full" />
-                <p className="text-lg font-semibold ml-1" title={lockedRewards.FOMO.amount}>
-                  $FOMO : {formatTokenAmount(+lockedRewards.FOMO.amount)}{" "}
-                  {lockedRewards.FOMO.inUSD && (
-                    <span className="text-[16px]">(${lockedRewards.FOMO.inUSD})</span>
-                  )}
-                </p>
-              </div>
-            </div>
-          }
-          isLoading={nodeStakingComponentDataLoading || tokenDataLoading}
-          infoTooltipProps={{
-            text: "Rewards that are yet to be distributed among Stakers holding above NFT.",
-            infoColor: "green",
-          }}
-        />
-      </div>
-
       {NodeStakeNFTid && (
         <>
           <InfoTile
