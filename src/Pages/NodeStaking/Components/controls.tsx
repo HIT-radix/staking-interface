@@ -115,7 +115,7 @@ const Controls = () => {
           )
         }
       >
-        Stake XRD to earn xUSDC, HIT, FOMO & DCKS
+        Stake XRD to earn xUSDC, $HIT, $FOMO, $DCKS
         <span>
           <img src={redirectIcon} alt="redirectIcon" className="w-4" />
         </span>
@@ -182,7 +182,7 @@ const Controls = () => {
                 onChange={(e) => setShouldRestakeHIT(e.target.checked)}
               />
               <p className="ml-2 text-accent">
-                Withdraw and stake HIT in the same transaction?{" "}
+                Withdraw and stake $HIT in the same transaction?{" "}
                 <span>
                   <InfoTooltip text="Upon withdraw, HITs will be staked so you get stHIT and FOMO in your wallet" />
                 </span>{" "}
