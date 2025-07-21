@@ -35,7 +35,7 @@ export const Balance = () => {
   );
 
   const currentToken = useMemo(
-    () => (currentTab === Tabs.stake ? StakingTokens.HIT : StakingTokens.StHIT),
+    () => (currentTab === Tabs.stake ? `$${StakingTokens.HIT}` : StakingTokens.StHIT),
     [currentTab]
   );
 
