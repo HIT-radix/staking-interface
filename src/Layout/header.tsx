@@ -40,7 +40,7 @@ export const LogoWebsite = ({ twContainerClass = "" }: { twContainerClass?: stri
     >
       <ImageAudioPlayer />
       {/* <img src={HitLogo} alt="mesh-logo" className="w-10" /> */}
-      <p className="hidden sm:block text-accent text-2xl font-bold pl-2">ADDIX HIT</p>
+      <p className="hidden sm:block text-accent text-2xl font-bold pl-2">ADDIX $HIT</p>
     </div>
   );
 };
