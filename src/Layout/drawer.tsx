@@ -32,7 +32,7 @@ const MobileDrawer = ({ children }: { children: ReactNode }) => {
             }
             onClick={() => moveToPage("/")}
           >
-            The Fund
+            The FOMO $HIT Hedge Fund
           </li>
           <li
             className={
@@ -50,7 +50,7 @@ const MobileDrawer = ({ children }: { children: ReactNode }) => {
             }
             onClick={() => moveToPage("/hit-staking")}
           >
-            Stake HIT
+            Stake $HIT
           </li>
         </ul>
       </div>
