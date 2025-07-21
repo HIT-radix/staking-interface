@@ -24,7 +24,7 @@ const Header = () => {
           className="text-accent font-bold text-lg cursor-pointer hidden sm:block"
           onClick={() => window.open(HIT_WEBSITE, "_blank")}
         >
-          Docs
+          Learn
         </p>
         <radix-connect-button></radix-connect-button>
       </div>
