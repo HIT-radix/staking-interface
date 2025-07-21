@@ -45,7 +45,7 @@ const StakingInfos = () => {
       <div className="col-span-12 sm:col-span-6 flex items-center justify-center">
         <InfoTile
           title="Total Staked"
-          value={formatTokenAmount(+stakedHIT) + " " + StakingTokens.HIT}
+          value={formatTokenAmount(+stakedHIT) + " $" + StakingTokens.HIT}
           isLoading={poolDataLoading}
           tooltip={stakedHIT}
         />
@@ -53,7 +53,7 @@ const StakingInfos = () => {
       <div className="col-span-12 sm:col-span-6 flex items-center justify-center ">
         <InfoTile
           title="Total Locked Rewards"
-          value={formatTokenAmount(+lockedHITRewards) + " " + StakingTokens.HIT}
+          value={formatTokenAmount(+lockedHITRewards) + " $" + StakingTokens.HIT}
           isLoading={rugProofComponentDataLoading}
           tooltip={lockedHITRewards}
         />
@@ -63,7 +63,7 @@ const StakingInfos = () => {
           title="StHIT Price"
           value={
             calculateStHitWorthInHIT("1", stakedHIT, stHIT_totalSupply).toFixed(4) +
-            " " +
+            " $" +
             StakingTokens.HIT
           }
           isLoading={poolDataLoading || stHitDataLoading}
@@ -75,7 +75,7 @@ const StakingInfos = () => {
             title="Your stake is worth"
             value={
               <>
-                <span title={userStakeWorth.inRawHIT}>{userStakeWorth.inHIT}</span> HIT{" "}
+                <span title={userStakeWorth.inRawHIT}>{userStakeWorth.inHIT}</span> $HIT{" "}
                 <span className="text-xl">({userStakeWorth.inUsd})</span>
               </>
             }
