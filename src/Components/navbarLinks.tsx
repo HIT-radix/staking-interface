@@ -31,7 +31,7 @@ const NavbarLinks = () => {
         }
         onClick={() => moveToPage("/")}
       >
-        The Fund
+        The FOMO $HIT Hedge Fund
       </p>
       <p
         className={
@@ -49,7 +49,7 @@ const NavbarLinks = () => {
         }
         onClick={() => moveToPage("/hit-staking")}
       >
-        Stake HIT
+        Stake $HIT
       </p>
     </>
   );
