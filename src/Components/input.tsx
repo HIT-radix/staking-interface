@@ -100,7 +100,7 @@ export const Input = () => {
               alt="ringMeshIcon"
               className="w-6 rounded-full"
             />{" "}
-            <p>{currentTab === Tabs.stake ? StakingTokens.HIT : StakingTokens.StHIT}</p>
+            <p>{currentTab === Tabs.stake ? `$${StakingTokens.HIT}` : StakingTokens.StHIT}</p>
           </div>
         </div>
       </div>
