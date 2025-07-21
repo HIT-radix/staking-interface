@@ -100,7 +100,13 @@ const InvesmentFunds = () => {
             <div className="flex items-center justify-center">
               <div>
                 <p className="text-white text-center text-xl font-bold ">
-                  FOMO $HIT Fund Total*{" "}
+                  <a
+                    className="underline"
+                    href="https://dashboard.radixdlt.com/network-staking/validator_rdx1swez5cqmw4d6tls0mcldehnfhpxge0mq7cmnypnjz909apqqjgx6n9"
+                  >
+                    Stake $XRD
+                  </a>
+                  , We deploy fees into Radix DeFi, you earn xUSDC{" "}
                   <span className="hidden" id="total-market-value">
                     {totalFunds}
                   </span>
@@ -139,6 +145,15 @@ const InvesmentFunds = () => {
                     />
                   </div>
                 )}
+                <div className="text-white/100 text-center font-bold text-xs">
+                  *The pot from which XRD stakers redeem their xUSDC{" "}
+                  <a
+                    href="https://addix-xrd.gitbook.io/usdhit-on-radix/proof-of-usdhit/the-fomo-usdhit-hedge-fund"
+                    className="underline"
+                  >
+                    Learn more
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -252,9 +267,6 @@ const InvesmentFunds = () => {
                 </table>
               )}
             </div>
-          </div>
-          <div className="text-white/100 text-center mt-5 mb-3 font-bold text-sm">
-            *The pot from which XRD stakers redeem their xUSDC
           </div>
         </div>
       </div>
