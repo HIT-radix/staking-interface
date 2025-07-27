@@ -104,7 +104,7 @@ export const NODE_UNSTAKING_XRD_VAULT_ADDRESS =
   "internal_vault_rdx1tzukc8dxghnlq8gw686s0vc86ss88978lde48ef0ars2c2lmh387pt";
 
 export const FELIX_WALLET_ADDRESS =
-  "account_rdx129xg758ryxg7xc080nv0c0k9xrcdv3ezve6kqpj665q38cv23kamph";
+  "account_rdx129yg7ugqe9hulflzu0uf22sx9h5d5qrcg3v2599zl8sjwh4fawdygj";
 
 export const XUSDC_RESOURCE_ADDRESS =
   "resource_rdx1t4upr78guuapv5ept7d7ptekk9mqhy605zgms33mcszen8l9fac8vf";
