@@ -7,11 +7,12 @@ import Skeleton from "react-loading-skeleton";
 import { fetchFelixWalletBalance } from "Utils/fetchers";
 import fluxInvestor from "Classes/investments/flux";
 import investBg from "Assets/Images/investment-bg.jpeg";
-import AnimatedNumbers from "react-animated-numbers";
-import { formatDollarAmount } from "Utils/format";
+// import AnimatedNumbers from "react-animated-numbers";
+import { cn, formatDollarAmount } from "Utils/format";
 import ApyCacheService from "Classes/apyCache";
 import { InvestmentBreakdown } from "Types/misc";
 import { useSelector } from "Store";
+import SlotMachinEffect from "Components/slotMachinEffect";
 
 const InvesmentFunds = () => {
   const [loading, setLoading] = useState(true);
@@ -131,7 +132,13 @@ const InvesmentFunds = () => {
                     >
                       $
                     </p>
-                    <AnimatedNumbers
+                    <SlotMachinEffect
+                      value={Number(totalFunds)}
+                      spinSpeedMs={119}
+                      settleSpeedMs={258}
+                      className={cn("text-white font-black", `text-[${fontSize}px]`)}
+                    />
+                    {/* <AnimatedNumbers
                       includeComma
                       transitions={() => ({
                         duration: 3,
@@ -142,7 +149,7 @@ const InvesmentFunds = () => {
                         color: "white",
                         fontWeight: "bold",
                       }}
-                    />
+                    /> */}
                   </div>
                 )}
                 <div className="text-white/100 text-center font-bold text-xs">
