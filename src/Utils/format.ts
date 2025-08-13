@@ -13,6 +13,12 @@ import { FungibleResourcesCollectionItem } from "@radixdlt/babylon-gateway-api-s
 import { dispatch, store } from "Store";
 import { setRewardsModalData } from "Store/Reducers/session";
 import { StakingTokens } from "Types/reducers";
+import { twMerge } from "tailwind-merge";
+import { type ClassValue, clsx } from "clsx";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 export const BN = BigNumber.clone({
   DECIMAL_PLACES: 18,
