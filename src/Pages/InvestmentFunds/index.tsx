@@ -124,6 +124,7 @@ const InvesmentFunds = () => {
                     }}
                   >
                     <p
+                      className="font-paytone font-black"
                       style={{
                         fontSize: fontSize > 100 ? 100 : fontSize > 80 ? 80 : 60,
                         color: "white",
@@ -138,7 +139,7 @@ const InvesmentFunds = () => {
                       settleSpeedMs={258}
                       // className={cn("text-white font-black", `text-[${fontSize}px]`)}
                       digitClassName={cn(
-                        "text-white font-black",
+                        "text-white font-black font-paytone",
                         `text-[100px] md:text-[120px] lg:text-[150px] xl:text-[180px]`
                       )}
                     />
