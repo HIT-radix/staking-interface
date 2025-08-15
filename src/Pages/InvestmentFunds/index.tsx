@@ -136,7 +136,11 @@ const InvesmentFunds = () => {
                       value={Number(totalFunds)}
                       spinSpeedMs={119}
                       settleSpeedMs={258}
-                      className={cn("text-white font-black", `text-[${fontSize}px]`)}
+                      // className={cn("text-white font-black", `text-[${fontSize}px]`)}
+                      digitClassName={cn(
+                        "text-white font-black",
+                        `text-[100px] md:text-[120px] lg:text-[150px] xl:text-[180px]`
+                      )}
                     />
                     {/* <AnimatedNumbers
                       includeComma
