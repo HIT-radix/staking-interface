@@ -175,6 +175,7 @@ export enum StrategyId {
   LSULP_Flux_Liquidation = "LSULP_Flux_Liquidation",
   xUSDT_Weft_Finance_Lending = "xUSDT_Weft Finance_Lending",
   xUSDC_Weft_Finance_Lending = "xUSDC_Weft Finance_Lending",
+  hUSDC_Weft_Finance_Lending = "hUSDC_Weft Finance_Lending",
   xUSDT_Root_Finance_Lending = "xUSDT_Root Finance_Lending",
   xUSDC_Root_Finance_Lending = "xUSDC_Root Finance_Lending",
   xUSDC_Surge_Trade_Liquidation = "xUSDC_Surge_Trade_Liquidation",
