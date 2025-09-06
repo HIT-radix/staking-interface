@@ -159,3 +159,6 @@ export const XRD_RESOURCE_ADDRESS =
 
 export const FOMO_COMPONENT_ADDRESS =
   "component_rdx1cr6lel0w3ktv0hww999uqpce5r2uzy24l5083dpg57n8xg66cerkcx";
+
+export const hUSDC_RESOURCE_ADDRESS =
+  "resource_rdx1thxj9m87sn5cc9ehgp9qxp6vzeqxtce90xm5cp33373tclyp4et4gv";
