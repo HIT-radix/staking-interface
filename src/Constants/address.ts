@@ -118,6 +118,9 @@ export const WEFT_W2_xUSDT_RESOURCE_ADDRESS =
 export const WEFT_W2_xUSDC_RESOURCE_ADDRESS =
   "resource_rdx1thw2u4uss739j8cqumehgf5wyw26chcfu98newsu42zhln7wd050ee";
 
+export const WEFT_W2_hUSDC_RESOURCE_ADDRESS =
+  "resource_rdx1t4kxe9n00hgzng02myj6a320qxcma2umxj8ygr795cc5m0hsj3p4l2";
+
 export const WEFT_KEY_VALUE_STORE_ADDRESS =
   "internal_keyvaluestore_rdx1kzjr763caq96j0kv883vy8gnf3jvrrp7dfm9zr5n0akryvzsxvyujc";
 
