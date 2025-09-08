@@ -10,6 +10,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Listeners from "Components/listeners";
+import RadixRewardsBanner from "Components/radixRewardsBanner";
 // if (process.env.REACT_APP_ENVIRONMENT === Environment.prod) {
 //   console.log = () => {};
 // }
@@ -27,6 +28,7 @@ root.render(
       <PersistGate loading={null} persistor={persister}>
         <Listeners />
         <ToastContainer />
+        <RadixRewardsBanner />
         <App />
       </PersistGate>
     </ReduxProvider>
