@@ -16,6 +16,7 @@ const initialState: SessionReducer = {
   rewardsModalData: undefined,
   selectedSnapshots: [],
   felixWallet: { fungible: {}, nonFungible: {} },
+  userWallet: { fungible: {}, nonFungible: {} },
 };
 
 const session = createSlice({
@@ -66,6 +67,9 @@ const session = createSlice({
     setFelixWallet(state, action: PayloadAction<SessionReducer["felixWallet"]>) {
       state.felixWallet = action.payload;
     },
+    setUserWallet(state, action: PayloadAction<SessionReducer["userWallet"]>) {
+      state.userWallet = action.payload;
+    },
   },
 });
 
@@ -83,4 +87,5 @@ export const {
   setFelixWallet,
   setxusdcBalance,
   setReddicksBalance,
+  setUserWallet,
 } = session.actions;
