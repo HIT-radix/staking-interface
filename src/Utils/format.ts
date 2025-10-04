@@ -4,7 +4,7 @@ import {
   XUSDC_RESOURCE_ADDRESS,
 } from "Constants/address";
 import { radixDashboardBaseUrl } from "Constants/misc";
-import { ResourceDetails } from "Types/api";
+import { MorpherPriceData, ResourceDetails } from "Types/api";
 import { parseUnits as parseUnitsEthers } from "ethers";
 import BigNumber from "bignumber.js";
 import numbro from "numbro";
@@ -271,4 +271,10 @@ export function calculateYearlyAPY(apr7d: number): number {
   const apyPercentage = apyDecimal * 100;
 
   return apyPercentage;
+}
+
+export function priceMsgToMorpherString(msg: MorpherPriceData) {
+  return msg.data
+    .map((el) => el.marketId + "-" + el.price + "-" + el.nonce + "-" + el.dataTimestamp)
+    .join(",");
 }
