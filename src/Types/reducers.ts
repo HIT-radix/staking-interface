@@ -78,6 +78,10 @@ export type SessionReducer = {
     fungible: FungibleBalances;
     nonFungible: NonFungibleBalances;
   };
+  userWallet: {
+    fungible: FungibleBalances;
+    nonFungible: NonFungibleBalances;
+  };
 };
 
 export type LoadingReducer = {
