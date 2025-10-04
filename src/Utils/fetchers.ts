@@ -458,3 +458,45 @@ export const fetchFelixWalletBalance = async () => {
     return false;
   }
 };
+
+export const fetchUserWalletBalance = async (walletAddress: string) => {
+  try {
+    const [fungibleBalances, nonFungibleBalances] = await Promise.all([
+      fetchAllFungibles(walletAddress),
+      fetchAllNonFungibles(walletAddress),
+    ]);
+
+    let formattedFungibleBalances: FungibleBalances = {};
+    fungibleBalances.forEach((balance) => {
+      if (balance.aggregation_level === "Global") {
+        const amount = balance.amount;
+        const tokenAddress = balance.resource_address;
+        if (+amount > 0) {
+          formattedFungibleBalances[tokenAddress] = { tokenAddress, amount };
+        }
+      }
+    });
+
+    let formattedNonFungibleBalances: NonFungibleBalances = {};
+    nonFungibleBalances.forEach((item) => {
+      if (item.aggregation_level === "Vault") {
+        const collectionAddress = item.resource_address;
+        const ids = item.vaults.items[0].items;
+        if (ids && ids.length > 0) {
+          formattedNonFungibleBalances[collectionAddress] = { collectionAddress, ids };
+        }
+      }
+    });
+
+    dispatch(
+      setUserWallet({
+        fungible: formattedFungibleBalances,
+        nonFungible: formattedNonFungibleBalances,
+      })
+    );
+    return true;
+  } catch (error) {
+    console.log("error in fetchUserWalletBalance", error);
+    return false;
+  }
+};
