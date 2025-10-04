@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
+import { bls12_381 } from "@noble/curves/bls12-381";
 
-import { Ociswap_baseurl, networkRPC } from "Constants/endpoints";
+import { MORPHER_ORACLE_BACKEND_URL, Ociswap_baseurl, networkRPC } from "Constants/endpoints";
 import { dispatch, store } from "Store";
 import { setStakingTokensPrices } from "Store/Reducers/app";
 import {
@@ -8,6 +9,7 @@ import {
   setFomoBalance,
   setHitBalance,
   setReddicksBalance,
+  setUserWallet,
   setxusdcBalance,
   updateHitFomoData,
 } from "Store/Reducers/session";
@@ -26,7 +28,7 @@ import {
 import { StakingTokens, Tabs } from "Types/reducers";
 import { FungibleBalances, NonFungibleBalances, TokenData } from "Types/token";
 import { BN, extractBalances, extractBalancesNew } from "./format";
-import { EntityDetails } from "Types/api";
+import { EntityDetails, MorpherPriceData, OracleRequestMessage } from "Types/api";
 import {
   NODE_STAKING_USER_BADGE_ADDRESS,
   NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS,
@@ -42,6 +44,7 @@ import {
   NODE_STAKING_XUSDC_KEY_VALUE_STORE_ADDRESS,
   REDDICKS_RESOURCE_ADDRESS,
   NODE_STAKING_REDDICKS_KEY_VALUE_STORE_ADDRESS,
+  MORPHER_ORACLE_NFT_ID,
 } from "Constants/address";
 import {
   setRugProofComponentDataLoading,
@@ -58,6 +61,8 @@ import {
   StateEntityFungiblesPageResponse,
   StateEntityNonFungiblesPageResponse,
 } from "@radixdlt/babylon-gateway-api-sdk";
+import { getPublicKey_BLS12_381, hexToUint8Array, htfEthereum } from "./noble-curves";
+import { bytesToHex } from "@noble/curves/utils";
 
 export const fetchBalances = async (walletAddress: string) => {
   let HITbalance = "0";
@@ -499,4 +504,66 @@ export const fetchUserWalletBalance = async (walletAddress: string) => {
     console.log("error in fetchUserWalletBalance", error);
     return false;
   }
+};
+
+// Fetch price data using the signed oracle message
+export const fetchPriceDataFromOracle = async (oracleRequestMsg: OracleRequestMessage) => {
+  const oracleUrl = `${MORPHER_ORACLE_BACKEND_URL}/v2/price/${oracleRequestMsg.marketId}/${oracleRequestMsg.publicKeyBLS}/${oracleRequestMsg.nftId}/${oracleRequestMsg.signature}`;
+
+  const response = await fetch(oracleUrl);
+
+  if (!response.ok) {
+    throw new Error(`Oracle API error: ${JSON.stringify(await response.json())}`);
+  }
+
+  const priceData = (await response.json()) as MorpherPriceData;
+  return priceData;
+};
+
+export const getPriceDataFromMorpherOracle = async (marketId: string) => {
+  const oracleRequest = generateMorpherOracleMessage(
+    marketId,
+    MORPHER_ORACLE_NFT_ID,
+    process.env.REACT_APP_FUND_BOT_PVT_KEY || ""
+  );
+  console.log("oracleRequest", oracleRequest);
+  return oracleRequest !== undefined
+    ? await fetchPriceDataFromOracle(oracleRequest.oracleRequest)
+    : undefined;
+};
+
+// Helper function to convert message to string format for signing
+function morpherRequestMsgToString(msg: OracleRequestMessage): string {
+  return `${msg.marketId}##${msg.publicKeyBLS}##${msg.nftId}`;
+}
+
+// Generate morpher oracle message with signature
+export const generateMorpherOracleMessage = (
+  marketId: string,
+  nftId: string,
+  privateKey: string
+) => {
+  console.log("privateKey", privateKey);
+  if (!privateKey) return undefined;
+  let publicKeyBLS: string = getPublicKey_BLS12_381(privateKey);
+
+  // Create the request message
+  let oracleRequest = {
+    marketId,
+    publicKeyBLS,
+    nftId,
+    signature: "",
+  };
+
+  const msgString = morpherRequestMsgToString(oracleRequest);
+  const msg = new TextEncoder().encode(msgString);
+  const msgHash = bls12_381.longSignatures.hash(msg, htfEthereum);
+  const signature = bls12_381.longSignatures.sign(msgHash, hexToUint8Array(privateKey));
+  oracleRequest.signature = bytesToHex(signature.toBytes());
+
+  return {
+    oracleRequest,
+    msgHash: bytesToHex(msgHash.toBytes()),
+    signature: oracleRequest.signature,
+  };
 };
