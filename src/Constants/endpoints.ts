@@ -17,3 +17,8 @@ export const HIT_SERVER_URL = "https://server.addix.meme";
 export const ATTO_BASE_URL = "https://earn-api.attos.world";
 export const SURGE_BASE_URL = "https://api.surge.trade";
 export const C9_BASE_URL = "https://api-core.caviarnine.com/v1.0";
+
+export const MORPHER_ORACLE_BACKEND_URL =
+  process.env.REACT_APP_ENVIRONMENT === Environment.dev
+    ? "https://dev-test-radix-oracle-api.morpher.com"
+    : "https://radix-oracle-api.morpher.com";
