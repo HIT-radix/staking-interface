@@ -155,10 +155,32 @@ export const LSULP_RESOURCE_ADDRESS =
   "resource_rdx1thksg5ng70g9mmy9ne7wz0sc7auzrrwy7fmgcxzel2gvp8pj0xxfmf";
 
 export const XRD_RESOURCE_ADDRESS =
-  "resource_rdx1tknxxxxxxxxxradxrdxxxxxxxxx009923554798xxxxxxxxxradxrd";
+  process.env.REACT_APP_ENVIRONMENT === Environment.dev
+    ? "resource_tdx_2_1tknxxxxxxxxxradxrdxxxxxxxxx009923554798xxxxxxxxxtfd2jc"
+    : "resource_rdx1tknxxxxxxxxxradxrdxxxxxxxxx009923554798xxxxxxxxxradxrd";
 
 export const FOMO_COMPONENT_ADDRESS =
   "component_rdx1cr6lel0w3ktv0hww999uqpce5r2uzy24l5083dpg57n8xg66cerkcx";
 
 export const hUSDC_RESOURCE_ADDRESS =
   "resource_rdx1thxj9m87sn5cc9ehgp9qxp6vzeqxtce90xm5cp33373tclyp4et4gv";
+
+export const MORPHER_ORACLE_NFT_RESOURCE_ADDRESS =
+  process.env.ENVIRONMENT === "dev"
+    ? "resource_tdx_2_1nt8kpf7m6g9l0p6w6yu4jd0pc4vac564s8f20qmzf782r90fmrgrpt"
+    : "resource_rdx1nfeeyrpqdkrcjmng09tdrtr6cpknlz0qadra0p3wc3ffg7p6w848gd";
+
+export const MORPHER_ORACLE_NFT_ID =
+  process.env.ENVIRONMENT === "dev"
+    ? "{cfd5d86c9d43b11e-78622846f264c0a0-e5256cd3fdb3a1e4-1e648e9bb24ca5de}"
+    : "{cfd5d86c9d43b11e-78622846f264c0a0-e5256cd3fdb3a1e4-1e648e9bb24ca5de}";
+
+export const HEDGE_FUND_UNIT_RESOURCE_ADDRESS =
+  process.env.ENVIRONMENT === "dev"
+    ? "resource_tdx_2_1t4ny2slhdk7dgshdaxggs3efddfp8j3uf838km74fcys9f8lwttd3n"
+    : "resource_tdx_2_1t4ny2slhdk7dgshdaxggs3efddfp8j3uf838km74fcys9f8lwttd3n";
+
+export const FUND_MANAGER_COMPONENT_ADDRESS =
+  process.env.ENVIRONMENT === "dev"
+    ? "component_tdx_2_1cpdhxgf8nmvzczs9ttvaf3307lq8m4wdky66rpn4zy5qdaat0av5sg"
+    : "component_tdx_2_1cpdhxgf8nmvzczs9ttvaf3307lq8m4wdky66rpn4zy5qdaat0av5sg";
