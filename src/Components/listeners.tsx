@@ -9,6 +9,7 @@ import {
   fetchPoolDetails,
   fetchStHITTotalSupply,
   fetchHitFomoData,
+  fetchUserWalletBalance,
 } from "Utils/fetchers";
 import { BN } from "Utils/format";
 import { shouldFetchAPYs } from "Utils/judgers";
@@ -50,6 +51,7 @@ const Listeners = () => {
     (async () => {
       dispatch(setBalanceLoading(true));
       await fetchBalances(walletAddress);
+      await fetchUserWalletBalance(walletAddress);
       dispatch(setBalanceLoading(false));
     })();
   }, [successTxCount, walletAddress]);
