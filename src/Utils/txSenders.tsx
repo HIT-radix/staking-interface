@@ -1,12 +1,16 @@
 import { toast } from "react-toastify";
 
-import { fetchNodeStakingComponentDetails, fetchRugProofComponentDetails } from "./fetchers";
+import {
+  fetchNodeStakingComponentDetails,
+  fetchRugProofComponentDetails,
+  getPriceDataFromMorpherOracle,
+} from "./fetchers";
 import { setAmount, setPercentage } from "Store/Reducers/staking";
 import { incrementSuccessTxCount } from "Store/Reducers/session";
 import { Percentage, StakingTokens } from "Types/reducers";
 import { setTxInProgress } from "Store/Reducers/loadings";
 import CachedService from "Classes/cachedService";
-import { formatTokenAmount } from "./format";
+import { formatTokenAmount, priceMsgToMorpherString } from "./format";
 import { store } from "Store";
 import { getRdt } from "subs";
 import {
@@ -24,6 +28,7 @@ import {
   ClaimLSUSuccessToast,
   UnlockLSUSuccessToast,
   AirdropToast,
+  WithdrawFundUnitSuccessToast,
 } from "Components/toasts";
 import axios from "axios";
 import { HIT_SERVER_URL } from "Constants/endpoints";
@@ -34,6 +39,7 @@ import {
   getDistributeHitTxManifest,
   getDistributeLockHitTxManifest,
   getFinishUnlockLSUProcessManifest,
+  getHedgeFundWithdrawManifest,
   getLockTxManifest,
   getMintNodeStakingRewardsNFTbadgeManifest,
   getStakeInNodeValidatorManifest,
@@ -361,6 +367,36 @@ export const finishNodeLSUnlockProcess = async (amount: string) => {
     });
   } catch (error) {
     console.log("Unable to finish unlock LSU process in node validator");
+  }
+};
+
+export const withdrawFromHedgeFund = async (amount: string, wantedCoinAddress?: string) => {
+  try {
+    const {
+      app: { walletAddress },
+    } = store.getState();
+
+    const priceData = await getPriceDataFromMorpherOracle("GATEIO:XRD_USDT");
+    if (!priceData) {
+      toast.error("Failed to fetch price data from Morpher Oracle");
+      return false;
+    }
+    const morpherMessage = priceMsgToMorpherString(priceData);
+
+    return await baseTxSender({
+      amount: amount,
+      txManifest: getHedgeFundWithdrawManifest(
+        walletAddress,
+        amount,
+        morpherMessage,
+        priceData.signature,
+        wantedCoinAddress
+      ),
+      ToastElement: WithdrawFundUnitSuccessToast,
+      tokenSymbol: StakingTokens.FUNDUNIT,
+    });
+  } catch (error) {
+    console.log("Unable to finish Withdraw from hedge fund process in node validator");
   }
 };
 
