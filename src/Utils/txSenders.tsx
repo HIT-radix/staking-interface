@@ -39,6 +39,8 @@ import {
   getDistributeHitTxManifest,
   getDistributeLockHitTxManifest,
   getFinishUnlockLSUProcessManifest,
+  getFundUnitValueManifest,
+  getHedgeFundDetailsManifest,
   getHedgeFundWithdrawManifest,
   getLockTxManifest,
   getMintNodeStakingRewardsNFTbadgeManifest,
@@ -51,6 +53,7 @@ import {
 } from "./manifests";
 import { ClaimableRewardsInfo, RewardTokenDistribution } from "Types/token";
 import { generateRandomNonce } from "@radixdlt/radix-engine-toolkit";
+import Decimal from "decimal.js";
 
 type Props = {
   amount: string;
@@ -397,6 +400,52 @@ export const withdrawFromHedgeFund = async (amount: string, wantedCoinAddress?: 
     });
   } catch (error) {
     console.log("Unable to finish Withdraw from hedge fund process in node validator");
+  }
+};
+
+export const getFundUnitValue = async () => {
+  try {
+    const txResult = await simulateTx(getFundUnitValueManifest());
+    const receipt = txResult.receipt as {
+      output: { programmatic_json: { fields: { kind: string; value: string }[] } }[];
+    };
+    const net_value = receipt?.output[0]?.programmatic_json?.fields?.[0]?.value;
+    const gross_value = receipt?.output[0]?.programmatic_json?.fields?.[1]?.value;
+    if (!net_value || !gross_value) {
+      return undefined;
+    }
+    return { net_value, gross_value };
+  } catch (error) {
+    console.log("Unable to get fund unit value");
+    return undefined;
+  }
+};
+
+export const getHedgeFundDetail = async () => {
+  try {
+    const txResult = await simulateTx(getHedgeFundDetailsManifest());
+    const receipt = txResult.receipt as {
+      output: {
+        programmatic_json: {
+          entries: {
+            key: { kind: string; value: string };
+            value: { kind: string; value: string };
+          }[];
+        };
+      }[];
+    };
+    const fundsDetails: Record<string, string> = {};
+    let totalFunds = new Decimal(0);
+    receipt?.output[0]?.programmatic_json?.entries.forEach((entry) => {
+      if (entry.key.kind === "String" && entry.value.kind === "Decimal") {
+        fundsDetails[entry.key.value] = entry.value.value;
+        totalFunds = totalFunds.plus(entry.value.value);
+      }
+    });
+    return { fundsDetails, totalFunds: totalFunds.toString() };
+  } catch (error) {
+    console.log("Unable to get fund unit value");
+    return undefined;
   }
 };
 
