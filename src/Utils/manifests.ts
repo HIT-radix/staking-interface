@@ -435,3 +435,21 @@ export const getHedgeFundWithdrawManifest = (
     ;
   `;
 };
+
+export const getFundUnitValueManifest = () => {
+  return `
+    CALL_METHOD
+      Address("${FUND_MANAGER_COMPONENT_ADDRESS}")
+      "fund_unit_value"
+    ;
+  `;
+};
+
+export const getHedgeFundDetailsManifest = () => {
+  return `
+    CALL_METHOD
+      Address("${FUND_MANAGER_COMPONENT_ADDRESS}")
+      "fund_details"
+    ;
+  `;
+};
