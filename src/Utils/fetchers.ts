@@ -63,6 +63,9 @@ import {
 } from "@radixdlt/babylon-gateway-api-sdk";
 import { getPublicKey_BLS12_381, hexToUint8Array, htfEthereum } from "./noble-curves";
 import { bytesToHex } from "@noble/curves/utils";
+import { getHedgeFundDetail } from "./txSenders";
+import { HedgeFundPositionsInfoMap } from "Constants/misc";
+import type { HedgeFundPositionInfo } from "Types/misc";
 
 export const fetchBalances = async (walletAddress: string) => {
   let HITbalance = "0";
