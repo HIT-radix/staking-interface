@@ -567,3 +567,17 @@ export const generateMorpherOracleMessage = (
     signature: oracleRequest.signature,
   };
 };
+
+// Convenience wrapper to fetch and return formatted hedge fund data
+export const getFormattedInvestmentsInfo = async () => {
+  const fundDetailsRaw = await getHedgeFundDetail();
+  if (!fundDetailsRaw) return undefined;
+
+  const mapped: Record<string, HedgeFundPositionInfo> = {};
+  Object.entries(HedgeFundPositionsInfoMap).forEach(([key, info]) => {
+    const updatedValue = fundDetailsRaw.fundsDetails[key] ?? "0";
+    mapped[key] = { ...info, value: updatedValue };
+  });
+
+  return { fundsDetails: Object.values(mapped), totalFunds: fundDetailsRaw.totalFunds };
+};
