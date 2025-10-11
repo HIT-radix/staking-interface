@@ -1,51 +1,33 @@
 import { useState, useEffect, useMemo } from "react";
 import Chart from "react-apexcharts";
-import rootInvestor from "Classes/investments/root";
-import surgeInvestor from "Classes/investments/surge";
-import weftInvestor from "Classes/investments/weft";
 import Skeleton from "react-loading-skeleton";
-import { fetchFelixWalletBalance } from "Utils/fetchers";
-import fluxInvestor from "Classes/investments/flux";
+import { getFormattedInvestmentsInfo } from "Utils/fetchers";
 import investBg from "Assets/Images/investment-bg.jpeg";
-// import AnimatedNumbers from "react-animated-numbers";
 import { cn, formatDollarAmount } from "Utils/format";
 import ApyCacheService from "Classes/apyCache";
-import { InvestmentBreakdown } from "Types/misc";
+import { HedgeFundPositionInfo } from "Types/misc";
 import { useSelector } from "Store";
 import SlotMachinEffect from "Components/slotMachinEffect";
 
 const InvesmentFunds = () => {
   const [loading, setLoading] = useState(true);
-  const [investments, setInvestments] = useState<InvestmentBreakdown[]>([]);
+  const [investments, setInvestments] = useState<HedgeFundPositionInfo[]>([]);
   const [fontSize, setFontSize] = useState(150);
-  // Store original order of investments for the chart to maintain consistency with the labels
-  const [originalInvestments, setOriginalInvestments] = useState<InvestmentBreakdown[]>([]);
+  const [originalInvestments, setOriginalInvestments] = useState<HedgeFundPositionInfo[]>([]);
 
   const apyFetching = useSelector((state) => state.loadings.apyFetching);
 
   useEffect(() => {
     const fetchInvestments = async () => {
       try {
-        const isFetched = await fetchFelixWalletBalance();
-        if (isFetched) {
-          const allInvestments = await Promise.all([
-            weftInvestor.getInvestment(),
-            rootInvestor.getInvestment(),
-            surgeInvestor.getInvestment(),
-            fluxInvestor.getInvestment(),
-          ]);
-
-          // Flatten all investment breakdowns into a single array
-          const flattenedInvestments = allInvestments.flatMap((inv) => inv.breakdown);
-
+        const investmentinfo = await getFormattedInvestmentsInfo();
+        if (investmentinfo) {
           // Store original order for chart data
-          setOriginalInvestments(flattenedInvestments);
-
+          setOriginalInvestments(investmentinfo.fundsDetails);
           // Sort investments by value in descending order
-          const sortedInvestments = [...flattenedInvestments].sort(
+          const sortedInvestments = [...investmentinfo.fundsDetails].sort(
             (a, b) => parseFloat(b.value) - parseFloat(a.value)
           );
-
           setInvestments(sortedInvestments);
         }
       } catch (err) {
