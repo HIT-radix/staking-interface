@@ -2,8 +2,8 @@ import LoadingSkeleton from "./Components/loadingSkeleton";
 import { useSelector } from "Store";
 import { getRdt } from "subs";
 import Listeners from "./Components/listeners";
-import NftImage from "./Components/nftImage";
 import Controls from "./Components/controls";
+import HedgeFund from "./Components/hedgeFund";
 
 const NodeStaking = () => {
   const walletAddress = useSelector((state) => state.app.walletAddress);
@@ -32,7 +32,8 @@ const NodeStaking = () => {
             <LoadingSkeleton />
           ) : (
             <>
-              <NftImage />
+              <HedgeFund />
+              {/* <NftImage /> */}
               <Controls />
             </>
           )}
