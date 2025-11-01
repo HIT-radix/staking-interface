@@ -12,10 +12,7 @@ const initialState: StakingReducer = {
   lockedHITRewards: "0",
   isOwner: false,
   NodeStakeNFTid: undefined,
-  lockedNodeStakingFomos: "0",
-  lockedNodeStakingHits: "0",
   lockedNodeStakingxUSDCs: "0",
-  lockedNodeStakingREDDICKS: "0",
   // lockedNodeStakingxUSDTs: "0",
 };
 
@@ -55,17 +52,8 @@ const staking = createSlice({
     setLockedHITRewards(state, action: PayloadAction<string>) {
       state.lockedHITRewards = action.payload;
     },
-    setLockedNodeStakingFomos(state, action: PayloadAction<string>) {
-      state.lockedNodeStakingFomos = action.payload;
-    },
-    setLockedNodeStakingHits(state, action: PayloadAction<string>) {
-      state.lockedNodeStakingHits = action.payload;
-    },
     setLockedNodeStakingxUSDCs(state, action: PayloadAction<string>) {
       state.lockedNodeStakingxUSDCs = action.payload;
-    },
-    setLockedNodeStakingREDDICKS(state, action: PayloadAction<string>) {
-      state.lockedNodeStakingREDDICKS = action.payload;
     },
     // setLockedNodeStakingxUSDTs(state, action: PayloadAction<string>) {
     //   state.lockedNodeStakingxUSDTs = action.payload;
@@ -86,9 +74,6 @@ export const {
   setStHitTotalSupply,
   setStakedHIT,
   setNodeStakeNFTid,
-  setLockedNodeStakingFomos,
-  setLockedNodeStakingHits,
   setLockedNodeStakingxUSDCs,
-  setLockedNodeStakingREDDICKS,
   // setLockedNodeStakingxUSDTs,
 } = staking.actions;
