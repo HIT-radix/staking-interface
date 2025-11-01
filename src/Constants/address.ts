@@ -184,3 +184,8 @@ export const FUND_MANAGER_COMPONENT_ADDRESS =
   process.env.ENVIRONMENT === "dev"
     ? "component_tdx_2_1cpdhxgf8nmvzczs9ttvaf3307lq8m4wdky66rpn4zy5qdaat0av5sg"
     : "component_tdx_2_1cpdhxgf8nmvzczs9ttvaf3307lq8m4wdky66rpn4zy5qdaat0av5sg";
+
+export const HEDGE_FUND_BOT_ADDRESS =
+  process.env.ENVIRONMENT === "dev"
+    ? "account_tdx_2_129y9wu3vugaeasnprxjlrqy3tpmr7hpurrmapmyqhsr26ehhrh22e2"
+    : "account_tdx_2_129y9wu3vugaeasnprxjlrqy3tpmr7hpurrmapmyqhsr26ehhrh22e2";
