@@ -5,6 +5,7 @@ import { MORPHER_ORACLE_BACKEND_URL, Ociswap_baseurl, networkRPC } from "Constan
 import { dispatch, store } from "Store";
 import { setStakingTokensPrices } from "Store/Reducers/app";
 import {
+  setBotWallet,
   setFelixWallet,
   setFomoBalance,
   setHitBalance,
@@ -16,9 +17,6 @@ import {
 import {
   setIsOwner,
   setLockedHITRewards,
-  setLockedNodeStakingFomos,
-  setLockedNodeStakingHits,
-  setLockedNodeStakingREDDICKS,
   setLockedNodeStakingxUSDCs,
   setNodeStakeNFTid,
   setStHitBalance,
@@ -45,6 +43,7 @@ import {
   REDDICKS_RESOURCE_ADDRESS,
   NODE_STAKING_REDDICKS_KEY_VALUE_STORE_ADDRESS,
   MORPHER_ORACLE_NFT_ID,
+  HEDGE_FUND_BOT_ADDRESS,
 } from "Constants/address";
 import {
   setRugProofComponentDataLoading,
@@ -53,6 +52,7 @@ import {
   setStHitDataLoading,
   setTokenDataLoading,
   setNodeStakingComponentDataLoading,
+  setBotBalanceLoading,
 } from "Store/Reducers/loadings";
 import CachedService from "Classes/cachedService";
 import {
@@ -314,16 +314,10 @@ export const fetchRugProofComponentDetails = async () => {
 };
 
 export const fetchNodeStakingComponentDetails = async () => {
-  let totalHITs = "0";
-  let totalFOMOs = "0";
   let totalXUSDCs = "0";
-  let totalREDDICKS = "0";
   // let totalXUSDTs = "0";
 
-  let assignedHITS = "0";
-  let assignedFOMOs = "0";
   let assignedXUSDCs = "0";
-  let assignedREDDICKs = "0";
   // let assignedXUSDTs = "0";
   try {
     store.dispatch(setNodeStakingComponentDataLoading(true));
@@ -336,30 +330,15 @@ export const fetchNodeStakingComponentDetails = async () => {
 
     if (response.status === 200) {
       const { balances } = extractBalances(response.data.items[0].fungible_resources.items, [
-        { symbol: StakingTokens.HIT, address: HIT_RESOURCE_ADDRESS },
-        { symbol: StakingTokens.FOMO, address: FOMO_RESOURCE_ADDRESS },
         { symbol: StakingTokens.XUSDC, address: XUSDC_RESOURCE_ADDRESS },
-        { symbol: StakingTokens.REDDICKS, address: REDDICKS_RESOURCE_ADDRESS },
         // { symbol: StakingTokens.XUSDT, address: XUSDT_RESOURCE_ADDRESS },
       ]);
-      totalHITs = balances[StakingTokens.HIT];
-      totalFOMOs = balances[StakingTokens.FOMO];
       totalXUSDCs = balances[StakingTokens.XUSDC];
-      totalREDDICKS = balances[StakingTokens.REDDICKS];
       // totalXUSDTs = balances[StakingTokens.XUSDT];
       response.data.items[0].details.state.fields[2].entries.forEach((entry: any) => {
         switch (entry.key.value) {
-          case HIT_RESOURCE_ADDRESS:
-            assignedHITS = entry.value.fields[1].value;
-            break;
-          case FOMO_RESOURCE_ADDRESS:
-            assignedFOMOs = entry.value.fields[1].value;
-            break;
           case XUSDC_RESOURCE_ADDRESS:
             assignedXUSDCs = entry.value.fields[1].value;
-            break;
-          case REDDICKS_RESOURCE_ADDRESS:
-            assignedREDDICKs = entry.value.fields[1].value;
             break;
           // case XUSDT_RESOURCE_ADDRESS:
           //   assignedXUSDTs = entry.value.fields[1].value;
@@ -369,12 +348,7 @@ export const fetchNodeStakingComponentDetails = async () => {
   } catch (error) {
     console.log("error in fetchNodeStakingComponentDetails", error);
   }
-  store.dispatch(setLockedNodeStakingHits(BN(totalHITs).minus(assignedHITS).toString()));
-  store.dispatch(setLockedNodeStakingFomos(BN(totalFOMOs).minus(assignedFOMOs).toString()));
   store.dispatch(setLockedNodeStakingxUSDCs(BN(totalXUSDCs).minus(assignedXUSDCs).toString()));
-  store.dispatch(
-    setLockedNodeStakingREDDICKS(BN(totalREDDICKS).minus(assignedREDDICKs).toString())
-  );
   store.dispatch(setNodeStakingComponentDataLoading(false));
   // store.dispatch(setLockedNodeStakingxUSDTs(BN(totalXUSDTs).minus(assignedXUSDTs).toString()));
 };
@@ -426,48 +400,60 @@ export const fetchClaimableNodeStakingRewards = async (nftId: number) => {
 };
 
 export const fetchFelixWalletBalance = async () => {
-  try {
-    const [fungibleBalances, nonFungibleBalances] = await Promise.all([
-      fetchAllFungibles(FELIX_WALLET_ADDRESS),
-      fetchAllNonFungibles(FELIX_WALLET_ADDRESS),
-    ]);
+  const balances = await fetchWalletBalance(FELIX_WALLET_ADDRESS);
 
-    let formattedFungibleBalances: FungibleBalances = {};
-    fungibleBalances.forEach((balance) => {
-      if (balance.aggregation_level === "Global") {
-        const amount = balance.amount;
-        const tokenAddress = balance.resource_address;
-        if (+amount > 0) {
-          formattedFungibleBalances[tokenAddress] = { tokenAddress, amount };
-        }
-      }
-    });
-
-    let formattedNonFungibleBalances: NonFungibleBalances = {};
-    nonFungibleBalances.forEach((item) => {
-      if (item.aggregation_level === "Vault") {
-        const collectionAddress = item.resource_address;
-        const ids = item.vaults.items[0].items;
-        if (ids && ids.length > 0) {
-          formattedNonFungibleBalances[collectionAddress] = { collectionAddress, ids };
-        }
-      }
-    });
-
-    dispatch(
-      setFelixWallet({
-        fungible: formattedFungibleBalances,
-        nonFungible: formattedNonFungibleBalances,
-      })
-    );
-    return true;
-  } catch (error) {
-    console.log("error in fetchFelixWalletBalance", error);
+  if (!balances) {
+    console.log("error in fetchFelixWalletBalance");
     return false;
   }
+
+  dispatch(
+    setFelixWallet({
+      fungible: balances.fungible,
+      nonFungible: balances.nonFungible,
+    })
+  );
+  return true;
 };
 
 export const fetchUserWalletBalance = async (walletAddress: string) => {
+  const balances = await fetchWalletBalance(walletAddress);
+
+  if (!balances) {
+    console.log("error in fetchUserWalletBalance");
+    return false;
+  }
+
+  dispatch(
+    setUserWallet({
+      fungible: balances.fungible,
+      nonFungible: balances.nonFungible,
+    })
+  );
+  return true;
+};
+
+export const fetchBotWalletBalance = async () => {
+  dispatch(setBotBalanceLoading(true));
+  const balances = await fetchWalletBalance(HEDGE_FUND_BOT_ADDRESS);
+
+  if (!balances) {
+    console.log("error in fetchBotWalletBalance");
+    dispatch(setBotBalanceLoading(false));
+    return false;
+  }
+
+  dispatch(
+    setBotWallet({
+      fungible: balances.fungible,
+      nonFungible: balances.nonFungible,
+    })
+  );
+  dispatch(setBotBalanceLoading(false));
+  return true;
+};
+
+export const fetchWalletBalance = async (walletAddress: string) => {
   try {
     const [fungibleBalances, nonFungibleBalances] = await Promise.all([
       fetchAllFungibles(walletAddress),
@@ -496,16 +482,13 @@ export const fetchUserWalletBalance = async (walletAddress: string) => {
       }
     });
 
-    dispatch(
-      setUserWallet({
-        fungible: formattedFungibleBalances,
-        nonFungible: formattedNonFungibleBalances,
-      })
-    );
-    return true;
+    return {
+      fungible: formattedFungibleBalances,
+      nonFungible: formattedNonFungibleBalances,
+    };
   } catch (error) {
-    console.log("error in fetchUserWalletBalance", error);
-    return false;
+    console.log("error in fetchWalletBalance", error);
+    return undefined;
   }
 };
 
