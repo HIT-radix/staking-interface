@@ -3,14 +3,17 @@ import { toast } from "react-toastify";
 import {
   fetchNodeStakingComponentDetails,
   fetchRugProofComponentDetails,
-  getPriceDataFromMorpherOracle,
+  // getPriceDataFromMorpherOracle,
 } from "./fetchers";
 import { setAmount, setPercentage } from "Store/Reducers/staking";
 import { incrementSuccessTxCount } from "Store/Reducers/session";
 import { Percentage, StakingTokens } from "Types/reducers";
 import { setTxInProgress } from "Store/Reducers/loadings";
 import CachedService from "Classes/cachedService";
-import { formatTokenAmount, priceMsgToMorpherString } from "./format";
+import {
+  formatTokenAmount,
+  //  priceMsgToMorpherString
+} from "./format";
 import { store } from "Store";
 import { getRdt } from "subs";
 import {
@@ -379,20 +382,24 @@ export const withdrawFromHedgeFund = async (amount: string, wantedCoinAddress?: 
       app: { walletAddress },
     } = store.getState();
 
-    const priceData = await getPriceDataFromMorpherOracle("GATEIO:XRD_USDT");
-    if (!priceData) {
-      toast.error("Failed to fetch price data from Morpher Oracle");
-      return false;
-    }
-    const morpherMessage = priceMsgToMorpherString(priceData);
+    // TODO: re-enable once Morpher Oracle is back
+    // const priceData = await getPriceDataFromMorpherOracle("GATEIO:XRD_USDT");
+    // if (!priceData) {
+    //   toast.error("Failed to fetch price data from Morpher Oracle");
+    //   return false;
+    // }
+    // const morpherMessage = priceMsgToMorpherString(priceData);
 
     return await baseTxSender({
       amount: amount,
       txManifest: getHedgeFundWithdrawManifest(
         walletAddress,
         amount,
-        morpherMessage,
-        priceData.signature,
+        "",
+        "",
+        // TODO: re-enable once Morpher Oracle is back
+        // morpherMessage,
+        // priceData.signature,
         wantedCoinAddress
       ),
       ToastElement: WithdrawFundUnitSuccessToast,
