@@ -3,6 +3,8 @@ import { Environment, HedgeFundPositionInfo } from "Types/misc";
 import fUSDLogo from "Assets/Images/fUSD.png";
 import xusdcLogo from "Assets/Images/xUSDC.png";
 import husdcLogo from "Assets/Svgs/husdc.svg";
+import xusdtLogo from "Assets/Images/xUSDT.png";
+import lsulpLogo from "Assets/Images/lsu_lp.png";
 
 export const TELEGRAM_LINK = "https://t.me/FOMO_HIT";
 export const X_HANDLE = "https://twitter.com/addix_xrd";
@@ -26,40 +28,54 @@ export const applicationName =
 export const APY_EXPIRE_PERIOD = 0.5 * 60 * 60 * 1000; // 30 minutes
 
 export const HedgeFundPositionsInfoMap: Record<string, HedgeFundPositionInfo> = {
-  "LSULP/fUSD@Flux": {
+  "LSULP/XRD@Hyperstake": {
+    value: "0",
+    logo: lsulpLogo,
+    platform: "Hyperstake",
+    position: "LSULP/XRD LP",
+    apyId: "LSULP_XRD_Hyperstake_Liquidity_Provision",
+  },
+  "LSULP@Weft": {
+    value: "0",
+    logo: lsulpLogo,
+    platform: "Weft Finance",
+    position: "LSULP lend",
+    apyId: "LSULP_Weft_Finance_Lending",
+  },
+  "fUSD/LSULP@Flux": {
     value: "0",
     logo: fUSDLogo,
     platform: "Flux",
-    position: "LSULP/fUSD LP",
-    apyId: "LSULP_fUSD_Flux_Liquidity_Provision",
+    position: "fUSD/LSULP LP",
+    apyId: "fUSD_LSULP_Flux_Liquidity_Provision",
   },
-  "WEFT/XRD@Ociswap": {
+  "fUSD/XRD@Ociswap": {
     value: "0",
     logo: fUSDLogo,
     platform: "Ociswap",
-    position: "WEFT/XRD LP",
-    apyId: "WEFT_XRD_Ociswap_Liquidity_Provision",
+    position: "fUSD/XRD LP",
+    apyId: "fUSD_XRD_Ociswap_Liquidity_Provision",
   },
-  "XRD/xUSDC@Caviarnine": {
+  "fUSD/xUSDC@Caviarnine": {
     value: "0",
-    logo: xusdcLogo,
+    logo: fUSDLogo,
     platform: "Caviarnine",
-    position: "XRD/xUSDC LP",
-    apyId: "XRD_xUSDC_Caviarnine_Liquidity_Provision",
+    position: "fUSD/xUSDC LP",
+    apyId: "fUSD_xUSDC_Caviarnine_Liquidity_Provision",
   },
-  "XRD@WEFT": {
-    value: "0",
-    logo: xusdcLogo,
-    platform: "Weft Finance",
-    position: "XRD lend",
-    apyId: "XRD_Weft_Finance_Lending",
-  },
-  "hUSDC@RootFinance": {
+  "hUSDC@Weft": {
     value: "0",
     logo: husdcLogo,
-    platform: "Root Finance",
+    platform: "Weft Finance",
     position: "hUSDC lend",
-    apyId: "hUSDC_Root_Finance_Lending",
+    apyId: "hUSDC_Weft_Finance_Lending",
+  },
+  "xUSDC@Root": {
+    value: "0",
+    logo: xusdcLogo,
+    platform: "Root Finance",
+    position: "xUSDC lend",
+    apyId: "xUSDC_Root_Finance_Lending",
   },
   "xUSDC@Surge": {
     value: "0",
@@ -68,11 +84,11 @@ export const HedgeFundPositionsInfoMap: Record<string, HedgeFundPositionInfo> = 
     position: "xUSDC lend",
     apyId: "xUSDC_Surge_Lending",
   },
-  "xUSDC@WEFT": {
+  "xUSDT@Root": {
     value: "0",
-    logo: xusdcLogo,
-    platform: "Weft Finance",
-    position: "xUSDC lend",
-    apyId: "xUSDC_Weft_Finance_Lending",
+    logo: xusdtLogo,
+    platform: "Root Finance",
+    position: "xUSDT lend",
+    apyId: "xUSDT_Root_Finance_Lending",
   },
 };
