@@ -89,7 +89,7 @@ const InvesmentFunds = () => {
                   >
                     Stake $XRD
                   </a>
-                  , We deploy fees into Radix DeFi, you earn xUSDC{" "}
+                  , We deploy fees into Radix DeFi, you earn fUSDC{" "}
                   <span className="hidden" id="total-market-value">
                     {totalFunds}
                   </span>
