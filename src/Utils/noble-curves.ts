@@ -1,0 +1,29 @@
+import { bls12_381 } from "@noble/curves/bls12-381";
+
+export const htfEthereum = "BLS_SIG_BLS12381G2_XMD:SHA-256_SSWU_RO_POP_";
+
+// Convert hex string to Uint8Array
+export function hexToUint8Array(hex: string): Uint8Array {
+  // Remove '0x' prefix if present
+  const cleanHex = hex.startsWith("0x") ? hex.slice(2) : hex;
+  // Ensure even length
+  const paddedHex = cleanHex.length % 2 ? "0" + cleanHex : cleanHex;
+  return new Uint8Array(paddedHex.match(/.{2}/g)!.map((byte) => parseInt(byte, 16)));
+}
+
+// Derive the public key from private key (supports both hex string and Uint8Array)
+export function getPublicKey_BLS12_381(privateKey: string | Uint8Array): string {
+  let privateKeyBytes: Uint8Array;
+
+  if (typeof privateKey === "string") {
+    privateKeyBytes = hexToUint8Array(privateKey);
+  } else {
+    privateKeyBytes = privateKey;
+  }
+
+  // Get the public key point and convert to compressed bytes
+  const publicKeyPoint = bls12_381.longSignatures.getPublicKey(privateKeyBytes);
+  const publicKeyBytes = publicKeyPoint.toBytes(true); // true for compressed format
+
+  return Array.from(publicKeyBytes, (byte: number) => byte.toString(16).padStart(2, "0")).join("");
+}

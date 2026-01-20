@@ -31,3 +31,11 @@ export interface InvestmentInfo {
   breakdown: InvestmentBreakdown[];
   index: number;
 }
+
+export type HedgeFundPositionInfo = {
+  value: string;
+  logo: string;
+  platform: string;
+  position: string;
+  apyId: string;
+};

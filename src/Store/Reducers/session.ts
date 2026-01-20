@@ -14,8 +14,11 @@ const initialState: SessionReducer = {
   fomoTokenData: undefined,
   reddicksTokenData: undefined,
   rewardsModalData: undefined,
+  buybackAirdropModalData: undefined,
   selectedSnapshots: [],
   felixWallet: { fungible: {}, nonFungible: {} },
+  userWallet: { fungible: {}, nonFungible: {} },
+  botWallet: { fungible: {}, nonFungible: {} },
 };
 
 const session = createSlice({
@@ -60,11 +63,23 @@ const session = createSlice({
     setRewardsModalData(state, action: PayloadAction<SessionReducer["rewardsModalData"]>) {
       state.rewardsModalData = action.payload;
     },
+    setBuybackAirdropModalData(
+      state,
+      action: PayloadAction<SessionReducer["buybackAirdropModalData"]>
+    ) {
+      state.buybackAirdropModalData = action.payload;
+    },
     setSelectedSnapshots(state, action: PayloadAction<SnapshotDB[]>) {
       state.selectedSnapshots = action.payload;
     },
     setFelixWallet(state, action: PayloadAction<SessionReducer["felixWallet"]>) {
       state.felixWallet = action.payload;
+    },
+    setBotWallet(state, action: PayloadAction<SessionReducer["botWallet"]>) {
+      state.botWallet = action.payload;
+    },
+    setUserWallet(state, action: PayloadAction<SessionReducer["userWallet"]>) {
+      state.userWallet = action.payload;
     },
   },
 });
@@ -83,4 +98,7 @@ export const {
   setFelixWallet,
   setxusdcBalance,
   setReddicksBalance,
+  setUserWallet,
+  setBuybackAirdropModalData,
+  setBotWallet,
 } = session.actions;

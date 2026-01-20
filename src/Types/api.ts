@@ -96,6 +96,20 @@ export type SnapshotApiResponse = {
   snapshot_state_version: number;
 };
 
+export type BuyBackAirdropData = {
+  tokenAddress: string;
+  totalAccounts: number;
+  chunkCount: number;
+  transactionIds: string[];
+  accounts: string[];
+  failedAirdrops: { address: string; amount: string }[];
+};
+
+export type BuyBackAirdopResponse = {
+  success: boolean;
+  data: BuyBackAirdropData[];
+};
+
 export type SnapshotDB = {
   snapshot: number;
   timestamp: number;
@@ -327,3 +341,24 @@ export interface C9PoolData {
     };
   };
 }
+
+export type MorpherPriceData = {
+  data: {
+    version: number;
+    marketId: string;
+    price: string;
+    nonce: string;
+    dataTimestamp: number;
+    oracleTimestamp: number;
+    marketStatusTimestamp: number;
+    marketStatus: string;
+  }[];
+  signature: string;
+};
+
+export type OracleRequestMessage = {
+  marketId: string;
+  publicKeyBLS: string;
+  nftId: string;
+  signature: string;
+};

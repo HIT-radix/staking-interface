@@ -11,6 +11,7 @@ const initialState: LoadingReducer = {
   nodeStakingRewards: false,
   nodeStakingComponentDataLoading: false,
   apyFetching: false,
+  botBalanceLoading: false,
 };
 
 const loadings = createSlice({
@@ -44,6 +45,9 @@ const loadings = createSlice({
     setApyFetching(state, action: PayloadAction<boolean>) {
       state.apyFetching = action.payload;
     },
+    setBotBalanceLoading(state, action: PayloadAction<boolean>) {
+      state.botBalanceLoading = action.payload;
+    },
   },
 });
 
@@ -59,4 +63,5 @@ export const {
   setNodeStakingRewardsLoading,
   setNodeStakingComponentDataLoading,
   setApyFetching,
+  setBotBalanceLoading,
 } = loadings.actions;

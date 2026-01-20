@@ -1616,6 +1616,13 @@
   dependencies:
     "@noble/hashes" "1.3.2"
 
+"@noble/curves@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@noble/curves/-/curves-2.0.0.tgz#1b1d75b447e5ccfaa6a4a3c34280f0c02a763f57"
+  integrity sha512-RiwZZeJnsTnhT+/gg2KvITJZhK5oagQrpZo+yQyd3mv3D5NAG2qEeEHpw7IkXRlpkoD45wl2o4ydHAvY9wyEfw==
+  dependencies:
+    "@noble/hashes" "2.0.0"
+
 "@noble/curves@^1.4.0":
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/@noble/curves/-/curves-1.8.1.tgz#19bc3970e205c99e4bdb1c64a4785706bce497ff"
@@ -1642,6 +1649,11 @@
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/@noble/hashes/-/hashes-1.7.1.tgz#5738f6d765710921e7a751e00c20ae091ed8db0f"
   integrity sha512-B8XBPsn4vT/KJAGqDzbwztd+6Yte3P4V7iafm24bxgDe/mlRuK6xmWPuCNrKt2vDafZ8MfJLlchDG/vYafQEjQ==
+
+"@noble/hashes@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@noble/hashes/-/hashes-2.0.0.tgz#5c39388259a0868cadb17d688cd8cf07eae344a4"
+  integrity sha512-h8VUBlE8R42+XIDO229cgisD287im3kdY6nbNZJFjc6ZvKIXPYXe6Vc/t+kyjFdMFyt5JpapzTsEg8n63w5/lw==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -1682,17 +1694,17 @@
     schema-utils "^4.2.0"
     source-map "^0.7.3"
 
-"@radixdlt/babylon-core-api-sdk@^1.2.3":
+"@radixdlt/babylon-core-api-sdk@^1.3.0":
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@radixdlt/babylon-core-api-sdk/-/babylon-core-api-sdk-1.3.0.tgz#c915240c05f6c0e6adaf5c258e85bdcbca6b35f5"
   integrity sha512-Tgtv8t3/Yk6K83Sf+7zCA8yJDcwyxRrE+jTRabF+tHfd1sTrMNqxyC7+jtW8jIgXsUEVR/FSQ4hQUJ/CkAAK6g==
 
-"@radixdlt/babylon-gateway-api-sdk@^1.7.3":
-  version "1.9.2"
-  resolved "https://registry.yarnpkg.com/@radixdlt/babylon-gateway-api-sdk/-/babylon-gateway-api-sdk-1.9.2.tgz#7e51b460cf3da0409e636362cbf58c216897e855"
-  integrity sha512-AgAqNMKpqlHKfm/NRaYMKOObmAihXCNPDqGUH4/w6kFBQnWl4DAcITUinJDoW5QubdU+qW+awhUiYQfLj3Uxqg==
+"@radixdlt/babylon-gateway-api-sdk@^1.10.1":
+  version "1.10.1"
+  resolved "https://registry.yarnpkg.com/@radixdlt/babylon-gateway-api-sdk/-/babylon-gateway-api-sdk-1.10.1.tgz#6ae6ed8684fc59e6a3138babae329f4b74770fa0"
+  integrity sha512-l/Pt1qaxi2I99ykl9oS4pO+AzBmpMY6oqMOBq0ABbpg7YqqaugZU3OUP/tI0SQsIR1QvXYGdxlsS+HnhioeHlA==
 
-"@radixdlt/radix-dapp-toolkit@^2.1.1":
+"@radixdlt/radix-dapp-toolkit@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@radixdlt/radix-dapp-toolkit/-/radix-dapp-toolkit-2.2.1.tgz#0634a9d2d9afb2d0d22d925bbf87de05bb72247a"
   integrity sha512-NiKZ+mP7M6TuVw00MQf4noch6SsahmBLlFovf/DwdDbPSAJD/GRycDAumlvNKujITEEKupolPseMh4XpJZZN6g==

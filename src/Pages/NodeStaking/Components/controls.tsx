@@ -106,25 +106,11 @@ const Controls = () => {
 
   return (
     <div className="w-full mt-3">
-      <div
-        className="btn bg-accent w-full hover:bg-accent mb-1"
-        onClick={() =>
-          window.open(
-            "https://dashboard.radixdlt.com/network-staking/validator_rdx1swez5cqmw4d6tls0mcldehnfhpxge0mq7cmnypnjz909apqqjgx6n9/stake",
-            "_blank"
-          )
-        }
-      >
-        Stake XRD to earn xUSDC, $HIT, $FOMO, $DCKS
-        <span>
-          <img src={redirectIcon} alt="redirectIcon" className="w-4" />
-        </span>
-      </div>
       <>
         <InfoTile
           title="Your Claimable Rewards:"
           value={
-            <div>
+            <div className="w-full">
               <div className="flex items-center">
                 <img src={hitLogo} alt="hit-logo" className="w-7 h-7 rounded-full" />
                 <p className="text-2xl font-bold ml-1" title={claimableRewards.HIT}>
@@ -163,48 +149,55 @@ const Controls = () => {
                   </p>
                 </div>
               ) : null}
+
+              {allowWithdraw && (
+                <div className="collapse collapse-arrow mt-2">
+                  <input type="checkbox" />
+                  <div className="collapse-title min-h-0 py-2 pl-0 flex items-center text-sm font-semibold opacity-80">
+                    Claim Rewards
+                  </div>
+                  <div className="collapse-content px-0">
+                    <div
+                      className="btn bg-base-100 hover:bg-base-200 text-accent w-full border-none"
+                      onClick={() => handleWithdrawRewards(NodeStakeNFTid ?? 0, claimableRewards)}
+                    >
+                      Claim Rewards 🎉
+                    </div>
+                    <div className="flex items-center justify-start mt-2">
+                      <input
+                        type="checkbox"
+                        className="checkbox checkbox-sm border-base-content/20"
+                        onChange={(e) => setShouldRestakeHIT(e.target.checked)}
+                      />
+                      <p className="ml-2 text-sm opacity-90">
+                        Withdraw and stake $HIT in the same transaction?{" "}
+                        <span>
+                          <InfoTooltip text="Upon withdraw, HITs will be staked so you get stHIT and FOMO in your wallet" />
+                        </span>{" "}
+                      </p>
+                    </div>
+                    {showAirdropOption && (
+                      <div className="flex items-center justify-start mt-2">
+                        <input
+                          type="checkbox"
+                          className="checkbox checkbox-sm border-base-content/20"
+                          onChange={(e) => setShouldAirdropRewards(e.target.checked)}
+                        />
+                        <p className="ml-2 text-sm opacity-90">
+                          Withdraw and airdrop rewards in the same transaction?{" "}
+                          <span>
+                            <InfoTooltip text="Upon withdraw, rewards will be airdropped directly to fomo stake component." />
+                          </span>{" "}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           }
           isLoading={nodeStakingRewardsLoading || tokenDataLoading}
         />
-        {allowWithdraw && (
-          <>
-            <div
-              className="btn bg-accent w-full hover:bg-accent mt-1"
-              onClick={() => handleWithdrawRewards(NodeStakeNFTid ?? 0, claimableRewards)}
-            >
-              Withdraw Rewards 🎉
-            </div>
-            <div className="flex items-center justify-start mt-0.5">
-              <input
-                type="checkbox"
-                className="checkbox checkbox-accent checkbox-sm"
-                onChange={(e) => setShouldRestakeHIT(e.target.checked)}
-              />
-              <p className="ml-2 text-accent">
-                Withdraw and stake $HIT in the same transaction?{" "}
-                <span>
-                  <InfoTooltip text="Upon withdraw, HITs will be staked so you get stHIT and FOMO in your wallet" />
-                </span>{" "}
-              </p>
-            </div>
-            {showAirdropOption && (
-              <div className="flex items-center justify-start mt-0.5">
-                <input
-                  type="checkbox"
-                  className="checkbox checkbox-accent checkbox-sm"
-                  onChange={(e) => setShouldAirdropRewards(e.target.checked)}
-                />
-                <p className="ml-2 text-accent">
-                  Withdraw and airdrop rewards in the same transaction?{" "}
-                  <span>
-                    <InfoTooltip text="Upon withdraw, rewards will be airdropped directly to fomo stake component." />
-                  </span>{" "}
-                </p>
-              </div>
-            )}
-          </>
-        )}
       </>
     </div>
   );

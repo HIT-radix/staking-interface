@@ -1,22 +1,22 @@
 import axios, { AxiosResponse } from "axios";
+import { bls12_381 } from "@noble/curves/bls12-381";
 
-import { Ociswap_baseurl, networkRPC } from "Constants/endpoints";
+import { MORPHER_ORACLE_BACKEND_URL, Ociswap_baseurl, networkRPC } from "Constants/endpoints";
 import { dispatch, store } from "Store";
 import { setStakingTokensPrices } from "Store/Reducers/app";
 import {
+  setBotWallet,
   setFelixWallet,
   setFomoBalance,
   setHitBalance,
   setReddicksBalance,
+  setUserWallet,
   setxusdcBalance,
   updateHitFomoData,
 } from "Store/Reducers/session";
 import {
   setIsOwner,
   setLockedHITRewards,
-  setLockedNodeStakingFomos,
-  setLockedNodeStakingHits,
-  setLockedNodeStakingREDDICKS,
   setLockedNodeStakingxUSDCs,
   setNodeStakeNFTid,
   setStHitBalance,
@@ -26,7 +26,7 @@ import {
 import { StakingTokens, Tabs } from "Types/reducers";
 import { FungibleBalances, NonFungibleBalances, TokenData } from "Types/token";
 import { BN, extractBalances, extractBalancesNew } from "./format";
-import { EntityDetails } from "Types/api";
+import { EntityDetails, MorpherPriceData, OracleRequestMessage } from "Types/api";
 import {
   NODE_STAKING_USER_BADGE_ADDRESS,
   NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS,
@@ -42,6 +42,8 @@ import {
   NODE_STAKING_XUSDC_KEY_VALUE_STORE_ADDRESS,
   REDDICKS_RESOURCE_ADDRESS,
   NODE_STAKING_REDDICKS_KEY_VALUE_STORE_ADDRESS,
+  MORPHER_ORACLE_NFT_ID,
+  HEDGE_FUND_BOT_ADDRESS,
 } from "Constants/address";
 import {
   setRugProofComponentDataLoading,
@@ -50,6 +52,7 @@ import {
   setStHitDataLoading,
   setTokenDataLoading,
   setNodeStakingComponentDataLoading,
+  setBotBalanceLoading,
 } from "Store/Reducers/loadings";
 import CachedService from "Classes/cachedService";
 import {
@@ -58,6 +61,11 @@ import {
   StateEntityFungiblesPageResponse,
   StateEntityNonFungiblesPageResponse,
 } from "@radixdlt/babylon-gateway-api-sdk";
+import { getPublicKey_BLS12_381, hexToUint8Array, htfEthereum } from "./noble-curves";
+import { bytesToHex } from "@noble/curves/utils";
+import { getHedgeFundDetail } from "./txSenders";
+import { HedgeFundPositionsInfoMap } from "Constants/misc";
+import type { HedgeFundPositionInfo } from "Types/misc";
 
 export const fetchBalances = async (walletAddress: string) => {
   let HITbalance = "0";
@@ -306,16 +314,10 @@ export const fetchRugProofComponentDetails = async () => {
 };
 
 export const fetchNodeStakingComponentDetails = async () => {
-  let totalHITs = "0";
-  let totalFOMOs = "0";
   let totalXUSDCs = "0";
-  let totalREDDICKS = "0";
   // let totalXUSDTs = "0";
 
-  let assignedHITS = "0";
-  let assignedFOMOs = "0";
   let assignedXUSDCs = "0";
-  let assignedREDDICKs = "0";
   // let assignedXUSDTs = "0";
   try {
     store.dispatch(setNodeStakingComponentDataLoading(true));
@@ -328,30 +330,15 @@ export const fetchNodeStakingComponentDetails = async () => {
 
     if (response.status === 200) {
       const { balances } = extractBalances(response.data.items[0].fungible_resources.items, [
-        { symbol: StakingTokens.HIT, address: HIT_RESOURCE_ADDRESS },
-        { symbol: StakingTokens.FOMO, address: FOMO_RESOURCE_ADDRESS },
         { symbol: StakingTokens.XUSDC, address: XUSDC_RESOURCE_ADDRESS },
-        { symbol: StakingTokens.REDDICKS, address: REDDICKS_RESOURCE_ADDRESS },
         // { symbol: StakingTokens.XUSDT, address: XUSDT_RESOURCE_ADDRESS },
       ]);
-      totalHITs = balances[StakingTokens.HIT];
-      totalFOMOs = balances[StakingTokens.FOMO];
       totalXUSDCs = balances[StakingTokens.XUSDC];
-      totalREDDICKS = balances[StakingTokens.REDDICKS];
       // totalXUSDTs = balances[StakingTokens.XUSDT];
       response.data.items[0].details.state.fields[2].entries.forEach((entry: any) => {
         switch (entry.key.value) {
-          case HIT_RESOURCE_ADDRESS:
-            assignedHITS = entry.value.fields[1].value;
-            break;
-          case FOMO_RESOURCE_ADDRESS:
-            assignedFOMOs = entry.value.fields[1].value;
-            break;
           case XUSDC_RESOURCE_ADDRESS:
             assignedXUSDCs = entry.value.fields[1].value;
-            break;
-          case REDDICKS_RESOURCE_ADDRESS:
-            assignedREDDICKs = entry.value.fields[1].value;
             break;
           // case XUSDT_RESOURCE_ADDRESS:
           //   assignedXUSDTs = entry.value.fields[1].value;
@@ -361,12 +348,7 @@ export const fetchNodeStakingComponentDetails = async () => {
   } catch (error) {
     console.log("error in fetchNodeStakingComponentDetails", error);
   }
-  store.dispatch(setLockedNodeStakingHits(BN(totalHITs).minus(assignedHITS).toString()));
-  store.dispatch(setLockedNodeStakingFomos(BN(totalFOMOs).minus(assignedFOMOs).toString()));
   store.dispatch(setLockedNodeStakingxUSDCs(BN(totalXUSDCs).minus(assignedXUSDCs).toString()));
-  store.dispatch(
-    setLockedNodeStakingREDDICKS(BN(totalREDDICKS).minus(assignedREDDICKs).toString())
-  );
   store.dispatch(setNodeStakingComponentDataLoading(false));
   // store.dispatch(setLockedNodeStakingxUSDTs(BN(totalXUSDTs).minus(assignedXUSDTs).toString()));
 };
@@ -418,10 +400,64 @@ export const fetchClaimableNodeStakingRewards = async (nftId: number) => {
 };
 
 export const fetchFelixWalletBalance = async () => {
+  const balances = await fetchWalletBalance(FELIX_WALLET_ADDRESS);
+
+  if (!balances) {
+    console.log("error in fetchFelixWalletBalance");
+    return false;
+  }
+
+  dispatch(
+    setFelixWallet({
+      fungible: balances.fungible,
+      nonFungible: balances.nonFungible,
+    })
+  );
+  return true;
+};
+
+export const fetchUserWalletBalance = async (walletAddress: string) => {
+  const balances = await fetchWalletBalance(walletAddress);
+
+  if (!balances) {
+    console.log("error in fetchUserWalletBalance");
+    return false;
+  }
+
+  dispatch(
+    setUserWallet({
+      fungible: balances.fungible,
+      nonFungible: balances.nonFungible,
+    })
+  );
+  return true;
+};
+
+export const fetchBotWalletBalance = async () => {
+  dispatch(setBotBalanceLoading(true));
+  const balances = await fetchWalletBalance(HEDGE_FUND_BOT_ADDRESS);
+
+  if (!balances) {
+    console.log("error in fetchBotWalletBalance");
+    dispatch(setBotBalanceLoading(false));
+    return false;
+  }
+
+  dispatch(
+    setBotWallet({
+      fungible: balances.fungible,
+      nonFungible: balances.nonFungible,
+    })
+  );
+  dispatch(setBotBalanceLoading(false));
+  return true;
+};
+
+export const fetchWalletBalance = async (walletAddress: string) => {
   try {
     const [fungibleBalances, nonFungibleBalances] = await Promise.all([
-      fetchAllFungibles(FELIX_WALLET_ADDRESS),
-      fetchAllNonFungibles(FELIX_WALLET_ADDRESS),
+      fetchAllFungibles(walletAddress),
+      fetchAllNonFungibles(walletAddress),
     ]);
 
     let formattedFungibleBalances: FungibleBalances = {};
@@ -446,15 +482,88 @@ export const fetchFelixWalletBalance = async () => {
       }
     });
 
-    dispatch(
-      setFelixWallet({
-        fungible: formattedFungibleBalances,
-        nonFungible: formattedNonFungibleBalances,
-      })
-    );
-    return true;
+    return {
+      fungible: formattedFungibleBalances,
+      nonFungible: formattedNonFungibleBalances,
+    };
   } catch (error) {
-    console.log("error in fetchFelixWalletBalance", error);
-    return false;
+    console.log("error in fetchWalletBalance", error);
+    return undefined;
   }
+};
+
+// Fetch price data using the signed oracle message
+export const fetchPriceDataFromOracle = async (oracleRequestMsg: OracleRequestMessage) => {
+  const oracleUrl = `${MORPHER_ORACLE_BACKEND_URL}/v2/price/${oracleRequestMsg.marketId}/${oracleRequestMsg.publicKeyBLS}/${oracleRequestMsg.nftId}/${oracleRequestMsg.signature}`;
+
+  const response = await fetch(oracleUrl);
+
+  if (!response.ok) {
+    throw new Error(`Oracle API error: ${JSON.stringify(await response.json())}`);
+  }
+
+  const priceData = (await response.json()) as MorpherPriceData;
+  return priceData;
+};
+
+export const getPriceDataFromMorpherOracle = async (marketId: string) => {
+  const oracleRequest = generateMorpherOracleMessage(
+    marketId,
+    MORPHER_ORACLE_NFT_ID,
+    process.env.REACT_APP_FUND_BOT_PVT_KEY || ""
+  );
+  console.log("oracleRequest", oracleRequest);
+  return oracleRequest !== undefined
+    ? await fetchPriceDataFromOracle(oracleRequest.oracleRequest)
+    : undefined;
+};
+
+// Helper function to convert message to string format for signing
+function morpherRequestMsgToString(msg: OracleRequestMessage): string {
+  return `${msg.marketId}##${msg.publicKeyBLS}##${msg.nftId}`;
+}
+
+// Generate morpher oracle message with signature
+export const generateMorpherOracleMessage = (
+  marketId: string,
+  nftId: string,
+  privateKey: string
+) => {
+  console.log("privateKey", privateKey);
+  if (!privateKey) return undefined;
+  let publicKeyBLS: string = getPublicKey_BLS12_381(privateKey);
+
+  // Create the request message
+  let oracleRequest = {
+    marketId,
+    publicKeyBLS,
+    nftId,
+    signature: "",
+  };
+
+  const msgString = morpherRequestMsgToString(oracleRequest);
+  const msg = new TextEncoder().encode(msgString);
+  const msgHash = bls12_381.longSignatures.hash(msg, htfEthereum);
+  const signature = bls12_381.longSignatures.sign(msgHash, hexToUint8Array(privateKey));
+  oracleRequest.signature = bytesToHex(signature.toBytes());
+
+  return {
+    oracleRequest,
+    msgHash: bytesToHex(msgHash.toBytes()),
+    signature: oracleRequest.signature,
+  };
+};
+
+// Convenience wrapper to fetch and return formatted hedge fund data
+export const getFormattedInvestmentsInfo = async () => {
+  const fundDetailsRaw = await getHedgeFundDetail();
+  if (!fundDetailsRaw) return undefined;
+
+  const mapped: Record<string, HedgeFundPositionInfo> = {};
+  Object.entries(HedgeFundPositionsInfoMap).forEach(([key, info]) => {
+    const updatedValue = fundDetailsRaw.fundsDetails[key] ?? "0";
+    mapped[key] = { ...info, value: updatedValue };
+  });
+
+  return { fundsDetails: Object.values(mapped), totalFunds: fundDetailsRaw.totalFunds };
 };

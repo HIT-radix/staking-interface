@@ -2,8 +2,10 @@ import React from "react";
 import { ChevronDown } from "lucide-react";
 
 interface DropDownProps {
-  stakingType: "Rug Proof" | "Validator" | "Investment Funds";
-  setStakingType: (type: "Rug Proof" | "Validator" | "Investment Funds") => void;
+  stakingType: "Rug Proof" | "Validator" | "Investment Funds" | "Hedge Fund Admin";
+  setStakingType: (
+    type: "Rug Proof" | "Validator" | "Investment Funds" | "Hedge Fund Admin"
+  ) => void;
 }
 
 const Dropdown: React.FC<DropDownProps> = ({ stakingType, setStakingType }) => {
@@ -21,6 +23,8 @@ const Dropdown: React.FC<DropDownProps> = ({ stakingType, setStakingType }) => {
             ? "ADDIX FOMO Validator Staking"
             : stakingType === "Investment Funds"
             ? "Investment Funds"
+            : stakingType === "Hedge Fund Admin"
+            ? "Hedge Fund Admin"
             : ""}
           <ChevronDown />
         </div>
@@ -38,6 +42,18 @@ const Dropdown: React.FC<DropDownProps> = ({ stakingType, setStakingType }) => {
               onClick={() => setStakingType("Rug Proof")}
             >
               Rug Proof HIT Staking
+            </div>
+          </li>
+          <li>
+            <div
+              className={`${
+                stakingType === "Hedge Fund Admin"
+                  ? "bg-accent text-base-100 hover:bg-accent hover:text-base-100"
+                  : " hover:bg-base-200"
+              }`}
+              onClick={() => setStakingType("Hedge Fund Admin")}
+            >
+              Hedge Fund Admin
             </div>
           </li>
           <li>

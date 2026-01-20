@@ -1,6 +1,6 @@
 import { WalletDataState } from "@radixdlt/radix-dapp-toolkit";
 import { FungibleBalances, NonFungibleBalances, RewardTokenDistribution, TokenData } from "./token";
-import { SnapshotDB } from "./api";
+import { BuyBackAirdropData, SnapshotDB } from "./api";
 
 export type AppReducer = {
   walletData: WalletDataState;
@@ -37,11 +37,8 @@ export type StakingReducer = {
   lockedHITRewards: string;
   isOwner: boolean;
   NodeStakeNFTid?: number;
-  lockedNodeStakingHits: string;
-  lockedNodeStakingFomos: string;
   // lockedNodeStakingxUSDTs: string;
   lockedNodeStakingxUSDCs: string;
-  lockedNodeStakingREDDICKS: string;
 };
 
 export enum StakingTokens {
@@ -53,6 +50,7 @@ export enum StakingTokens {
   // XUSDT = "xUSDT",
   XUSDC = "xUSDC",
   REDDICKS = "REDDICKS",
+  FUNDUNIT = "FUNDUNIT",
 }
 
 export type SessionReducer = {
@@ -78,6 +76,15 @@ export type SessionReducer = {
     fungible: FungibleBalances;
     nonFungible: NonFungibleBalances;
   };
+  userWallet: {
+    fungible: FungibleBalances;
+    nonFungible: NonFungibleBalances;
+  };
+  botWallet: {
+    fungible: FungibleBalances;
+    nonFungible: NonFungibleBalances;
+  };
+  buybackAirdropModalData?: BuyBackAirdropData;
 };
 
 export type LoadingReducer = {
@@ -90,4 +97,5 @@ export type LoadingReducer = {
   nodeStakingRewards: boolean;
   nodeStakingComponentDataLoading: boolean;
   apyFetching: boolean;
+  botBalanceLoading: boolean;
 };
