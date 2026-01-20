@@ -173,19 +173,19 @@ export const MORPHER_ORACLE_NFT_RESOURCE_ADDRESS =
 export const MORPHER_ORACLE_NFT_ID =
   process.env.ENVIRONMENT === "dev"
     ? "{cfd5d86c9d43b11e-78622846f264c0a0-e5256cd3fdb3a1e4-1e648e9bb24ca5de}"
-    : "{cfd5d86c9d43b11e-78622846f264c0a0-e5256cd3fdb3a1e4-1e648e9bb24ca5de}";
+    : "{8408f20781d53d44-cb2d523270f04cd7-a7e51cdf58953534-34fd63bc2e806aa4}";
 
 export const HEDGE_FUND_UNIT_RESOURCE_ADDRESS =
   process.env.ENVIRONMENT === "dev"
     ? "resource_tdx_2_1t4ny2slhdk7dgshdaxggs3efddfp8j3uf838km74fcys9f8lwttd3n"
-    : "resource_tdx_2_1t4ny2slhdk7dgshdaxggs3efddfp8j3uf838km74fcys9f8lwttd3n";
+    : "resource_rdx1th38dkeamzmlhvv264tjk54gtvd2yn3x26kpa6c5ukspmyqd8rtgru";
 
 export const FUND_MANAGER_COMPONENT_ADDRESS =
   process.env.ENVIRONMENT === "dev"
     ? "component_tdx_2_1cpdhxgf8nmvzczs9ttvaf3307lq8m4wdky66rpn4zy5qdaat0av5sg"
-    : "component_tdx_2_1cpdhxgf8nmvzczs9ttvaf3307lq8m4wdky66rpn4zy5qdaat0av5sg";
+    : "component_rdx1cpd5eajj0rq9dcwuymdhjhcrn2k62xgn07msfj2xhk3rn8mn2gcuut";
 
 export const HEDGE_FUND_BOT_ADDRESS =
   process.env.ENVIRONMENT === "dev"
     ? "account_tdx_2_129y9wu3vugaeasnprxjlrqy3tpmr7hpurrmapmyqhsr26ehhrh22e2"
-    : "account_tdx_2_129y9wu3vugaeasnprxjlrqy3tpmr7hpurrmapmyqhsr26ehhrh22e2";
+    : "account_rdx129puw6c9lhw9f5wceaeumj97lmaryzc8z2sdzk76z99ackqhc7f7yg";
