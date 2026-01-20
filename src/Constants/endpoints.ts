@@ -13,7 +13,7 @@ export const networkRPC =
 //     : "https://server.addix.meme";
 
 export const HIT_SERVER_URL = "https://server.addix.meme";
-export const HEDGE_FUND_SERVER_URL = "http://localhost:8000";
+export const HEDGE_FUND_SERVER_URL = "https://api.addix.meme";
 
 export const ATTO_BASE_URL = "https://earn-api.attos.world";
 export const SURGE_BASE_URL = "https://api.surge.trade";
