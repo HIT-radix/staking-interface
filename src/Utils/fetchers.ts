@@ -17,6 +17,9 @@ import {
 import {
   setIsOwner,
   setLockedHITRewards,
+  setLockedNodeStakingFomos,
+  setLockedNodeStakingHits,
+  setLockedNodeStakingREDDICKS,
   setLockedNodeStakingxUSDCs,
   setNodeStakeNFTid,
   setStHitBalance,
@@ -314,10 +317,16 @@ export const fetchRugProofComponentDetails = async () => {
 };
 
 export const fetchNodeStakingComponentDetails = async () => {
+  let totalHITs = "0";
+  let totalFOMOs = "0";
   let totalXUSDCs = "0";
+  let totalREDDICKS = "0";
   // let totalXUSDTs = "0";
 
+  let assignedHITS = "0";
+  let assignedFOMOs = "0";
   let assignedXUSDCs = "0";
+  let assignedREDDICKs = "0";
   // let assignedXUSDTs = "0";
   try {
     store.dispatch(setNodeStakingComponentDataLoading(true));
@@ -330,15 +339,30 @@ export const fetchNodeStakingComponentDetails = async () => {
 
     if (response.status === 200) {
       const { balances } = extractBalances(response.data.items[0].fungible_resources.items, [
+        { symbol: StakingTokens.HIT, address: HIT_RESOURCE_ADDRESS },
+        { symbol: StakingTokens.FOMO, address: FOMO_RESOURCE_ADDRESS },
         { symbol: StakingTokens.XUSDC, address: XUSDC_RESOURCE_ADDRESS },
+        { symbol: StakingTokens.REDDICKS, address: REDDICKS_RESOURCE_ADDRESS },
         // { symbol: StakingTokens.XUSDT, address: XUSDT_RESOURCE_ADDRESS },
       ]);
+      totalHITs = balances[StakingTokens.HIT];
+      totalFOMOs = balances[StakingTokens.FOMO];
       totalXUSDCs = balances[StakingTokens.XUSDC];
+      totalREDDICKS = balances[StakingTokens.REDDICKS];
       // totalXUSDTs = balances[StakingTokens.XUSDT];
       response.data.items[0].details.state.fields[2].entries.forEach((entry: any) => {
         switch (entry.key.value) {
+          case HIT_RESOURCE_ADDRESS:
+            assignedHITS = entry.value.fields[1].value;
+            break;
+          case FOMO_RESOURCE_ADDRESS:
+            assignedFOMOs = entry.value.fields[1].value;
+            break;
           case XUSDC_RESOURCE_ADDRESS:
             assignedXUSDCs = entry.value.fields[1].value;
+            break;
+          case REDDICKS_RESOURCE_ADDRESS:
+            assignedREDDICKs = entry.value.fields[1].value;
             break;
           // case XUSDT_RESOURCE_ADDRESS:
           //   assignedXUSDTs = entry.value.fields[1].value;
@@ -348,7 +372,12 @@ export const fetchNodeStakingComponentDetails = async () => {
   } catch (error) {
     console.log("error in fetchNodeStakingComponentDetails", error);
   }
+  store.dispatch(setLockedNodeStakingHits(BN(totalHITs).minus(assignedHITS).toString()));
+  store.dispatch(setLockedNodeStakingFomos(BN(totalFOMOs).minus(assignedFOMOs).toString()));
   store.dispatch(setLockedNodeStakingxUSDCs(BN(totalXUSDCs).minus(assignedXUSDCs).toString()));
+  store.dispatch(
+    setLockedNodeStakingREDDICKS(BN(totalREDDICKS).minus(assignedREDDICKs).toString())
+  );
   store.dispatch(setNodeStakingComponentDataLoading(false));
   // store.dispatch(setLockedNodeStakingxUSDTs(BN(totalXUSDTs).minus(assignedXUSDTs).toString()));
 };
