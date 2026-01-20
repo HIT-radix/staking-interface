@@ -5,25 +5,22 @@ import HitStakingPanel from "./Components/hitStakingPanel";
 import ValidatorStaking from "./Components/validatorStaking";
 import Listeners from "./Components/listeners";
 import { useSelector } from "Store";
-import InvestmentFunds from "./Components/investmentFunds";
 import HedgeFundAdmin from "./Components/hedgeFundAdmin";
 
 const AdminPanel = () => {
   const [managementType, setStakingType] = useState<
-    "Rug Proof" | "Validator" | "Investment Funds" | "Hedge Fund Admin"
+    "Rug Proof" | "Airdrop Node Rewards" | "Hedge Fund Admin"
   >("Rug Proof");
   const isOwner = useSelector((state) => state.staking.isOwner);
 
-  return true ? (
+  return isOwner ? (
     <div>
       <Listeners />
       <Tabs stakingType={managementType} setStakingType={setStakingType} />
       {managementType === "Rug Proof" ? (
         <HitStakingPanel />
-      ) : managementType === "Validator" ? (
+      ) : managementType === "Airdrop Node Rewards" ? (
         <ValidatorStaking />
-      ) : managementType === "Investment Funds" ? (
-        <InvestmentFunds />
       ) : managementType === "Hedge Fund Admin" ? (
         <HedgeFundAdmin />
       ) : null}

@@ -2,10 +2,8 @@ import React from "react";
 import { ChevronDown } from "lucide-react";
 
 interface DropDownProps {
-  stakingType: "Rug Proof" | "Validator" | "Investment Funds" | "Hedge Fund Admin";
-  setStakingType: (
-    type: "Rug Proof" | "Validator" | "Investment Funds" | "Hedge Fund Admin"
-  ) => void;
+  stakingType: "Rug Proof" | "Airdrop Node Rewards" | "Hedge Fund Admin";
+  setStakingType: (type: "Rug Proof" | "Airdrop Node Rewards" | "Hedge Fund Admin") => void;
 }
 
 const Dropdown: React.FC<DropDownProps> = ({ stakingType, setStakingType }) => {
@@ -19,13 +17,11 @@ const Dropdown: React.FC<DropDownProps> = ({ stakingType, setStakingType }) => {
         >
           {stakingType === "Rug Proof"
             ? "Rug Proof HIT Staking"
-            : stakingType === "Validator"
-            ? "ADDIX FOMO Validator Staking"
-            : stakingType === "Investment Funds"
-            ? "Investment Funds"
-            : stakingType === "Hedge Fund Admin"
-            ? "Hedge Fund Admin"
-            : ""}
+            : stakingType === "Airdrop Node Rewards"
+              ? "Airdrop Node Rewards"
+              : stakingType === "Hedge Fund Admin"
+                ? "Hedge Fund Admin"
+                : ""}
           <ChevronDown />
         </div>
         <ul
@@ -59,25 +55,13 @@ const Dropdown: React.FC<DropDownProps> = ({ stakingType, setStakingType }) => {
           <li>
             <div
               className={`${
-                stakingType === "Validator"
+                stakingType === "Airdrop Node Rewards"
                   ? "bg-accent text-base-100 hover:bg-accent hover:text-base-100"
                   : " hover:bg-base-200"
               }`}
-              onClick={() => setStakingType("Validator")}
+              onClick={() => setStakingType("Airdrop Node Rewards")}
             >
-              ADDIX FOMO Node Staking
-            </div>
-          </li>
-          <li>
-            <div
-              className={`${
-                stakingType === "Investment Funds"
-                  ? "bg-accent text-base-100 hover:bg-accent hover:text-base-100"
-                  : " hover:bg-base-200"
-              }`}
-              onClick={() => setStakingType("Investment Funds")}
-            >
-              Investment Funds
+              Airdrop Node Rewards
             </div>
           </li>
         </ul>
