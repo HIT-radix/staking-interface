@@ -140,7 +140,7 @@ const InvesmentFunds = () => {
                   </div>
                 )}
                 <div className="text-white/100 text-center font-bold text-xs">
-                  *The pot from which XRD stakers redeem their xUSDC{" "}
+                  *The pot from which XRD stakers redeem their fUSD{" "}
                   <a
                     href="https://addix-xrd.gitbook.io/usdhit-on-radix/proof-of-usdhit/the-fomo-usdhit-hedge-fund"
                     className="underline"
