@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useMemo, useState } from "react";
 
 import Decimal from "decimal.js";
 
-import nft from "Assets/Images/nft.jpg";
+import nft from "Assets/Images/fund-unit.jpg";
 import InfoTile from "Components/infoTile";
 import { HEDGE_FUND_UNIT_RESOURCE_ADDRESS } from "Constants/address";
 import { AMOUNT_INPUT_REGEX } from "Constants/misc";
@@ -10,6 +10,7 @@ import { useSelector } from "Store";
 import { cn, formatDollarAmount, formatTokenAmount } from "Utils/format";
 import { validateDecimalPlaces } from "Utils/judgers";
 import { getFundUnitValue, withdrawFromHedgeFund } from "Utils/txSenders";
+import redirectIcon from "Assets/Images/share.png";
 
 const HedgeFund = () => {
   const earnedFundUnits = useSelector(
@@ -174,7 +175,7 @@ const HedgeFund = () => {
       return "Insufficient balance";
     }
 
-    return "Withdraw";
+    return "Redeem";
   }, [
     isAmountGreaterThanBalance,
     txInProgress,
@@ -213,11 +214,25 @@ const HedgeFund = () => {
   };
 
   return (
-    <div className="w-full mb-4">
+    <div className="w-full">
+      <div
+        className="btn bg-accent w-full hover:bg-accent mb-1"
+        onClick={() =>
+          window.open(
+            "https://dashboard.radixdlt.com/network-staking/validator_rdx1swez5cqmw4d6tls0mcldehnfhpxge0mq7cmnypnjz909apqqjgx6n9/stake",
+            "_blank"
+          )
+        }
+      >
+        Stake XRD to earn FUs, $HIT, $FOMO, $DCKS
+        <span>
+          <img src={redirectIcon} alt="redirectIcon" className="w-4" />
+        </span>
+      </div>
       <InfoTile
         title="Your Earned Fund Units:"
         value={
-          <div>
+          <div className="w-full">
             <div className="flex items-center">
               <img src={nft} alt="hit-logo" className="w-7 h-7 rounded-full" />
               <p className="text-2xl font-bold ml-1" title={earnedFundUnits}>
@@ -227,43 +242,48 @@ const HedgeFund = () => {
                 </span>
               </p>
             </div>
+
+            <div className="collapse collapse-arrow mt-2">
+              <input type="checkbox" />
+              <div className="collapse-title min-h-0 py-0 pl-0 flex items-center text-sm font-semibold opacity-80">
+                Redeem Fund Units
+              </div>
+
+              <div className="collapse-content px-0">
+                <div className="flex flex-col items-center gap-2">
+                  <input
+                    id="hedge-fund-withdraw"
+                    value={withdrawAmount}
+                    onChange={handleWithdrawAmountChange}
+                    placeholder="0.0"
+                    className="input bg-base-200 text-accent focus:outline-none focus:border-accent w-full font-bold"
+                    type="text"
+                  />
+                  <p
+                    className="text-sm opacity-80 w-full font-bold"
+                    title={formattedWithdrawUsdValue}
+                  >
+                    ~{formattedWithdrawUsdValue}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={handleWithdrawClick}
+                    className={cn(
+                      "btn bg-base-100 hover:bg-base-200 text-accent w-full border-none",
+                      isWithdrawDisabled ? "opacity-50" : ""
+                    )}
+                    // disabled={isWithdrawDisabled}
+                  >
+                    {withdrawButtonLabel}
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         }
         isLoading={isValueLoading}
         tooltip={fundUnitPriceTooltip}
       />
-      <div className="mt-6">
-        <label className="text-secondary text-sm font-semibold" htmlFor="hedge-fund-withdraw">
-          Withdraw Fund Units
-        </label>
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3 mt-2">
-          <input
-            id="hedge-fund-withdraw"
-            value={withdrawAmount}
-            onChange={handleWithdrawAmountChange}
-            placeholder="0.0"
-            className="input bg-base-200 text-accent focus:outline-none focus:border-accent flex-1"
-            type="text"
-          />
-          <button
-            type="button"
-            onClick={handleWithdrawClick}
-            className={cn(
-              "btn bg-accent hover:bg-accent text-base-100 w-full sm:w-auto",
-              isWithdrawDisabled ? "text-white bg-accent/30 hover:bg-accent/30" : ""
-            )}
-            // disabled={isWithdrawDisabled}
-          >
-            {withdrawButtonLabel}
-          </button>
-        </div>
-        <p className="text-secondary text-sm mt-2" title={formattedWithdrawUsdValue}>
-          ~{formattedWithdrawUsdValue}
-        </p>
-        {isAmountGreaterThanBalance && withdrawAmountDecimal.gt(0) ? (
-          <p className="text-error text-xs mt-1">Insufficient fund units available.</p>
-        ) : null}
-      </div>
     </div>
   );
 };
