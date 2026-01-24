@@ -2,9 +2,8 @@ import { toast } from "react-toastify";
 
 import {
   fetchNodeStakingComponentDetails,
+  fetchPriceDataFromOracle,
   fetchRugProofComponentDetails,
-  getPriceDataFromMorpherOracle,
-  // getPriceDataFromMorpherOracle,
 } from "./fetchers";
 import { setAmount, setPercentage } from "Store/Reducers/staking";
 import { incrementSuccessTxCount } from "Store/Reducers/session";
@@ -383,10 +382,12 @@ export const withdrawFromHedgeFund = async (amount: string, wantedCoinAddress?: 
     const {
       app: { walletAddress },
     } = store.getState();
+    store.dispatch(setTxInProgress(true));
 
-    const priceData = await getPriceDataFromMorpherOracle("GATEIO:XRD_USDT");
+    const priceData = await fetchPriceDataFromOracle();
     if (!priceData) {
       toast.error("Failed to fetch price data from Morpher Oracle");
+      store.dispatch(setTxInProgress(false));
       return false;
     }
     const morpherMessage = priceMsgToMorpherString(priceData);
@@ -405,6 +406,7 @@ export const withdrawFromHedgeFund = async (amount: string, wantedCoinAddress?: 
     });
   } catch (error) {
     console.log("Unable to finish Withdraw from hedge fund process in node validator");
+    store.dispatch(setTxInProgress(false));
   }
 };
 

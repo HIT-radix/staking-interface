@@ -349,10 +349,10 @@ export type MorpherPriceData = {
     price: string;
     nonce: string;
     createdAt: string;
-    dataTimestamp: number;
-    oracleTimestamp: number;
-    marketStatusTimestamp: number;
-    marketStatus: string;
+    dataTimestamp?: number;
+    oracleTimestamp?: number;
+    marketStatusTimestamp?: number;
+    marketStatus?: string;
   }[];
   signature: string;
 };

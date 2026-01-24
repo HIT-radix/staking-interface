@@ -1,7 +1,6 @@
 import axios, { AxiosResponse } from "axios";
-import { bls12_381 } from "@noble/curves/bls12-381";
 
-import { MORPHER_ORACLE_BACKEND_URL, Ociswap_baseurl, networkRPC } from "Constants/endpoints";
+import { HEDGE_FUND_SERVER_URL, Ociswap_baseurl, networkRPC } from "Constants/endpoints";
 import { dispatch, store } from "Store";
 import { setStakingTokensPrices } from "Store/Reducers/app";
 import {
@@ -522,64 +521,20 @@ export const fetchWalletBalance = async (walletAddress: string) => {
 };
 
 // Fetch price data using the signed oracle message
-export const fetchPriceDataFromOracle = async (oracleRequestMsg: OracleRequestMessage) => {
-  const oracleUrl = `${MORPHER_ORACLE_BACKEND_URL}/price/${oracleRequestMsg.marketId}/${oracleRequestMsg.publicKeyBLS}/${oracleRequestMsg.nftId}/${oracleRequestMsg.signature}`;
+export const fetchPriceDataFromOracle = async () => {
+  try {
+    const response = await fetch(`${HEDGE_FUND_SERVER_URL}/common/test-oracle-price`);
 
-  const response = await fetch(oracleUrl);
+    if (!response.ok) {
+      throw new Error(`Oracle API error: ${JSON.stringify(await response.json())}`);
+    }
 
-  if (!response.ok) {
-    throw new Error(`Oracle API error: ${JSON.stringify(await response.json())}`);
+    const priceData = (await response.json()) as MorpherPriceData;
+    return priceData;
+  } catch (error) {
+    console.error("Error in fetchPriceDataFromOracle:", error);
+    throw error;
   }
-
-  const priceData = (await response.json()) as MorpherPriceData;
-  return priceData;
-};
-
-export const getPriceDataFromMorpherOracle = async (marketId: string) => {
-  const oracleRequest = generateMorpherOracleMessage(
-    marketId,
-    MORPHER_ORACLE_NFT_ID,
-    process.env.REACT_APP_FUND_BOT_PVT_KEY || ""
-  );
-  return oracleRequest !== undefined
-    ? await fetchPriceDataFromOracle(oracleRequest.oracleRequest)
-    : undefined;
-};
-
-// Helper function to convert message to string format for signing
-function morpherRequestMsgToString(msg: OracleRequestMessage): string {
-  return `${msg.marketId}##${msg.publicKeyBLS}##${msg.nftId}`;
-}
-
-// Generate morpher oracle message with signature
-export const generateMorpherOracleMessage = (
-  marketId: string,
-  nftId: string,
-  privateKey: string
-) => {
-  console.log("privateKey", privateKey);
-  if (!privateKey) return undefined;
-  let publicKeyBLS: string = getPublicKey_BLS12_381(privateKey);
-
-  // Create the request message
-  let oracleRequest = {
-    marketId,
-    publicKeyBLS,
-    nftId,
-    signature: "",
-  };
-
-  const msgString = morpherRequestMsgToString(oracleRequest);
-  const msg = new TextEncoder().encode(msgString);
-  const msgHash = bls12_381.longSignatures.hash(msg, htfEthereum);
-  const signature = bls12_381.longSignatures.sign(msgHash, hexToUint8Array(privateKey));
-  oracleRequest.signature = bytesToHex(signature.toBytes());
-
-  return {
-    oracleRequest,
-    msgHash: bytesToHex(msgHash.toBytes()),
-    signature: oracleRequest.signature,
-  };
 };
 
 // Convenience wrapper to fetch and return formatted hedge fund data
