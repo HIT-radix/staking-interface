@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import {
   fetchNodeStakingComponentDetails,
   fetchRugProofComponentDetails,
+  getPriceDataFromMorpherOracle,
   // getPriceDataFromMorpherOracle,
 } from "./fetchers";
 import { setAmount, setPercentage } from "Store/Reducers/staking";
@@ -12,6 +13,7 @@ import { setTxInProgress } from "Store/Reducers/loadings";
 import CachedService from "Classes/cachedService";
 import {
   formatTokenAmount,
+  priceMsgToMorpherString,
   //  priceMsgToMorpherString
 } from "./format";
 import { store } from "Store";
