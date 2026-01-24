@@ -3,6 +3,7 @@ import axios, { AxiosError } from "axios";
 import { toast } from "react-toastify";
 
 import { HEDGE_FUND_SERVER_URL } from "Constants/endpoints";
+import { useSelector } from "Store";
 
 type ProtocolPercentage = {
   name: string;
@@ -16,6 +17,8 @@ type ProtocolEntry = {
 };
 
 const ProtocolsPercentages = () => {
+  const isOwner = useSelector((state) => state.staking.isOwner);
+
   const [protocols, setProtocols] = useState<ProtocolEntry[]>([]);
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(false);
@@ -170,6 +173,10 @@ const ProtocolsPercentages = () => {
       setLoading(false);
     }
   };
+
+  if (!isOwner) {
+    return null;
+  }
 
   return (
     <div className="max-w-3xl mx-auto w-full">
