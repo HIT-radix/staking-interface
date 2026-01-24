@@ -189,3 +189,8 @@ export const HEDGE_FUND_BOT_ADDRESS =
   process.env.ENVIRONMENT === "dev"
     ? "account_tdx_2_129y9wu3vugaeasnprxjlrqy3tpmr7hpurrmapmyqhsr26ehhrh22e2"
     : "account_rdx129puw6c9lhw9f5wceaeumj97lmaryzc8z2sdzk76z99ackqhc7f7yg";
+
+export const FUND_BOT_BADGE =
+  process.env.ENVIRONMENT === "dev"
+    ? "resource_tdx_2_1t40pyc05pfmsqvslxpnystfyxe654h856r049gfxc009cjrp6kluta"
+    : "resource_rdx1t5s0qfsgsfhlf8q3sutt8j500dk2el4p3dk4psxyagqxdfwuhrm56k";
