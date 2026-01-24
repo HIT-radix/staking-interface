@@ -523,7 +523,7 @@ export const fetchWalletBalance = async (walletAddress: string) => {
 
 // Fetch price data using the signed oracle message
 export const fetchPriceDataFromOracle = async (oracleRequestMsg: OracleRequestMessage) => {
-  const oracleUrl = `${MORPHER_ORACLE_BACKEND_URL}/v2/price/${oracleRequestMsg.marketId}/${oracleRequestMsg.publicKeyBLS}/${oracleRequestMsg.nftId}/${oracleRequestMsg.signature}`;
+  const oracleUrl = `${MORPHER_ORACLE_BACKEND_URL}/price/${oracleRequestMsg.marketId}/${oracleRequestMsg.publicKeyBLS}/${oracleRequestMsg.nftId}/${oracleRequestMsg.signature}`;
 
   const response = await fetch(oracleUrl);
 
@@ -541,7 +541,6 @@ export const getPriceDataFromMorpherOracle = async (marketId: string) => {
     MORPHER_ORACLE_NFT_ID,
     process.env.REACT_APP_FUND_BOT_PVT_KEY || ""
   );
-  console.log("oracleRequest", oracleRequest);
   return oracleRequest !== undefined
     ? await fetchPriceDataFromOracle(oracleRequest.oracleRequest)
     : undefined;

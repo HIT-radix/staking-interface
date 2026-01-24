@@ -408,33 +408,6 @@ export const getHedgeFundWithdrawManifest = (
   morpherSignature: string,
   wantedCoinAddress?: string
 ) => {
-  // TODO: uncomment this. when morpher is working again.
-  // return `
-  //   CALL_METHOD
-  //     Address("${walletAddress}")
-  //     "withdraw"
-  //     Address("${HEDGE_FUND_UNIT_RESOURCE_ADDRESS}")
-  //     Decimal("${amount}")
-  //   ;
-  //   TAKE_ALL_FROM_WORKTOP
-  //     Address("${HEDGE_FUND_UNIT_RESOURCE_ADDRESS}")
-  //     Bucket("fund_units")
-  //   ;
-  //   CALL_METHOD
-  //     Address("${FUND_MANAGER_COMPONENT_ADDRESS}")
-  //     "withdraw"
-  //     Bucket("fund_units")
-  //     ${wantedCoinAddress ? `Some(Address("${wantedCoinAddress}"))` : "None"}
-  //     Map<Address, Tuple>(
-  //       Address("${XRD_RESOURCE_ADDRESS}") => Tuple("${morpherMessage}", "${morpherSignature}"),
-  //     )
-  //   ;
-  //   CALL_METHOD
-  //     Address("${walletAddress}")
-  //     "deposit_batch"
-  //     Expression("ENTIRE_WORKTOP")
-  //   ;
-  // `;
   return `
     CALL_METHOD
       Address("${walletAddress}")
@@ -451,7 +424,9 @@ export const getHedgeFundWithdrawManifest = (
       "withdraw"
       Bucket("fund_units")
       ${wantedCoinAddress ? `Some(Address("${wantedCoinAddress}"))` : "None"}
-      Map<Address, Tuple>()
+      Map<Address, Tuple>(
+        Address("${XRD_RESOURCE_ADDRESS}") => Tuple("${morpherMessage}", "${morpherSignature}"),
+      )
     ;
     CALL_METHOD
       Address("${walletAddress}")

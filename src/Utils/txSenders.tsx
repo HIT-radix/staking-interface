@@ -382,24 +382,20 @@ export const withdrawFromHedgeFund = async (amount: string, wantedCoinAddress?: 
       app: { walletAddress },
     } = store.getState();
 
-    // TODO: re-enable once Morpher Oracle is back
-    // const priceData = await getPriceDataFromMorpherOracle("GATEIO:XRD_USDT");
-    // if (!priceData) {
-    //   toast.error("Failed to fetch price data from Morpher Oracle");
-    //   return false;
-    // }
-    // const morpherMessage = priceMsgToMorpherString(priceData);
+    const priceData = await getPriceDataFromMorpherOracle("GATEIO:XRD_USDT");
+    if (!priceData) {
+      toast.error("Failed to fetch price data from Morpher Oracle");
+      return false;
+    }
+    const morpherMessage = priceMsgToMorpherString(priceData);
 
     return await baseTxSender({
       amount: amount,
       txManifest: getHedgeFundWithdrawManifest(
         walletAddress,
         amount,
-        "",
-        "",
-        // TODO: re-enable once Morpher Oracle is back
-        // morpherMessage,
-        // priceData.signature,
+        morpherMessage,
+        priceData.signature,
         wantedCoinAddress
       ),
       ToastElement: WithdrawFundUnitSuccessToast,

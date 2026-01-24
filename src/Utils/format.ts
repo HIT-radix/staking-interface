@@ -275,6 +275,6 @@ export function calculateYearlyAPY(apr7d: number): number {
 
 export function priceMsgToMorpherString(msg: MorpherPriceData) {
   return msg.data
-    .map((el) => el.marketId + "-" + el.price + "-" + el.nonce + "-" + el.dataTimestamp)
+    .map((el) => el.marketId + "-" + el.price + "-" + el.nonce + "-" + el.createdAt)
     .join(",");
 }
