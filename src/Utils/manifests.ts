@@ -444,12 +444,3 @@ export const getFundUnitValueManifest = () => {
     ;
   `;
 };
-
-export const getHedgeFundDetailsManifest = () => {
-  return `
-    CALL_METHOD
-      Address("${FUND_MANAGER_COMPONENT_ADDRESS}")
-      "fund_details"
-    ;
-  `;
-};

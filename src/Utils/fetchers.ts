@@ -28,7 +28,7 @@ import {
 import { StakingTokens, Tabs } from "Types/reducers";
 import { FungibleBalances, NonFungibleBalances, TokenData } from "Types/token";
 import { BN, extractBalances, extractBalancesNew } from "./format";
-import { EntityDetails, MorpherPriceData, OracleRequestMessage } from "Types/api";
+import { EntityDetails, HedgeFundProtocolsDetailsResponse, MorpherPriceData } from "Types/api";
 import {
   NODE_STAKING_USER_BADGE_ADDRESS,
   NODE_STAKING_FOMO_KEY_VALUE_STORE_ADDRESS,
@@ -44,7 +44,6 @@ import {
   NODE_STAKING_XUSDC_KEY_VALUE_STORE_ADDRESS,
   REDDICKS_RESOURCE_ADDRESS,
   NODE_STAKING_REDDICKS_KEY_VALUE_STORE_ADDRESS,
-  MORPHER_ORACLE_NFT_ID,
   HEDGE_FUND_BOT_ADDRESS,
 } from "Constants/address";
 import {
@@ -63,9 +62,6 @@ import {
   StateEntityFungiblesPageResponse,
   StateEntityNonFungiblesPageResponse,
 } from "@radixdlt/babylon-gateway-api-sdk";
-import { getPublicKey_BLS12_381, hexToUint8Array, htfEthereum } from "./noble-curves";
-import { bytesToHex } from "@noble/curves/utils";
-import { getHedgeFundDetail } from "./txSenders";
 import { HedgeFundPositionsInfoMap } from "Constants/misc";
 import type { HedgeFundPositionInfo } from "Types/misc";
 
@@ -538,15 +534,34 @@ export const fetchPriceDataFromOracle = async () => {
 };
 
 // Convenience wrapper to fetch and return formatted hedge fund data
+
 export const getFormattedInvestmentsInfo = async () => {
-  const fundDetailsRaw = await getHedgeFundDetail();
-  if (!fundDetailsRaw) return undefined;
+  try {
+    const response = await fetch(`${HEDGE_FUND_SERVER_URL}/common/hedge-fund-protocols-details`);
 
-  const mapped: Record<string, HedgeFundPositionInfo> = {};
-  Object.entries(HedgeFundPositionsInfoMap).forEach(([key, info]) => {
-    const updatedValue = fundDetailsRaw.fundsDetails[key] ?? "0";
-    mapped[key] = { ...info, value: updatedValue };
-  });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch hedge fund details: ${response.statusText}`);
+    }
 
-  return { fundsDetails: Object.values(mapped), totalFunds: fundDetailsRaw.totalFunds };
+    const fundDetailsRaw = (await response.json()) as HedgeFundProtocolsDetailsResponse;
+
+    if (!fundDetailsRaw || !fundDetailsRaw.data) {
+      return undefined;
+    }
+
+    const mapped: Record<string, HedgeFundPositionInfo> = {};
+
+    Object.entries(HedgeFundPositionsInfoMap).forEach(([key, info]) => {
+      const updatedValue = fundDetailsRaw?.data?.fundsDetails?.[key] ?? "0";
+      mapped[key] = { ...info, value: updatedValue };
+    });
+
+    return {
+      fundsDetails: Object.values(mapped),
+      totalFunds: fundDetailsRaw?.data.totalFunds ?? "0",
+    };
+  } catch (error) {
+    console.error("Error in getFormattedInvestmentsInfo:", error);
+    return undefined;
+  }
 };

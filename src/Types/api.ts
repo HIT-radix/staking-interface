@@ -363,3 +363,15 @@ export type OracleRequestMessage = {
   nftId: string;
   signature: string;
 };
+
+export type HedgeFundProtocolsDetailsResponse = {
+  success: boolean;
+  message: string;
+  data?: {
+    fundsDetails: Record<string, string>;
+    totalFunds: string;
+  };
+  meta: {
+    timestamp: Date;
+  };
+};
