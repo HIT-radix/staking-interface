@@ -11,6 +11,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Listeners from "Components/listeners";
 import RadixRewardsBanner from "Components/radixRewardsBanner";
+import ReactQueryProvider from "providers/reactQueryProvider";
 // if (process.env.REACT_APP_ENVIRONMENT === Environment.prod) {
 //   console.log = () => {};
 // }
@@ -26,10 +27,12 @@ root.render(
   >
     <ReduxProvider store={store}>
       <PersistGate loading={null} persistor={persister}>
-        <Listeners />
-        <ToastContainer />
-        <RadixRewardsBanner />
-        <App />
+        <ReactQueryProvider>
+          <Listeners />
+          <ToastContainer />
+          <RadixRewardsBanner />
+          <App />
+        </ReactQueryProvider>
       </PersistGate>
     </ReduxProvider>
   </Suspense>
