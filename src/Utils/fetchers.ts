@@ -547,9 +547,14 @@ export const getFormattedInvestmentsInfo = async () => {
       return undefined;
     }
 
+    const rawFunds = fundDetailsRaw.data.fundsDetails ?? [];
+    const fundsDetails = [...rawFunds].sort(
+      (a, b) => parseFloat(b.value ?? "0") - parseFloat(a.value ?? "0")
+    );
+
     return {
-      fundsDetails: fundDetailsRaw?.data.fundsDetails,
-      totalFunds: fundDetailsRaw?.data.totalFunds ?? "0",
+      fundsDetails,
+      totalFunds: fundDetailsRaw.data.totalFunds ?? "0",
     };
   } catch (error) {
     console.error("Error in getFormattedInvestmentsInfo:", error);
