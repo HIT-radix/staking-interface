@@ -8,6 +8,8 @@ import ApyCacheService from "Classes/apyCache";
 import { HedgeFundPositionInfo } from "Types/misc";
 import { useSelector } from "Store";
 import SlotMachinEffect from "Components/slotMachinEffect";
+import { ExternalLink } from "lucide-react";
+import { radixDashboardBaseUrl } from "Constants/misc";
 
 const InvesmentFunds = () => {
   const [loading, setLoading] = useState(true);
@@ -244,7 +246,15 @@ const InvesmentFunds = () => {
                               alt="logo"
                               className="w-4 h-4 rounded-full"
                             />
-                            {investment.position}
+                            <a
+                              href={`${radixDashboardBaseUrl}/account/${investment.account}`}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="flex items-center gap-2 hover:text-white/80 transition-colors"
+                            >
+                              {investment.position}
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
                           </div>
                         </td>
                         <td className="font-semibold">
