@@ -62,8 +62,6 @@ import {
   StateEntityFungiblesPageResponse,
   StateEntityNonFungiblesPageResponse,
 } from "@radixdlt/babylon-gateway-api-sdk";
-import { HedgeFundPositionsInfoMap } from "Constants/misc";
-import type { HedgeFundPositionInfo } from "Types/misc";
 
 export const fetchBalances = async (walletAddress: string) => {
   let HITbalance = "0";
@@ -545,19 +543,12 @@ export const getFormattedInvestmentsInfo = async () => {
 
     const fundDetailsRaw = (await response.json()) as HedgeFundProtocolsDetailsResponse;
 
-    if (!fundDetailsRaw || !fundDetailsRaw.data) {
+    if (!fundDetailsRaw || !fundDetailsRaw.data || !fundDetailsRaw.success) {
       return undefined;
     }
 
-    const mapped: Record<string, HedgeFundPositionInfo> = {};
-
-    Object.entries(HedgeFundPositionsInfoMap).forEach(([key, info]) => {
-      const updatedValue = fundDetailsRaw?.data?.fundsDetails?.[key] ?? "0";
-      mapped[key] = { ...info, value: updatedValue };
-    });
-
     return {
-      fundsDetails: Object.values(mapped),
+      fundsDetails: fundDetailsRaw?.data.fundsDetails,
       totalFunds: fundDetailsRaw?.data.totalFunds ?? "0",
     };
   } catch (error) {
