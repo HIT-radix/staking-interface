@@ -38,4 +38,6 @@ export type HedgeFundPositionInfo = {
   platform: string;
   position: string;
   apyId: string;
+  account: string;
+  id: string;
 };

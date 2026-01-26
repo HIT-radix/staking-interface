@@ -1,3 +1,4 @@
+import { HedgeFundPositionInfo } from "./misc";
 import { RewardTokenDistribution } from "./token";
 
 export interface ResourceDetails {
@@ -368,7 +369,7 @@ export type HedgeFundProtocolsDetailsResponse = {
   success: boolean;
   message: string;
   data?: {
-    fundsDetails: Record<string, string>;
+    fundsDetails: HedgeFundPositionInfo[];
     totalFunds: string;
   };
   meta: {
