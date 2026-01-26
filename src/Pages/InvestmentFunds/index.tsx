@@ -1,51 +1,24 @@
 import { useState, useEffect, useMemo } from "react";
 import Chart from "react-apexcharts";
 import Skeleton from "react-loading-skeleton";
-import { getFormattedInvestmentsInfo } from "Utils/fetchers";
+import { useGetFormattedInvestmentsInfo } from "hooks/apis/common";
 import investBg from "Assets/Images/investment-bg.jpeg";
 import { cn, formatDollarAmount } from "Utils/format";
 import ApyCacheService from "Classes/apyCache";
-import { HedgeFundPositionInfo } from "Types/misc";
 import { useSelector } from "Store";
 import SlotMachinEffect from "Components/slotMachinEffect";
 import { ExternalLink } from "lucide-react";
 import { radixDashboardBaseUrl } from "Constants/misc";
 
 const InvesmentFunds = () => {
-  const [loading, setLoading] = useState(true);
-  const [investments, setInvestments] = useState<HedgeFundPositionInfo[]>([]);
+  const { data: investmentsInfo, isLoading: loading } = useGetFormattedInvestmentsInfo();
   const [fontSize, setFontSize] = useState(150);
-  const [originalInvestments, setOriginalInvestments] = useState<HedgeFundPositionInfo[]>([]);
 
   const apyFetching = useSelector((state) => state.loadings.apyFetching);
 
-  useEffect(() => {
-    const fetchInvestments = async () => {
-      try {
-        const investmentinfo = await getFormattedInvestmentsInfo();
-        if (investmentinfo) {
-          // Store original order for chart data
-          setOriginalInvestments(investmentinfo.fundsDetails);
-          // Sort investments by value in descending order
-          const sortedInvestments = [...investmentinfo.fundsDetails].sort(
-            (a, b) => parseFloat(b.value) - parseFloat(a.value)
-          );
-          setInvestments(sortedInvestments);
-        }
-      } catch (err) {
-        console.error("Error fetching investments", err);
-      }
-      setLoading(false);
-    };
+  const investments = useMemo(() => investmentsInfo?.fundsDetails || [], [investmentsInfo]);
 
-    fetchInvestments();
-  }, []);
-
-  const totalFunds = useMemo(() => {
-    return investments.reduce((total, investment) => {
-      return total + parseFloat(investment.value);
-    }, 0);
-  }, [investments]);
+  const totalFunds = useMemo(() => investmentsInfo?.totalFunds || "0", [investmentsInfo]);
 
   // Handle responsive font size
   useEffect(() => {
@@ -127,18 +100,6 @@ const InvesmentFunds = () => {
                         `text-[100px] md:text-[120px] lg:text-[150px] xl:text-[180px]`
                       )}
                     />
-                    {/* <AnimatedNumbers
-                      includeComma
-                      transitions={() => ({
-                        duration: 3,
-                      })}
-                      animateToNumber={Number(Number(totalFunds).toFixed(2))}
-                      fontStyle={{
-                        fontSize: fontSize,
-                        color: "white",
-                        fontWeight: "bold",
-                      }}
-                    /> */}
                   </div>
                 )}
                 <div className="text-white/100 text-center font-bold text-xs">
@@ -167,9 +128,7 @@ const InvesmentFunds = () => {
                 <div className="w-full max-w-[500px]">
                   <Chart
                     options={{
-                      labels: originalInvestments.map(
-                        (item) => `${item.platform} - ${item.position}`
-                      ),
+                      labels: investments.map((item) => `${item.platform} - ${item.position}`),
                       dataLabels: {
                         formatter: function (val, opts) {
                           return Number(val).toFixed(2) + "%";
@@ -210,7 +169,7 @@ const InvesmentFunds = () => {
                         },
                       },
                     }}
-                    series={originalInvestments.map((item) => +item.value)}
+                    series={investments.map((item) => +item.value)}
                     type="donut"
                     width="100%"
                   />
