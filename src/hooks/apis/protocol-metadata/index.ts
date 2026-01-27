@@ -35,12 +35,10 @@ const fetchProtocolsMetadata = async (secret?: string): Promise<ProtocolMetadata
 
 const fetchProtocolMetadata = async (name: string, secret?: string): Promise<ProtocolMetadata> => {
   const resolvedSecret = assertSecret(resolveSecret(secret));
-  const { data } = await axios.get<ProtocolMetadataResponse>(
-    `${BASE_URL}/${encodeURIComponent(name)}`,
-    {
-      params: { secret: resolvedSecret },
-    }
-  );
+  const { data } = await axios.post<ProtocolMetadataResponse>(`${BASE_URL}/find`, {
+    id: name,
+    secret: resolvedSecret,
+  });
   return data.data;
 };
 
@@ -60,13 +58,11 @@ const updateProtocolMetadata = async (input: {
   payload: UpdateProtocolMetadataPayload;
 }): Promise<ProtocolMetadata> => {
   const resolvedSecret = assertSecret(resolveSecret(input.payload.secret));
-  const { data } = await axios.patch<ProtocolMetadataResponse>(
-    `${BASE_URL}/${encodeURIComponent(input.name)}`,
-    {
-      ...input.payload,
-      secret: resolvedSecret,
-    }
-  );
+  const { data } = await axios.patch<ProtocolMetadataResponse>(BASE_URL, {
+    ...input.payload,
+    id: input.name,
+    secret: resolvedSecret,
+  });
   return data.data;
 };
 
@@ -75,12 +71,9 @@ const deleteProtocolMetadata = async (input: {
   secret?: string;
 }): Promise<string> => {
   const resolvedSecret = assertSecret(resolveSecret(input.secret));
-  const { data } = await axios.delete<DeleteProtocolMetadataResponse>(
-    `${BASE_URL}/${encodeURIComponent(input.name)}`,
-    {
-      params: { secret: resolvedSecret },
-    }
-  );
+  const { data } = await axios.delete<DeleteProtocolMetadataResponse>(BASE_URL, {
+    data: { id: input.name, secret: resolvedSecret },
+  });
   return data.message;
 };
 
