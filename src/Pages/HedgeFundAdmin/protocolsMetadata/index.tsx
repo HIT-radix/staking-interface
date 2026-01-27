@@ -5,9 +5,11 @@ import { ProtocolMetadata } from "hooks/apis/protocol-metadata/types";
 import ProtocolRow from "./components/ProtocolRow";
 import CreateModal from "./components/createModal";
 import EditModal from "./components/editModal";
+import { useSelector } from "Store";
 
 const ProtocolsMetadata = () => {
   const [selectedProtocol, setSelectedProtocol] = useState<ProtocolMetadata | null>(null);
+  const isOwner = useSelector((state) => state.staking.isOwner);
 
   const { data: protocols, isLoading, error } = useProtocolMetadataList();
 
@@ -31,6 +33,10 @@ const ProtocolsMetadata = () => {
       <ProtocolRow key={protocol.name} protocol={protocol} onEdit={handleEditProtocol} />
     ));
   }, [protocols, handleEditProtocol]);
+
+  if (!isOwner) {
+    return null;
+  }
 
   return (
     <div className="w-full max-w-7xl mx-auto p-4 md:p-6">
