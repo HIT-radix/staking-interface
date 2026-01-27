@@ -40,4 +40,5 @@ export type HedgeFundPositionInfo = {
   apyId: string;
   account: string;
   id: string;
+  percentage: string;
 };
