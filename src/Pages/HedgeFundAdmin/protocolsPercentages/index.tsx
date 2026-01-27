@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import axios, { AxiosError } from "axios";
 import { toast } from "react-toastify";
 
+import { useGetFormattedInvestmentsInfo } from "hooks/apis/common";
 import { HEDGE_FUND_SERVER_URL } from "Constants/endpoints";
 import { useSelector } from "Store";
 
@@ -18,6 +19,7 @@ type ProtocolEntry = {
 
 const ProtocolsPercentages = () => {
   const isOwner = useSelector((state) => state.staking.isOwner);
+  const { data: investmentsInfo } = useGetFormattedInvestmentsInfo();
 
   const [protocols, setProtocols] = useState<ProtocolEntry[]>([]);
   const [loading, setLoading] = useState(false);
@@ -174,6 +176,44 @@ const ProtocolsPercentages = () => {
     }
   };
 
+  const protocolsList = useMemo(
+    () =>
+      protocols.map((protocol) => {
+        const currentPercentage = investmentsInfo?.fundsDetails?.find(
+          (f) => f.id === protocol.name
+        )?.percentage;
+
+        return (
+          <div
+            key={protocol.name}
+            className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 items-center"
+          >
+            <span className="text-secondary font-medium">{protocol.name}</span>
+
+            <div className="flex items-center gap-2 sm:hidden">
+              <span className="text-xs text-secondary">Current:</span>
+              <span className="text-accent text-center">{currentPercentage ?? "0"}</span>
+            </div>
+            <div className="hidden sm:block text-accent">{currentPercentage ?? "0"}</div>
+
+            <div className="flex items-center gap-2 sm:hidden">
+              <span className="text-xs text-secondary">Desired:</span>
+            </div>
+            <input
+              type="text"
+              inputMode="decimal"
+              pattern="[0-9]*\\.?[0-9]*"
+              value={protocol.value}
+              onChange={(event) => handlePercentageChange(protocol.name, event.target.value)}
+              className="input bg-base-200 text-accent focus:outline-none focus:ring w-full"
+              placeholder="0"
+            />
+          </div>
+        );
+      }),
+    [protocols, investmentsInfo]
+  );
+
   if (!isOwner) {
     return null;
   }
@@ -189,23 +229,14 @@ const ProtocolsPercentages = () => {
           ) : apiError ? (
             <div className="text-error">{apiError}</div>
           ) : (
-            protocols.map((protocol) => (
-              <div
-                key={protocol.name}
-                className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6"
-              >
-                <span className="text-secondary font-medium sm:w-1/2">{protocol.name}</span>
-                <input
-                  type="text"
-                  inputMode="decimal"
-                  pattern="[0-9]*\\.?[0-9]*"
-                  value={protocol.value}
-                  onChange={(event) => handlePercentageChange(protocol.name, event.target.value)}
-                  className="input bg-base-200 text-accent focus:outline-none focus:ring w-full sm:max-w-xs"
-                  placeholder="0"
-                />
+            <>
+              <div className="hidden sm:grid grid-cols-3 gap-4 mb-2 px-1 border-b border-base-300 pb-2">
+                <div className="text-sm font-bold text-secondary">Platform</div>
+                <div className="text-sm font-bold text-secondary">Current Percentage</div>
+                <div className="text-sm font-bold text-secondary">Desired Percentage</div>
               </div>
-            ))
+              {protocolsList}
+            </>
           )}
         </div>
 
