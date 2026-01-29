@@ -365,14 +365,33 @@ export type OracleRequestMessage = {
   signature: string;
 };
 
-export type HedgeFundProtocolsDetailsResponse = {
+export type GenericResponse<T> = {
   success: boolean;
   message: string;
-  data?: {
-    fundsDetails: HedgeFundPositionInfo[];
-    totalFunds: string;
-  };
+  data: T;
   meta: {
     timestamp: Date;
   };
 };
+
+export type HedgeFundProtocolsDetailsResponse = GenericResponse<
+  | {
+      fundsDetails: HedgeFundPositionInfo[];
+      totalFunds: string;
+    }
+  | undefined
+>;
+
+export interface TotalFundValue {
+  time: string; // ISO Date string
+  value: string;
+}
+
+export type TotalFundHistoricValuesResponse = GenericResponse<TotalFundValue[]>;
+
+export interface FundUnitValue {
+  time: string; // ISO Date string
+  value: string;
+}
+
+export type FundUnitHistoricValuesResponse = GenericResponse<FundUnitValue[]>;
