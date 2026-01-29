@@ -561,3 +561,14 @@ export const getFormattedInvestmentsInfo = async () => {
     return undefined;
   }
 };
+
+export const resolveSecret = (secret?: string) =>
+  secret ?? process.env.REACT_APP_HEDGE_FUND_ADMIN_SECRET ?? "";
+
+export const assertSecret = (secret: string) => {
+  const normalized = secret.trim();
+  if (!normalized) {
+    throw new Error("Admin secret is required for protocol metadata requests.");
+  }
+  return normalized;
+};

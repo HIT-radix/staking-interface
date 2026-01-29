@@ -11,19 +11,9 @@ import {
   ProtocolMetadataResponse,
   UpdateProtocolMetadataPayload,
 } from "./types";
+import { assertSecret, resolveSecret } from "Utils/fetchers";
 
 const BASE_URL = `${HEDGE_FUND_SERVER_URL}/admin/protocols-metadata`;
-
-const resolveSecret = (secret?: string) =>
-  secret ?? process.env.REACT_APP_HEDGE_FUND_ADMIN_SECRET ?? "";
-
-const assertSecret = (secret: string) => {
-  const normalized = secret.trim();
-  if (!normalized) {
-    throw new Error("Admin secret is required for protocol metadata requests.");
-  }
-  return normalized;
-};
 
 const fetchProtocolsMetadata = async (secret?: string): Promise<ProtocolMetadata[]> => {
   const resolvedSecret = assertSecret(resolveSecret(secret));
