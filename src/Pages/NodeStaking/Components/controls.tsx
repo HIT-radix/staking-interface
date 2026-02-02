@@ -105,7 +105,7 @@ const Controls = () => {
   };
 
   return (
-    <div className="w-full mt-3">
+    <div className="w-full">
       <>
         <InfoTile
           title="Your Claimable Rewards:"
