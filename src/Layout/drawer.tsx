@@ -17,7 +17,7 @@ const MobileDrawer = ({ children }: { children: ReactNode }) => {
         <Navbar />
         {children}
       </div>
-      <div className="drawer-side">
+      <div className="drawer-side z-50">
         <label htmlFor="my-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
         <ul className="menu bg-base-content text-accent min-h-full w-80 p-4">
           <div className="flex items-center justify-start gap-2 mb-16">
