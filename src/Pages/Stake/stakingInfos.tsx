@@ -38,7 +38,7 @@ const StakingInfos = () => {
   }, [hitPrice, stHIT_totalSupply, stHitBalance, stakedHIT]);
 
   return (
-    <div className="grid grid-cols-12 w-full mb-5 gap-3">
+    <div className="grid grid-cols-12 w-full gap-3">
       <div className="col-span-12 sm:col-span-6 flex items-center justify-center ">
         <InfoTile title="Staking APY%" value={apy + "%"} isLoading={poolDataLoading} />
       </div>

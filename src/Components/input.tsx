@@ -79,7 +79,7 @@ export const Input = () => {
             value={toLocaleFormat(amount)}
             type="text"
             onChange={onValueChange}
-            className={`input rounded-none bg-base-200 text-accent focus:outline-none focus:border-none  px-0 my-3 max-w-[100%] sm:max-w-[calc(100% - 40px)] text-3xl sm:text-5xl ${
+            className={`input rounded-none bg-transparent text-accent focus:outline-none focus:border-none  px-0 my-3 max-w-[100%] sm:max-w-[calc(100% - 40px)] text-3xl sm:text-5xl ${
               isInSufficientBalance ? "text-red-500" : ""
             }`}
             placeholder="0"
@@ -88,11 +88,11 @@ export const Input = () => {
             }}
           />
         </div>
-        <div className="dropdown dropdown-bottom dropdown-end w-max mr-[-1rem]">
+        <div className="w-max mr-[-1rem] ">
           <div
             tabIndex={0}
             role="button"
-            className="btn bg-transparent text-accent flex items-center justify-end w-max rounded"
+            className="btn bg-transparent text-accent flex items-center justify-end w-max rounded border-none"
             onClick={(e) => e.stopPropagation()}
           >
             <img

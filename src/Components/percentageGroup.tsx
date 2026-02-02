@@ -65,11 +65,11 @@ const SingleBox = ({ percent, selected, setSelected }: SingleBoxProps) => {
   return (
     <div
       className={`${
-        selected ? "bg-accent" : "bg-base-200"
+        selected ? "bg-accent" : "bg-black/30"
       } w-1/6 text-center py-1.5 cursor-pointer rounded-lg`}
       onClick={() => setSelected(percent)}
     >
-      <p className={`font-semibold ${selected ? "text-primary" : "text-secondary"}`}>
+      <p className={`font-semibold ${selected ? "text-primary" : "text-gray-400"}`}>
         {MapPercentage[percent]}
       </p>
     </div>

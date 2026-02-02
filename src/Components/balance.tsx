@@ -41,7 +41,7 @@ export const Balance = () => {
 
   return (
     <div className="text-xs flex items-center justify-between">
-      <div className="flex items-center text-secondary gap-1">
+      <div className="flex items-center text-gray-300 gap-1">
         <p className="font-semibold">Available</p>
         <img
           src={currentTab === Tabs.stake ? HITlogo : StHITlogo}
@@ -62,7 +62,7 @@ export const Balance = () => {
           <>
             <img src={WalletIcon} alt="WalletIcon" className="mb-1" />
             <Tooltip text={amountToShow.toString() + " " + currentToken}>
-              <p className="font-bold ml-1 text-secondary">
+              <p className="font-bold ml-1 text-white">
                 {formatTokenAmount(amountToShow.toNumber())}
               </p>
             </Tooltip>
@@ -75,7 +75,7 @@ export const Balance = () => {
               />
             ) : (
               <Tooltip text={"$" + Number(usdPriceToShow.toFixed(4)).toString()}>
-                <span className="ml-1 text-secondary">
+                <span className="ml-1 text-gray-400">
                   (~
                   {formatDollarAmount(
                     Number.isNaN(usdPriceToShow.toNumber()) ? 0 : usdPriceToShow.toNumber()

@@ -12,7 +12,7 @@ export const Tabs = () => {
     dispatch(setAmount(""));
   };
   return (
-    <div className="mb-3 bg-base-200 px-1.5 py-1.5 rounded-lg">
+    <div className="mb-3 bg-black/20 px-1.5 py-1.5 rounded-lg">
       <div
         className={`${CommonTabClass} ${currentTab === TabsType.stake ? "bg-accent" : ""}`}
         onClick={() => changeTab(TabsType.stake)}

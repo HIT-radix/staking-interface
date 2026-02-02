@@ -22,9 +22,9 @@ const Estimates = () => {
       className="flex items-center justify-between text-sm mt-1 mb-3"
       style={{ opacity: isInSufficientBalance ? 0 : 1 }}
     >
-      <p className="text-secondary">You'll recieve</p>
+      <p className="text-gray-300">You'll recieve</p>
       <Tooltip text={exactAmountInDecimals(estimatedAmount.toNumber(), 4)}>
-        <p className="text-secondary">
+        <p className="text-white font-semibold">
           ~{" "}
           {formatTokenAmount(
             Number.isNaN(estimatedAmount.toNumber()) ? 0 : estimatedAmount.toNumber()
