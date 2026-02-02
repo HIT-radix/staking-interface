@@ -225,9 +225,9 @@ const HedgeFund = () => {
         }
       >
         Stake XRD to earn FUs, $HIT, $FOMO, $DCKS
-        <span>
+        {/* <span>
           <img src={redirectIcon} alt="redirectIcon" className="w-4" />
-        </span>
+        </span> */}
       </div>
       <InfoTile
         title="Your Earned Fund Units:"
