@@ -5,29 +5,52 @@ import { PercentageGroup } from "Components/percentageGroup";
 import { ActionBtnStake } from "Components/actionBtnStake";
 import Estimates from "Components/estimates";
 import StakingInfos from "./stakingInfos";
+import investBg from "Assets/Images/investment-bg.jpeg";
 
 const Stake = () => {
   return (
-    <div
-      className="flex flex-col items-center justify-center"
-      style={{ minHeight: "calc(100vh - 150px - 50px)" }}
-    >
-      <div className="w-[95vw] max-w-[650px]">
-        <StakingInfos />
-        <div className="flex flex-col justify-between bg-base-content text-primary p-6 w-full rounded-lg ">
-          <div className="w-full">
+    <div className="relative w-full min-h-screen pb-20">
+      {/* Background */}
+      <div className="absolute inset-0 fixed">
+        <img
+          src={investBg}
+          alt="Stake Background"
+          className="w-full h-full object-cover filter brightness-[0.3]"
+        />
+        <div className="absolute inset-0 bg-black/40 pointer-events-none" />
+      </div>
+
+      <div
+        className="relative z-10 w-full flex flex-col items-center pt-10 px-4"
+        style={{ minHeight: "calc(100vh - 90px)" }}
+      >
+        <div className="w-full max-w-[650px] space-y-6">
+          {/* Header */}
+          <div className="text-center">
+            <h1 className="text-3xl font-bold text-white drop-shadow-lg">Staking Dashboard</h1>
+            <p className="text-gray-300 mt-2">Manage your HIT staking and rewards</p>
+          </div>
+
+          <StakingInfos />
+
+          {/* Interaction Card */}
+          <div className="bg-neutral/40 backdrop-blur-md p-6 rounded-xl border border-white/10 shadow-lg w-full">
             <Tabs />
-            <div className="bg-base-200 py-4 px-4 mt-3 rounded-lg">
+
+            <div className="py-4 px-4 mt-4 rounded-lg border border-white/5 bg-black/20">
               <Input />
               <Balance />
             </div>
-            {/* {isInSufficientBalance ? (
-          <div className="text-error text-xs font-semibold text-end mt-2">Insufficient Balance</div>
-        ) : null} */}
-            <Estimates />
-            <PercentageGroup />
+
+            <div className="mt-4 space-y-4">
+              <Estimates />
+              <PercentageGroup />
+            </div>
+
+            <div className="mt-8">
+              <ActionBtnStake />
+            </div>
           </div>
-          <ActionBtnStake />
         </div>
       </div>
     </div>
