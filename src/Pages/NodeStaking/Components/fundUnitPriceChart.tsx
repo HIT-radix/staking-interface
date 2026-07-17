@@ -132,7 +132,7 @@ const FundUnitPriceChart = () => {
       <div className="flex justify-between items-center mb-4 px-2">
         <h3 className="text-xl font-bold text-white opacity-90">Fund Unit Performance</h3>
         <div className="text-right">
-          <span className="text-sm opacity-70 block text-white">Current NAV</span>
+          <span className="text-sm opacity-70 block text-white">$FU value</span>
           <div className="flex items-center gap-2">
             <img src={nft} alt="hit-logo" className="w-7 h-7 rounded-full" />
             <span className="text-2xl font-bold text-accent whitespace-nowrap">
