@@ -4,4 +4,6 @@ export const snapshotKeys = {
     [...snapshotKeys.all, "total-fund-historic-values", secret] as const,
   fundUnitHistoricValues: (secret?: string) =>
     [...snapshotKeys.all, "fund-unit-historic-values", secret] as const,
+  list: (page: number, limit: number, secret?: string) =>
+    [...snapshotKeys.all, "list", page, limit, secret] as const,
 };

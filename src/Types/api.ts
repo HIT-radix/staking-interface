@@ -395,3 +395,49 @@ export interface FundUnitValue {
 }
 
 export type FundUnitHistoricValuesResponse = GenericResponse<FundUnitValue[]>;
+
+export enum SnapshotState {
+  UNLOCK_STARTED = "unlock_started",
+  UNSTAKE_STARTED = "unstake_started",
+  UNSTAKED = "unstaked",
+  DISTRIBUTED = "distributed",
+}
+
+export interface SnapshotAccountDB {
+  date: string; // ISO Date string
+  account: string;
+  lsu_amount: string;
+  fund_units_sent: boolean;
+}
+
+export interface SnapshotWithAccounts {
+  date: string; // ISO Date string
+  state: SnapshotState;
+  claim_nft_id: string | null;
+  accounts: SnapshotAccountDB[];
+}
+
+export type SnapshotsListResponse = {
+  success: boolean;
+  count: number;
+  data: SnapshotWithAccounts[];
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+};
+
+export type RecoverDistributionData = {
+  success: boolean;
+  found: boolean;
+  snapshotDate: string | null;
+  state: SnapshotState | null;
+  pendingBefore: number;
+  distributedCount: number;
+  pendingAfter: number;
+  message: string;
+};
+
+export type RecoverDistributionResponse = GenericResponse<RecoverDistributionData>;

@@ -11,6 +11,7 @@ const NodeStaking = lazy(() => import("Pages/NodeStaking"));
 const InvestmentFunds = lazy(() => import("Pages/InvestmentFunds"));
 const ProtocolsPercentages = lazy(() => import("Pages/HedgeFundAdmin/protocolsPercentages"));
 const ProtocolsMetadata = lazy(() => import("Pages/HedgeFundAdmin/protocolsMetadata"));
+const Snapshots = lazy(() => import("Pages/HedgeFundAdmin/snapshots"));
 
 export default function Routes() {
   const navigate = useNavigate();
@@ -54,6 +55,14 @@ export default function Routes() {
       element: (
         <MainLayout>
           <ProtocolsPercentages />
+        </MainLayout>
+      ),
+    },
+    {
+      path: "/admin/hedge-fund/snapshots",
+      element: (
+        <MainLayout>
+          <Snapshots />
         </MainLayout>
       ),
     },
