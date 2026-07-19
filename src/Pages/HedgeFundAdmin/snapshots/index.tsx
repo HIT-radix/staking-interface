@@ -104,10 +104,7 @@ const Snapshots = () => {
   const { data, isLoading, isFetching, error } = useSnapshots({ page, limit: PAGE_LIMIT });
   const recoverMutation = useRecoverDistribution();
 
-  const views = useMemo<SnapshotView[]>(
-    () => (data?.data ?? []).map(buildView),
-    [data]
-  );
+  const views = useMemo<SnapshotView[]>(() => (data?.data ?? []).map(buildView), [data]);
 
   const pagination = data?.pagination;
   const totalPages = pagination?.totalPages ?? 1;
@@ -245,14 +242,14 @@ const Snapshots = () => {
           </span>
           <div className="join">
             <button
-              className="btn btn-sm join-item"
+              className="btn btn-secondary btn-sm join-item"
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page <= 1 || isFetching}
             >
               Prev
             </button>
             <button
-              className="btn btn-sm join-item"
+              className="btn btn-secondary btn-sm join-item"
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page >= totalPages || isFetching}
             >
@@ -269,9 +266,8 @@ const Snapshots = () => {
           {confirmTarget ? (
             <div className="py-4 space-y-2 text-sm">
               <p className="text-secondary">
-                This re-runs the fund-unit distribution on-chain for the accounts still
-                pending in this snapshot. This action triggers real transactions and cannot
-                be undone.
+                This re-runs the fund-unit distribution on-chain for the accounts still pending in
+                this snapshot. This action triggers real transactions and cannot be undone.
               </p>
               <div className="bg-base-200 rounded-lg p-3 space-y-1">
                 <div>
